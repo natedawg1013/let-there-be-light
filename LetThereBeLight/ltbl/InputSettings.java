@@ -30,6 +30,7 @@ public class InputSettings extends JPanel implements ActionListener {
     	for(int i : sam) sampleRate.addItem(i);
     	setPositions();
     	input.addActionListener(this);
+    	set.addActionListener(this);
     }
     
     private void setPositions(){
@@ -45,7 +46,7 @@ public class InputSettings extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		if(ae.getSource()==input){
-			input.removeAllItems();
+			sampleRate.removeAllItems();
 			List<Integer> sam = AudioInput.getSampleRates(input.getSelectedItem());
 	    	for(int i : sam) sampleRate.addItem(i);
 		}
