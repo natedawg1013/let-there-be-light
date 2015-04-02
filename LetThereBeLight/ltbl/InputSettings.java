@@ -24,7 +24,6 @@ public class InputSettings extends JPanel implements ActionListener {
     	input = new JComboBox<String>();
     	sampleRate = new JComboBox<Integer>();
     	set = new JButton("Set");
-    	setPositions();
     	List<String> in = AudioInput.getSources();
     	for(String s : in) input.addItem(s);
     	List<Integer> sam = AudioInput.getSampleRates(input.getSelectedItem());
@@ -39,8 +38,8 @@ public class InputSettings extends JPanel implements ActionListener {
     	this.add(input, c);
     	c.gridx=1;
     	this.add(sampleRate, c);
-    	c.gridx=0;c.gridy=1;
-    	this.add(set);
+    	c.gridy=1;
+    	this.add(set, c);
     }
 
 	@Override
