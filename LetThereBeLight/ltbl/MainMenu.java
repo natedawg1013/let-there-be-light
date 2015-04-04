@@ -27,12 +27,21 @@ import javax.swing.JPanel;
 
 public class MainMenu extends JPanel implements ActionListener{
     
-    Runner r;
+    Runner runner;
+    JButton input_settings;
+    JButton sound_based_effects;
+    JButton input_options;
+    JButton output_options;
+    JButton time_based_effects;
+    JButton start;
+    JButton stop;
+    
     
     //BAR GRAPH BOX PENDING
     
-    
+    public MainMenu(Runner r) {
     //MAKING THE BUTTONS
+    runner = r;
     JButton sound_based_effects = new JButton("Sound Based Effects");
     if (shouldWeightX){
         //c.weightx = 0.5;
@@ -116,5 +125,6 @@ public class MainMenu extends JPanel implements ActionListener{
 		else if(ae.getSource()==stop) {
 		    //STOP
 		}
-	}
+	  }
+    }
 }

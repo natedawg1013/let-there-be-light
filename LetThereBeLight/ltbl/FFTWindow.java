@@ -37,6 +37,7 @@ public class FFTWindow extends JPanel{
     	this.add( boxSettings, c );
     	c.gridy = 1;
     	this.add( addBox, c );
+    	mousePanel.setSize()
     }
     
     @Override
