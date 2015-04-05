@@ -1,4 +1,5 @@
 package ltbl;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -35,6 +36,7 @@ public class MainMenu extends JPanel implements ActionListener{
 	JButton time_based_effects;
 	JButton start;
 	JButton stop;
+	BarGraph graph;
 
 	private final boolean shouldWeightX = false;
 
@@ -43,57 +45,48 @@ public class MainMenu extends JPanel implements ActionListener{
 
 	public MainMenu(Runner r) {
 		super(new GridBagLayout());
-		//MAKING THE BUTTONS
+		this.setPreferredSize(new Dimension(700, 400));
 		runner = r;
-		GridBagConstraints c = new GridBagConstraints();
 		sound_based_effects = new JButton("Sound Based Effects");
-		if (shouldWeightX){
-			//c.weightx = 0.5;
-		}
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.gridx = 0;
-		c.gridy = 0;
-		this.add(sound_based_effects, c);
-
 		time_based_effects = new JButton("Time Based Effects");
-
-		c.fill = GridBagConstraints.HORIZONTAL;
-		//c.weightx = 0.5;
-		c.gridx = 4;
-		c.gridy = 0;
-		this.add(time_based_effects, c);
-
 		input_options = new JButton("Input Options");
-		c.fill = GridBagConstraints.HORIZONTAL;
-		//c.weightx = 0.5;
-		c.gridx = 0;
-		c.gridy = 1;
-		this.add(input_options, c);
-
 		output_options = new JButton("Output Options");
-		c.fill = GridBagConstraints.HORIZONTAL;
-		//c.weightx = 0.5;
-		c.gridx = 4;
-		c.gridy = 1;
-		this.add(output_options, c);
-
 		start = new JButton("Start");
-		c.fill = GridBagConstraints.HORIZONTAL;
-		//c.weightx = 0.5;
-		c.gridx = 2;
-		c.gridy = 1;
-		this.add(start, c);
-
 		stop = new JButton("Stop");
-		c.fill = GridBagConstraints.HORIZONTAL;
-		//grid locations not yet set
-		//c.weightx = 0.5;
-		c.gridx = 3;
-		c.gridy = 1;
+		graph = new BarGraph();
+		
+		setPositions();
+		
+		addActionListeners();
+	}
+	private void setPositions(){
+		GridBagConstraints c = new GridBagConstraints();
+		//c.fill = GridBagConstraints.HORIZONTAL;
+		c.fill = GridBagConstraints.NONE;
+		c.anchor = GridBagConstraints.CENTER;
+			c.weightx = 0.5;		
+			c.gridx = 0; c.gridy = 0;
+		this.add(sound_based_effects, c);
+			c.gridx = 3; c.gridy = 0;
+		this.add(time_based_effects, c);
+			c.gridx = 0; c.gridy = 1;
+		this.add(input_options, c);
+			c.gridx = 3; c.gridy = 1;
+		this.add(output_options, c);
+			c.weightx = 0.75;
+			c.gridx = 1; c.gridy = 1;
+		this.add(start, c);
+			c.gridx = 2; c.gridy = 1;
 		this.add(stop, c);
+			c.gridx = 1; c.gridy = 0;
+			c.gridheight = 1; c.gridwidth = 2;
+			c.weighty=0.5;
+			c.fill = GridBagConstraints.BOTH;
+		this.add(graph, c);
 
+	}
 
-
+	private void addActionListeners(){
 		sound_based_effects.addActionListener(this);
 		time_based_effects.addActionListener(this);
 		start.addActionListener(this);
