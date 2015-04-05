@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+import javax.sound.sampled.Line;
+import javax.sound.sampled.Mixer;
 import javax.swing.ComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -24,10 +26,11 @@ public class InputSettings extends JPanel implements ActionListener {
     	input = new JComboBox<String>();
     	sampleRate = new JComboBox<Integer>();
     	set = new JButton("Set");
-    	List<String> in = AudioInput.getSources();
-    	for(String s : in) input.addItem(s);
-    	List<Integer> sam = AudioInput.getSampleRates(input.getSelectedItem());
-    	for(int i : sam) sampleRate.addItem(i);
+    	List<Mixer.Info> cards = AudioInput.getSoundCards();
+    	List<Line.Info> in = AudioInput.getSources(cards.get(0));
+    	for(Line.Info s : in) input.addItem(s.toString());
+    	int[] rates = {22050, 44100, 48000};
+    	for(int i : rates) sampleRate.addItem(i);
     	setPositions();
     	input.addActionListener(this);
     	set.addActionListener(this);
@@ -45,15 +48,16 @@ public class InputSettings extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
-		if(ae.getSource()==input){
-			sampleRate.removeAllItems();
-			List<Integer> sam = AudioInput.getSampleRates(input.getSelectedItem());
-	    	for(int i : sam) sampleRate.addItem(i);
-		}
-		else if(ae.getSource()==set){
+//		if(ae.getSource()==input){
+//			sampleRate.removeAllItems();
+//			List<Integer> sam = AudioInput.getSampleRates((String) input.getSelectedItem());
+//	    	for(int i : sam) sampleRate.addItem(i);
+//		}
+		if(ae.getSource()==set){
 			String name = (String) input.getSelectedItem();
 			Integer sample = (Integer) sampleRate.getSelectedItem();
-			runner.updateFourrier(new AudioInput(name, sample));
+			runner.updateFourier(new AudioInput(name, sample, 8192));
+			///TODO: Add dropdown for buffer length
 		}
 	}
 }
