@@ -1,5 +1,6 @@
 package ltbl;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.EventListener;
@@ -32,31 +33,36 @@ public class Runner implements EventListener{
     }
     
     public Runner(){
-    	menu = new MainMenu();
-    	os=new OutputSettings();
-    	is=new InputSettings();
-    	pe=new PeriodicEffectWindow();
-    	fw=new FFTWindow();
+    	menu = new MainMenu(this);
+    	//os=new OutputSettings();
+    	is=new InputSettings(this);
+    	//pe=new PeriodicEffectWindow();
+    	//fw=new FFTWindow(this);
     	outputs = new ArrayList<Output>();
     	boxes = new ArrayList<FFTBox>();
     	fourrier = new FourierAnalysis();
     	
     	menuFrame = new JFrame();
-    	osFrame = new JFrame();
+    	//osFrame = new JFrame();
     	isFrame = new JFrame();
-    	peFrame = new JFrame();
-    	fwFrame = new JFrame();
+    	//peFrame = new JFrame();
+    	//fwFrame = new JFrame();
     	
     	menuFrame.add(menu);
-    	osFrame.add(os);
+    	//osFrame.add(os);
     	isFrame.add(is);
-    	peFrame.add(pe);
-    	fwFrame.add(fw);
+    	//peFrame.add(pe);
+    	//fwFrame.add(fw);
     	
     	menuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    	osFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+    	//osFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
     	isFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-    	peFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+    	//peFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+    	
+    	menuFrame.setMinimumSize(new Dimension(500, 100));
+    	
+    	menuFrame.pack();
+    	menuFrame.setVisible(true);
     }
     
     public void showMainMenu(boolean state){
@@ -64,10 +70,12 @@ public class Runner implements EventListener{
     }
     
     public void showOutputSettings(boolean state){
+    	osFrame.pack();
     	osFrame.setVisible(state);
     }
     
     public void showInputSettings(boolean state){
+    	isFrame.pack();
     	isFrame.setVisible(state);
     }
     
@@ -77,6 +85,10 @@ public class Runner implements EventListener{
     
     public void showFFTWindow(boolean state){
     	fwFrame.setVisible(state);
+    }
+    
+    public void updateFourier(AudioInput in){
+    	fourrier.setInput(in);
     }
     
     public void actionPerformed(ActionEvent e){
