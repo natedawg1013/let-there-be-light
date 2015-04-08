@@ -1,5 +1,5 @@
 package ltbl;
 
-public class FFTBox{
+public class FFTBox {
     
 }

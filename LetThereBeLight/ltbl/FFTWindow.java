@@ -10,7 +10,6 @@ public class FFTWindow extends JPanel{
     private JLayeredPane graphPane;
     private FFTGraph graph;
     private FFTMousePanel mousePanel;
-    private FFTBoxSettings boxSettings;
     private JButton addBox;
 
 	public FFTWindow( Runner r ) {
@@ -19,7 +18,6 @@ public class FFTWindow extends JPanel{
         graph = new FFTGraph(runner);
         graphPane = new graphPane();
         mousePanel = new FFTMousePanel( runner, graphPane );
-        boxSettings = new FFTBoxSettings(runner);
         addBox = new JButton("Add");
         addBox.addActionListener(this);
 	}
@@ -34,8 +32,6 @@ public class FFTWindow extends JPanel{
         this.add( graphPane, c );
         c.weightx = .20;
     	c.gridx = 1;
-    	this.add( boxSettings, c );
-    	c.gridy = 1;
     	this.add( addBox, c );
     	mousePanel.setSize()
     }
