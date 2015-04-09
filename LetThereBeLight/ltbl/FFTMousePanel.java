@@ -33,7 +33,9 @@ public class FFTMousePanel extends JPanel {
             private FFTMousePanel modePanel;
             
             public void processMouseEvent ( MouseEvent me ) {
-                // do we reference MouseEvent for enums in it?
+                // when you click down and hold the mouse, get coords for initial box
+                // actually make it, and add it on top of the box pile.
+                // then transition to the DrawBox state
                 if ( me.getID() == MOUSE_PRESSED && me.getButton() == BUTTON1 ) {
                     AddDrawBox nextMode = new AddDrawBox(modePanel);
                     nextMode.setInitialCoords( me.getX(), me.getY() );
@@ -57,22 +59,31 @@ public class FFTMousePanel extends JPanel {
             private int x0, y0;
             
             public void processMouseEvent ( MouseEvent me ) {
-                if ( me.getID() ==  ) {
-                    
+                if ( me.getID() == MOUSE_RELEASED && me.getButton() = BUTTON1 ) {
+                    // If you let go of the mouse, switch to the Edit state
+                    // and make the box inside the overlay get loaded with ratios of bounding coords to dimensions
+                    // should we bring up a menu that has more settings now or later when you edit it?
                 }
             }
             
             public void processMouseMotionEvent ( MouseEvent me ) {
+                // If you move the mouse, make the size of the box change with the updated mouse coords
                 
             }
             
             public void processMouseWheelEvent ( MouseWheelEvent mwe ) {
-                
+                // do nothing
             }
             
             public void setInitialCoords ( int x, int y ) {
                 x0 = x;
                 y0 = y;
+            }
+            
+            public void setBoxSize ( int x, int y ) {
+                int level = modePanel.boxLayers.getLayer(modePanel) - 1;
+                FFTBoxOverlay box = (FFTBoxOverlay) modePanel.boxLayers.getComponentsInLayer(level)[0];
+                box.setDimensions( Math.min( x0, x ), Math.min( y0, y ), Math.max( x0, x ), Math.max( y0, y ) );
             }
             
         }
@@ -82,15 +93,19 @@ public class FFTMousePanel extends JPanel {
             private FFTMousePanel modePanel;
             
             public void processMouseEvent ( MouseEvent me ) {
-                
+                // If you click on a box "MOUSE_CLICKED" once (getClickCount()), pull box to top of the JLayeredPane
+                // If you click on a box twice, get the boxSettings menu up
+                // If you right-click on a box, ask to delete box + other options maybe
+                // If you left-click and hold down "MOUSE_PRESSED", switch state into EditMoveBox
+                // If you left-click and hold down on an EDGE of a box, switch state into EditResizeBox
             }
             
             public void processMouseMotionEvent ( MouseEvent me ) {
-                
+                // Do nothing
             }
             
             public void processMouseWheelEvent ( MouseWheelEvent mwe ) {
-                
+                // scroll through the different boxes underneath the cursor
             }
             
         }
@@ -99,23 +114,39 @@ public class FFTMousePanel extends JPanel {
             
             private FFTMousePanel modePanel;
             
+            private int[] initBoxCoords, initMouseCoords;
+            
             public void processMouseEvent ( MouseEvent me ) {
-                
+                // When you release the mouse, switch state into Edit
             }
             
             public void processMouseMotionEvent ( MouseEvent me ) {
-                
+                // When you move the mouse, update the box with the new coords
             }
             
             public void processMouseWheelEvent ( MouseWheelEvent mwe ) {
-                
+                // Do nothing
             }
             
         }
 
-        public class EditBox extends Mode {
+        public class EditResizeBox extends Mode {
             
+            private FFTMousePanel modePanel;
             
+            private int side;
+            
+            public void processMouseEvent ( MouseEvent me ) {
+                // When you release the mouse, switch state into Edit
+            }
+            
+            public void processMouseMotionEvent ( MouseEvent me ) {
+                // When you move the mouse, update the box with the new coords
+            }
+            
+            public void processMouseWheelEvent ( MouseWheelEvent mwe ) {
+                // Do nothing
+            }
         }
         
         public Mode getMode ( EMode m, FFTMousePanel mp ) {
@@ -141,7 +172,6 @@ public class FFTMousePanel extends JPanel {
     private Mode inputMode;
     private Runner runner;
     private JLayeredPane boxLayers;
-    private Point p1, p2;
     private List<FFTBoxOverlay> boxOverlays;
     private int sizeX, sizeY;
     // boxes can go anywhere between but not including
