@@ -36,30 +36,31 @@ public class Runner implements EventListener{
     	menu = new MainMenu(this);
     	//os=new OutputSettings();
     	is=new InputSettings(this);
-    	//pe=new PeriodicEffectWindow();
+    	pe=new PeriodicEffectWindow();
     	//fw=new FFTWindow(this);
     	outputs = new ArrayList<Output>();
     	boxes = new ArrayList<FFTBox>();
     	fourrier = new FourierAnalysis();
     	
-    	menuFrame = new JFrame();
-    	//osFrame = new JFrame();
-    	isFrame = new JFrame();
-    	//peFrame = new JFrame();
-    	//fwFrame = new JFrame();
+    	menuFrame = new JFrame("Let There Be Light");
+    	//osFrame = new JFrame("Output Settings");
+    	isFrame = new JFrame("Inout Settings");
+    	peFrame = new JFrame("Time-Based Effects");
+    	//fwFrame = new JFrame("Sound-Based Effects");
     	
     	menuFrame.add(menu);
     	//osFrame.add(os);
     	isFrame.add(is);
-    	//peFrame.add(pe);
+    	peFrame.add(pe);
     	//fwFrame.add(fw);
     	
     	menuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	//osFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
     	isFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-    	//peFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+    	peFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
     	
     	menuFrame.setMinimumSize(new Dimension(500, 100));
+    	peFrame.setMinimumSize(new Dimension(400, 300));
     	
     	menuFrame.pack();
     	menuFrame.setVisible(true);
@@ -80,6 +81,7 @@ public class Runner implements EventListener{
     }
     
     public void showPeriodicEffects(boolean state){
+    	peFrame.pack();
     	peFrame.setVisible(state);
     }
     
