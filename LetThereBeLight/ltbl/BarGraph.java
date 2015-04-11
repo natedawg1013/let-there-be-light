@@ -30,12 +30,7 @@ public class BarGraph extends JPanel{
     	int x = this.getWidth();
     	int y = this.getHeight();
     	Dimension dim = this.getSize();
-    	System.out.println("" + x + " - " + y);
-    	System.out.println(dim);
     	int[] buckets = getBuckets();
-    	for(int i : buckets){
-    		System.out.println(i);
-    	}
     	int barWidth = (int) ((x*(1-SPACING))/BARS);
     	double scaling = (double) y/MAX_HEIGHT;
     	for(int i=0;i<BARS;i++){
