@@ -13,23 +13,43 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
 
+import java.util.Enumeration;
+import javax.comm.CommPortIdentifier;
+
 
 public class OutputSettings extends JPanel {
     
     Runner runner;
-    JButton Add;
+    JButton set;
+    JComboBox output_box;
+    JComboBox port_box;
+    JComboBox dmxver_box;
+    List<String> serialList = new ArrayList<String>();
+    
+    
+    private void getSerialPorts() {
+        
+        Enumeration portList = CommPortIdentifier.getPortIdentifiers;
+        
+        while(portList.hasMoreElements()) {
+            CommPortIdentifier i = (CommPortIdentifier) portList.nextElement();
+            if(i.getPortType() == CommPortIdentifier.PORT_SERIAL) {
+                serialList.add(i.getName());
+            }
+        }
+    }
     
     public OutputSettings(Runner r) {
+        
         runner = r;
-        Add = new JButton("Add");
+        set = new JButton("Set");
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 4;
         c.gridy = 1;
-        this.add(Add, c);
+        this.add(set, c);
         
         JLabel output_label = new JLabel("Output");
         this.add(output_label);
-        private JComboBox output_box;
         output_box = new JComboBox();
         output_box.setEditable(true);
         output_box.addItem("Serial");
@@ -37,29 +57,46 @@ public class OutputSettings extends JPanel {
         output_box.addActionListener(this);
         this.add(output_box);
         
-        JLabel output_label = new JLabel("Port");
+        JLabel port = new JLabel("Port");
         this.add(port);
-        private JComboBox port_box;
         port_box = new JComboBox();
         port_box.setEditable(true);
-        port_box.addItem("COM1");
         port_box.addActionListener(this);
-        this.add(port);
+        this.add(port_box);
         
         JLabel DMXver = new JLabel("DMX Ver.");
         this.add(DMXver);
-        private JComboBox dmxver_box;
         dmxver_box = new JComboBox();
         dmxver_box.setEditable(true);
         dmxver_box.addItem("DMX 512");
         dmxver_box.addActionListener(this);
-        this.add(dmxver);
+        this.add(dmxver_box);
         
         
         public void actionPerformed(ActionEvent ae) {
+            if(e.getSource()==set) {
+                Output out = null;
+                if(((String) output_box.getSelectedItem()).equals("Serial"){
+                    out = new DMXOut((String) port_box.getSelectedItem(), 
+                    (String) dmxver_box,getSelectedItem);
+                    port_box.removeAllItems();
+                    this.getSerialPorts();
+                    for(int i = 0; i < serialList.size(); i++) 
+                       port_box.addItem(serialList.get(i));
+                }
+                else {
+                    out = new SimOut((String) dmxver_box,getSelectedItem);
+                    port_box.removeAllItems();
+                    port_box.addItem("Not Applicable");
+                }
+            }
             
+   
         }
         
-        
+        ///TODO: 
+        //need function to get available serial ports
+        //on action event from output box, if serial, rebuild port box from the getSerialPorts method
+        //if simulator, rebuild port box with just "Not Applicable" element
     }
 }

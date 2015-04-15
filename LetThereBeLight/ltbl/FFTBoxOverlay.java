@@ -8,9 +8,9 @@ public class FFTBoxOverlay extends JPanel {
     private int xOuter, yOuter;
     private FFTBox box;
     
-    public FFTBoxOverlay ( FFTBox ) {
+    public FFTBoxOverlay () {
         // make box
-        box = FFTBox;
+        box = new FFTBox();
         // initially we want it to be not showed until we set its size via the MousePanel
     }
     
@@ -21,7 +21,7 @@ public class FFTBoxOverlay extends JPanel {
         dimensions = box.getDimensions( xOuter, yOuter );
     }
     
-    sets the size of the graph's dimensions
+    // sets the size of the graph's dimensions
     public void setOuter ( int x, int y ) {
         xOuter = x;
         yOuter = y;
@@ -34,5 +34,8 @@ public class FFTBoxOverlay extends JPanel {
         dimensions[2] = x1;
         dimensions[3] = x2;
     }
-    
 }
+
+
+
+

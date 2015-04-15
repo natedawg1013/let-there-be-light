@@ -18,8 +18,8 @@ import javax.swing.event;
 public class FFTMousePanel extends JPanel {
     
     public enum EMode {
-        ADD, ADD_DRAWBOX,
-        EDIT, EDIT_MOVEBOX, EDIT_BOX;
+        ADD, ADD_DRAW_BOX,
+        EDIT, EDIT_RESIZE_BOX, EDIT_MOVE_BOX;
 
         public abstract class Mode {
             public abstract Mode ( FFTMousePanel mp );
@@ -28,7 +28,7 @@ public class FFTMousePanel extends JPanel {
             public abstract void processMouseWheelEvent ( MouseWheelEvent mwe );
         }
         
-        public class Add extends Mode {
+        public class AddMode extends Mode {
             
             private FFTMousePanel modePanel;
             
@@ -37,8 +37,14 @@ public class FFTMousePanel extends JPanel {
                 // actually make it, and add it on top of the box pile.
                 // then transition to the DrawBox state
                 if ( me.getID() == MOUSE_PRESSED && me.getButton() == BUTTON1 ) {
-                    AddDrawBox nextMode = new AddDrawBox(modePanel);
+                    FFTBoxOverlay newBox = new FFTBoxOverlay();
+                    AddDrawBoxMode nextMode = new AddDrawBoxMode(modePanel);
                     nextMode.setInitialCoords( me.getX(), me.getY() );
+                    newBox.setdimensions( me.getX(), me.getY(), me.getX(), me.getY() );
+                    int level = modePanel.boxLayers.getLayer(modePanel);
+                    modePanel.boxLayers.setLayer( modePanel, level+1 );
+                    modePanel.boxLayers.add( newBox, level );
+                    nextMode.setBox(newBox);
                     modePanel.setMode(nextMode);
                 }
             }
@@ -53,9 +59,10 @@ public class FFTMousePanel extends JPanel {
             
         }
         
-        public class AddDrawBox extends Mode {
+        public class AddDrawBoxMode extends Mode {
             
             private FFTMousePanel modePanel;
+            private FFTBoxOverlay boxAdded;
             private int x0, y0;
             
             public void processMouseEvent ( MouseEvent me ) {
@@ -63,12 +70,18 @@ public class FFTMousePanel extends JPanel {
                     // If you let go of the mouse, switch to the Edit state
                     // and make the box inside the overlay get loaded with ratios of bounding coords to dimensions
                     // should we bring up a menu that has more settings now or later when you edit it?
+                    EditMode nextMode = new EditMode(modePanel);
+                    modePanel.setMode(nextMode);
                 }
             }
             
             public void processMouseMotionEvent ( MouseEvent me ) {
                 // If you move the mouse, make the size of the box change with the updated mouse coords
-                
+                if ( me.getID() == MOUSE_DRAGGED ) {
+                    x1 = me.getX();
+                    x2 = me.getY();
+                    boxAdded.setDimensions( min(x0, x1), min(y0, y1), max(x0, x1), max(y0, y1) );
+                }
             }
             
             public void processMouseWheelEvent ( MouseWheelEvent mwe ) {
@@ -80,15 +93,17 @@ public class FFTMousePanel extends JPanel {
                 y0 = y;
             }
             
+            public void setBox( FFTBoxOverlay newBox ) {
+                boxAdded = newBox
+            }
+            
             public void setBoxSize ( int x, int y ) {
-                int level = modePanel.boxLayers.getLayer(modePanel) - 1;
-                FFTBoxOverlay box = (FFTBoxOverlay) modePanel.boxLayers.getComponentsInLayer(level)[0];
-                box.setDimensions( Math.min( x0, x ), Math.min( y0, y ), Math.max( x0, x ), Math.max( y0, y ) );
+                boxAdded.setDimensions( Math.min( x0, x ), Math.min( y0, y ), Math.max( x0, x ), Math.max( y0, y ) );
             }
             
         }
 
-        public class Edit extends Mode {
+        public class EditMode extends Mode {
             
             private FFTMousePanel modePanel;
             
@@ -96,8 +111,31 @@ public class FFTMousePanel extends JPanel {
                 // If you click on a box "MOUSE_CLICKED" once (getClickCount()), pull box to top of the JLayeredPane
                 // If you click on a box twice, get the boxSettings menu up
                 // If you right-click on a box, ask to delete box + other options maybe
-                // If you left-click and hold down "MOUSE_PRESSED", switch state into EditMoveBox
-                // If you left-click and hold down on an EDGE of a box, switch state into EditResizeBox
+                // If you left-click and hold down "MOUSE_PRESSED", switch state into EditMoveBoxMode
+                // If you left-click and hold down on an EDGE of a box, switch state into EditResizeBoxMode *extra*
+                if ( me.getID() == MOUSE_CLICKED ) {
+                    FFTBoxOverlay boxFocused = getFocus( me.getX(), me.getY() );
+                    if ( boxFocused != null ) {
+                        if ( me.getButton() == BUTTON1 && me.getClickCount() > 1 ) {
+                            // Haven't implemented boxSettings yet, but stuff should go here
+                        }
+                        else if ( me.getButton() == BUTTON2 ) {
+                            // Need to implement right click menu
+                        }
+                    }
+                }
+                
+                if ( me.getID() == MOUSE_PRESSED && me.getButton() == BUTTON1 ) {
+                    FFTBoxOverlay boxFocused = getFocus( me.getX(), me.getY() );
+                    if ( boxFocused != null ) {
+                        EditMoveBoxMode nextMode = new EditMoveBoxMode(modePanel);
+                        nextMode.setBox(boxFocused);
+                        nextMode.setInitialCoords( me.getX(), me.getY() );
+                        modePanel.setMode(nextMode);
+                    }
+                }
+                
+                
             }
             
             public void processMouseMotionEvent ( MouseEvent me ) {
@@ -108,9 +146,27 @@ public class FFTMousePanel extends JPanel {
                 // scroll through the different boxes underneath the cursor
             }
             
+            private FFTBoxOverlay getFocus ( int x, int y ) {
+                JLayeredPane stack = modePanel.boxLayers;
+                int stackHeight = stack.getLayer(modePanel);
+                for ( int i = stackHeight-1; i > 0; --i ) {
+                    if ( stack.getComponentCountInLayer(i) == 1 ) { 
+                        box = (FFTBoxOverlay) stack.getComponentsInLayer(i)[0];
+                        if ( box.contains(x,y) ) {
+                            // switch focus to this box
+                            FFTBoxOverlay oldFocus = (FFTBoxOverlay) stack.getComponentsInLayer(stackHeight-1)[0];
+                            stack.setLayer( oldFocus, i );
+                            stack.setLayer( box, stackHeight-1 );
+                            return box;
+                        }
+                    }
+                }
+                return null;
+            }
+            
         }
 
-        public class EditMoveBox extends Mode {
+        public class EditMoveBoxMode extends Mode {
             
             private FFTMousePanel modePanel;
             
@@ -130,7 +186,7 @@ public class FFTMousePanel extends JPanel {
             
         }
 
-        public class EditResizeBox extends Mode {
+        public class EditResizeBoxMode extends Mode {
             
             private FFTMousePanel modePanel;
             
@@ -152,15 +208,15 @@ public class FFTMousePanel extends JPanel {
         public Mode getMode ( EMode m, FFTMousePanel mp ) {
             switch (m) {
                 case ADD:
-                    return new Add(mp);
-                case ADD_DRAWBOX:
-                    return new AddDrawBox(mp);
+                    return new AddMode(mp);
+                case ADD_DRAW_BOX:
+                    return new AddDrawBoxMode(mp);
                 case EDIT:
-                    return new Edit(mp);
-                case EDIT_BOX:
-                    return new EditBox(mp);
-                case EDIT_MOVEBOX:
-                    return new EditMoveBox(mp);
+                    return new EditMode(mp);
+                case EDIT_RESIZE_BOX:
+                    return new EditResizeBoxMode(mp);
+                case EDIT_MOVE_BOX:
+                    return new EditMoveBoxMode(mp);
             }
         }
         
