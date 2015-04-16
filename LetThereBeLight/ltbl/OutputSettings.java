@@ -92,7 +92,12 @@ public class OutputSettings extends JPanel implements ActionListener {
                 port_box.addItem("Not Applicable");
             }
         }
-
+        if(ae.getSource()==output_box){
+        	if(output_box.getSelectedIndex()==0)
+        		port_box.setEnabled(true);
+        	else
+        		port_box.setEnabled(false);
+        }
 
     }
         
