@@ -1,11 +1,15 @@
-package ltbl;
+package ltbl.ui;
 
 import javax.swing.JPanel;
 import javax.swing.JLayeredPane;
+
 import java.awt.event.*;
+
 import javax.swing.SwingUtilities;
 
 import java.util.ArrayList;
+
+import ltbl.control.Runner;
 
 /* NOTE:
  * Might think about using the scroll wheel 

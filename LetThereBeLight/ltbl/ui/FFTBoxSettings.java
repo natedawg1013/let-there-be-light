@@ -1,4 +1,4 @@
-package ltbl;
+package ltbl.ui;
 import javax.swing.JPanel;
 
 

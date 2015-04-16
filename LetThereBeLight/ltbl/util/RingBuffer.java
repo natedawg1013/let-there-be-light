@@ -1,4 +1,4 @@
-package ltbl;
+package ltbl.util;
 public class RingBuffer{
 	private byte[] ring;
 	private int next=0;

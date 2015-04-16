@@ -1,5 +1,7 @@
-package ltbl;
+package ltbl.ui;
 import javax.swing.JPanel;
+
+import ltbl.algo.FFTBox;
 
 
 public class FFTBoxOverlay extends JPanel {

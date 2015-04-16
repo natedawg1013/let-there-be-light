@@ -1,15 +1,16 @@
-package ltbl;
+package ltbl.ui;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.util.Random;
 
 import javax.swing.JPanel;
 
+import ltbl.algo.FourierAnalysis;
+
 public class BarGraph extends JPanel{
-    private FourierAnalysis analysis;
+	private static final long serialVersionUID = 4570416097915326118L;
+	private FourierAnalysis analysis;
     private int[] buckets;
     
     private final int BARS = 8;
@@ -30,33 +31,28 @@ public class BarGraph extends JPanel{
     @Override
     public void paint(Graphics g){
     	super.paint(g);
+    	//cast g to Graphics2D
     	Graphics2D graphics = (Graphics2D) g;
-    	int x = this.getWidth();
+    	int x = this.getWidth();		//get panel size
     	int y = this.getHeight();
-    	Dimension dim = this.getSize();
-    	int barWidth = (int) ((x*(1-SPACING))/BARS);
-    	double scaling = (double) y/MAX_HEIGHT;
+    	int barWidth = (int) ((x*(1-SPACING))/BARS);	//horizontal scaling
+    	double scaling = (double) y/MAX_HEIGHT;			//vertical scaling
+    	graphics.setColor(new Color(127, 127, 127));	//set shape color to gray
     	for(int i=0;i<BARS;i++){
     		int start =  y - (int) (buckets[i]*scaling);
     		int height = (int) (buckets[i]*scaling);
-    		graphics.setColor(new Color(127, 127, 127));
     		graphics.fillRect((int) (barWidth*(1+SPACING)*i), start, barWidth, height);
     	}
     	
     }
     
-    void update(){
+    //later will be replaced with method to get data from FourierAnalysis
+    public void update(){
     	buckets=getRandomBuckets();
     	this.repaint();
     }
     
-    private int[] getBuckets(){
-    	int[] buckets = new int[BARS];
-    	for(int i=0;i<BARS;i++){
-    		buckets[i]=i*1000 + 100;
-    	}
-    	return buckets;
-    }
+    //for now, gets random bar heights
     private int[] getRandomBuckets(){
     	int[] buckets = new int[BARS];
     	for(int i=0;i<BARS;i++){

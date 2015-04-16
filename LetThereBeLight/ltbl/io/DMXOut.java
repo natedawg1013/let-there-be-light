@@ -1,12 +1,13 @@
-package ltbl;
+package ltbl.io;
 
-public class SimOut implements Output {
+public class DMXOut implements Output{
 
 
-    public SimOut(String dmxverbox) {
+
+    public DMXOut(String portbox, String dmxverbox) {
     	
     }
-
+    
 	@Override
 	public void setChannel(int channel, int value) {
 		// TODO Auto-generated method stub

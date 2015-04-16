@@ -1,4 +1,4 @@
-package ltbl;
+package ltbl.ui;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;

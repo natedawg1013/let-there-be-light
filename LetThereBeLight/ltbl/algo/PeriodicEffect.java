@@ -1,4 +1,4 @@
-package ltbl;
+package ltbl.algo;
 
 import javax.swing.JPanel;
 

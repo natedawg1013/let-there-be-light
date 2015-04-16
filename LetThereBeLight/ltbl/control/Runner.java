@@ -1,4 +1,4 @@
-package ltbl;
+package ltbl.control;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -7,6 +7,16 @@ import java.util.EventListener;
 import java.util.List;
 
 import javax.swing.JFrame;
+
+import ltbl.algo.FFTBox;
+import ltbl.algo.FourierAnalysis;
+import ltbl.io.AudioInput;
+import ltbl.io.Output;
+import ltbl.ui.FFTWindow;
+import ltbl.ui.InputSettings;
+import ltbl.ui.MainMenu;
+import ltbl.ui.OutputSettings;
+import ltbl.ui.PeriodicEffectWindow;
 
 
 public class Runner implements EventListener, Runnable{

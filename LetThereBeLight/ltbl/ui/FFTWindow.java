@@ -1,12 +1,19 @@
-package ltbl;
+package ltbl.ui;
 
 import javax.swing.JPanel;
+
 import java.awt.GridBagLayout;
+
 import javax.swing.JLayeredPane;
+
 import java.awt.GridBagConstraints;
+
 import javax.swing.JButton;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import ltbl.control.Runner;
 
 public class FFTWindow extends JPanel implements ActionListener{
     private Runner runner;

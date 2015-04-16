@@ -1,4 +1,6 @@
-package ltbl;
+package ltbl.algo;
+
+import ltbl.io.AudioInput;
 
 public class FourierAnalysis {
     private AudioInput in;

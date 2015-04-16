@@ -1,6 +1,4 @@
-package ltbl;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+package ltbl.ui;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,13 +6,16 @@ import java.util.List;
 
 import javax.sound.sampled.Line;
 import javax.sound.sampled.Mixer;
-import javax.swing.ComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
+import ltbl.control.Runner;
+import ltbl.io.AudioInput;
+
 
 public class InputSettings extends JPanel implements ActionListener {
+	private static final long serialVersionUID = -997194328110445776L;
 	JComboBox<String> cards;
 	JComboBox<String> input;
 	JComboBox<Integer> sampleRate;
@@ -23,12 +24,13 @@ public class InputSettings extends JPanel implements ActionListener {
 	
     public InputSettings(Runner r){
     	super();
-    	runner = r;
+    	runner = r;		//need runner for passing new AudioIn to other components
     	this.setLayout(new GridLayout(2,3));
     	cards = new JComboBox<String>();
     	input = new JComboBox<String>();
     	sampleRate = new JComboBox<Integer>();
     	set = new JButton("Set");
+    	//get lists of cards, lines, and sample rates
     	List<Mixer.Info> cardList = AudioInput.getSoundCards();
     	for(Mixer.Info m : cardList) cards.addItem(m.getName());
     	List<Line.Info> in = AudioInput.getSources(cardList.get(0));
@@ -42,6 +44,7 @@ public class InputSettings extends JPanel implements ActionListener {
     }
     
     private void setPositions(){
+    	//set positions as per GridLayout
     	this.add(cards);
     	this.add(input);
     	this.add(sampleRate);
@@ -52,13 +55,8 @@ public class InputSettings extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
-//		if(ae.getSource()==input){
-//			sampleRate.removeAllItems();
-//			List<Integer> sam = AudioInput.getSampleRates((String) input.getSelectedItem());
-//	    	for(int i : sam) sampleRate.addItem(i);
-//		}
+		//if card selection changed
 		if(ae.getSource()==cards){
-			System.out.println(cards.getSelectedIndex());
 			List<Mixer.Info> cardList = AudioInput.getSoundCards();
 			List<Line.Info> in = AudioInput.getSources(cardList.get(cards.getSelectedIndex()));
 			input.removeAllItems();
@@ -77,11 +75,11 @@ public class InputSettings extends JPanel implements ActionListener {
 	    	}
 	    	
 		}
+		//if set button pressed
 		if(ae.getSource()==set){
 			String name = (String) input.getSelectedItem();
 			Integer sample = (Integer) sampleRate.getSelectedItem();
 			runner.updateFourier(new AudioInput(name, sample, 8192));
-			///TODO: Add dropdown for buffer length
 		}
 	}
 }

@@ -1,4 +1,4 @@
-package ltbl;
+package ltbl.ui;
 
 import java.awt.Color;
 import java.awt.GridBagConstraints;

@@ -1,4 +1,4 @@
-package ltbl;
+package ltbl.ui;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -6,24 +6,26 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-import javax.swing.ComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
-import javax.swing.JComboBox;
 
 import java.util.Enumeration;
 //import javax.comm.CommPortIdentifier;
 import java.util.ArrayList;
 
+import ltbl.control.Runner;
+import ltbl.io.Output;
+import ltbl.io.SimOut;
+
 public class OutputSettings extends JPanel implements ActionListener {
     
     Runner runner;
     JButton set;
-    JComboBox output_box;
-    JComboBox port_box;
-    JComboBox dmxver_box;
+    JComboBox<String> output_box;
+    JComboBox<String> port_box;
+    JComboBox<String> dmxver_box;
     List<String> serialList = new ArrayList<String>();
     
     
@@ -51,7 +53,7 @@ public class OutputSettings extends JPanel implements ActionListener {
         
         JLabel output_label = new JLabel("Output");
         this.add(output_label);
-        output_box = new JComboBox();
+        output_box = new JComboBox<String>();
         output_box.setEditable(true);
         output_box.addItem("Serial");
         output_box.addItem("Simulator");
@@ -60,14 +62,14 @@ public class OutputSettings extends JPanel implements ActionListener {
         
         JLabel port = new JLabel("Port");
         this.add(port);
-        port_box = new JComboBox();
+        port_box = new JComboBox<String>();
         port_box.setEditable(true);
         port_box.addActionListener(this);
         this.add(port_box);
         
         JLabel DMXver = new JLabel("DMX Ver.");
         this.add(DMXver);
-        dmxver_box = new JComboBox();
+        dmxver_box = new JComboBox<String>();
         dmxver_box.setEditable(true);
         dmxver_box.addItem("DMX 512");
         dmxver_box.addActionListener(this);

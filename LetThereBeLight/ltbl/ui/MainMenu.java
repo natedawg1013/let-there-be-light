@@ -1,15 +1,14 @@
-package ltbl;
+package ltbl.ui;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
-import javax.swing.ComboBoxModel;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JPanel;
+
+import ltbl.control.Runner;
 
 //one bar graph window that shows real-time display of the audio db vs frequency
 //six buttons
@@ -27,7 +26,7 @@ import javax.swing.JPanel;
 //https://docs.google.com/document/d/1ZsLmtc-dvg6UlhFYZyuu-Z8Y8vvB8OXcBTOWN7V5kgU/
 
 public class MainMenu extends JPanel implements ActionListener{
-
+	private static final long serialVersionUID = -2997035831207668668L;
 	Runner runner;
 	JButton input_settings;
 	JButton sound_based_effects;
@@ -37,9 +36,6 @@ public class MainMenu extends JPanel implements ActionListener{
 	JButton start;
 	JButton stop;
 	BarGraph graph;
-
-	private final boolean shouldWeightX = false;
-
 
 	//BAR GRAPH BOX PENDING
 
@@ -61,7 +57,6 @@ public class MainMenu extends JPanel implements ActionListener{
 	}
 	private void setPositions(){
 		GridBagConstraints c = new GridBagConstraints();
-		//c.fill = GridBagConstraints.HORIZONTAL;
 		c.fill = GridBagConstraints.NONE;
 		c.anchor = GridBagConstraints.CENTER;
 			c.weightx = 0.5;		
@@ -126,7 +121,7 @@ public class MainMenu extends JPanel implements ActionListener{
 		}
 	}
 	
-	BarGraph getBarGraph(){
+	public BarGraph getBarGraph(){
 		return graph;
 	}
 }
