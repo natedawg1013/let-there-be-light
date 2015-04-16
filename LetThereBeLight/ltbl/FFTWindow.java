@@ -43,7 +43,7 @@ public class FFTWindow extends JPanel implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent ae) {
         if(ae.getSource()==addBox){
-            mousePanel.setMode( FFTMousePanel.EMode.ADD );
+            mousePanel.setState( FFTMousePanel.EState.ADD );
         }
     }
 
