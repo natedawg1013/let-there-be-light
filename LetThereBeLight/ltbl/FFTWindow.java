@@ -23,6 +23,7 @@ public class FFTWindow extends JPanel implements ActionListener{
         mousePanel = new FFTMousePanel( runner, graphPane );
         addBox = new JButton("Add");
         addBox.addActionListener(this);
+        setPositions();
     }
 	
     private void setPositions(){

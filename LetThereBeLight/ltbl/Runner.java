@@ -34,33 +34,34 @@ public class Runner implements EventListener, Runnable{
     
     public Runner(){
     	menu = new MainMenu(this);
-    	//os=new OutputSettings();
+    	os=new OutputSettings(this);
     	is=new InputSettings(this);
     	pe=new PeriodicEffectWindow();
-    	//fw=new FFTWindow(this);
+    	fw=new FFTWindow(this);
     	outputs = new ArrayList<Output>();
     	boxes = new ArrayList<FFTBox>();
     	fourrier = new FourierAnalysis();
     	
     	menuFrame = new JFrame("Let There Be Light");
-    	//osFrame = new JFrame("Output Settings");
+    	osFrame = new JFrame("Output Settings");
     	isFrame = new JFrame("Inout Settings");
     	peFrame = new JFrame("Time-Based Effects");
-    	//fwFrame = new JFrame("Sound-Based Effects");
+    	fwFrame = new JFrame("Sound-Based Effects");
     	
     	menuFrame.add(menu);
-    	//osFrame.add(os);
+    	osFrame.add(os);
     	isFrame.add(is);
     	peFrame.add(pe);
-    	//fwFrame.add(fw);
+    	fwFrame.add(fw);
     	
     	menuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    	//osFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+    	osFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
     	isFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
     	peFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
     	
     	menuFrame.setMinimumSize(new Dimension(500, 100));
     	peFrame.setMinimumSize(new Dimension(400, 300));
+    	fwFrame.setMinimumSize(new Dimension(400, 300));
     	
     	menuFrame.pack();
     	menuFrame.setVisible(true);

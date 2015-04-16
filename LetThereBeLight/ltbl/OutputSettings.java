@@ -14,7 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JComboBox;
 
 import java.util.Enumeration;
-import javax.comm.CommPortIdentifier;
+//import javax.comm.CommPortIdentifier;
 import java.util.ArrayList;
 
 public class OutputSettings extends JPanel implements ActionListener {
@@ -29,14 +29,14 @@ public class OutputSettings extends JPanel implements ActionListener {
     
     private void getSerialPorts() {
         
-        Enumeration portList = CommPortIdentifier.getPortIdentifiers();
+       /* Enumeration portList = CommPortIdentifier.getPortIdentifiers();
         
         while(portList.hasMoreElements()) {
             CommPortIdentifier i = (CommPortIdentifier) portList.nextElement();
             if(i.getPortType() == CommPortIdentifier.PORT_SERIAL) {
                 serialList.add(i.getName());
             }
-        }
+        }*/
     }
     
     public OutputSettings(Runner r) {
@@ -79,8 +79,8 @@ public class OutputSettings extends JPanel implements ActionListener {
         if(ae.getSource()==set) {
             Output out = null;
             if( ( (String) output_box.getSelectedItem() ).equals("Serial") ){
-                out = new DMXOut( (String) port_box.getSelectedItem(),
-                                  (String) dmxver_box.getSelectedItem() );
+                //out = new DMXOut( (String) port_box.getSelectedItem(),
+                //                  (String) dmxver_box.getSelectedItem() );
                 port_box.removeAllItems();
                 this.getSerialPorts();
                 for(int i = 0; i < serialList.size(); i++)
