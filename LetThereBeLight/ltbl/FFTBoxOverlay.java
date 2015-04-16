@@ -33,6 +33,12 @@ public class FFTBoxOverlay extends JPanel {
         dimensions[1] = y0;
         dimensions[2] = x1;
         dimensions[3] = x2;
+        // assuming setOuter has been called, this should work
+        box.setDimensions( dimensions, xOuter, yOuter );
+    }
+    
+    public void getDimensions () {
+        return dimensions;
     }
 }
 

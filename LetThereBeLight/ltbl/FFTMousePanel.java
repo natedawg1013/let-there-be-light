@@ -32,6 +32,10 @@ public class FFTMousePanel extends JPanel {
             
             private FFTMousePanel modePanel;
             
+            public AddMode ( FFTMousePanel mp ) {
+                modePanel = mp;
+            }
+            
             public void processMouseEvent ( MouseEvent me ) {
                 // when you click down and hold the mouse, get coords for initial box
                 // actually make it, and add it on top of the box pile.
@@ -40,7 +44,7 @@ public class FFTMousePanel extends JPanel {
                     FFTBoxOverlay newBox = new FFTBoxOverlay();
                     AddDrawBoxMode nextMode = new AddDrawBoxMode(modePanel);
                     nextMode.setInitialCoords( me.getX(), me.getY() );
-                    newBox.setdimensions( me.getX(), me.getY(), me.getX(), me.getY() );
+                    newBox.setDimensions( me.getX(), me.getY(), me.getX(), me.getY() );
                     int level = modePanel.boxLayers.getLayer(modePanel);
                     modePanel.boxLayers.setLayer( modePanel, level+1 );
                     modePanel.boxLayers.add( newBox, level );
@@ -80,6 +84,10 @@ public class FFTMousePanel extends JPanel {
                 if ( me.getID() == MOUSE_DRAGGED ) {
                     x1 = me.getX();
                     x2 = me.getY();
+                    if ( x1 < 0 ) x1 = 0;
+                    else if ( x1 > modePanel.getWidth() ) x1 = modePanel.getWidth();
+                    if ( y1 < 0 ) y1 = 0;
+                    else if ( y1 > modePanel.getHeight() ) y1 = modePanel.getHeight();
                     boxAdded.setDimensions( min(x0, x1), min(y0, y1), max(x0, x1), max(y0, y1) );
                 }
             }
@@ -128,14 +136,13 @@ public class FFTMousePanel extends JPanel {
                 if ( me.getID() == MOUSE_PRESSED && me.getButton() == BUTTON1 ) {
                     FFTBoxOverlay boxFocused = getFocus( me.getX(), me.getY() );
                     if ( boxFocused != null ) {
+                        // check for edges
                         EditMoveBoxMode nextMode = new EditMoveBoxMode(modePanel);
                         nextMode.setBox(boxFocused);
                         nextMode.setInitialCoords( me.getX(), me.getY() );
                         modePanel.setMode(nextMode);
                     }
                 }
-                
-                
             }
             
             public void processMouseMotionEvent ( MouseEvent me ) {
@@ -146,6 +153,7 @@ public class FFTMousePanel extends JPanel {
                 // scroll through the different boxes underneath the cursor
             }
             
+            // grab the highest box on the stack and move it to the top of the stack
             private FFTBoxOverlay getFocus ( int x, int y ) {
                 JLayeredPane stack = modePanel.boxLayers;
                 int stackHeight = stack.getLayer(modePanel);
@@ -170,14 +178,68 @@ public class FFTMousePanel extends JPanel {
             
             private FFTMousePanel modePanel;
             
+            private FFTBoxOverlay moveBox;
             private int[] initBoxCoords, initMouseCoords;
+            
+            public EditMoveBoxMode ( FFTMousePanel mp ) {
+                modePanel = mp;
+            }
+            
+            public void setBox ( FFTBoxOverlay b ) {
+                moveBox = b;
+                initBoxCoords = b.getDimensions;
+            }
+            
+            public void setInitialCoords ( int x, int y ) {
+                initMouseCoords = new int[2];
+                initMouseCoords[0] = x;
+                initMouseCoords[1] = y;
+            }
+            
+            public void updateCoords ( int x, int y ) {
+                diffx = x-initMouseCoords[0];
+                diffy = y-initMouseCoords[1];
+                
+                int [] newCoords = new int[4];
+                newCoords[0] = initBoxCoords[0]+diffx;
+                newCoords[1] = initBoxCoords[1]+diffy;
+                newCoords[2] = initBoxCoords[2]+diffx;
+                newCoords[3] = initBoxCoords[3]+diffy;
+                
+                if ( newCoords[0] < 0 ) {
+                    newCoords[2] -= newCoords[0];
+                    newCoords[0] = 0;
+                }
+                else if ( newCoords[2] > modePanel.getWidth() ) {
+                    newCoords[0] += modePanel.getWidth() - newCoords[2];
+                    newCoords[2] = modePanel.getWidth();
+                }
+                
+                if ( newCoords[1] < 0 ) {
+                    newCoords[3] -= newCoords[1];
+                    newCoords[1] = 0;
+                }
+                else if ( newCoords[3] > modePanel.getHeight() ) {
+                    newCoords[1] += modePanel.getHeight() - newCoords[3];
+                    newCoords[3] = modePanel.getHeight();
+                }
+                
+                moveBox.setDimensions( newCoords[0], newCoords[1], newCoords[2], newCoords[3] );
+            }
             
             public void processMouseEvent ( MouseEvent me ) {
                 // When you release the mouse, switch state into Edit
+                if ( me.getID() == MOUSE_RELEASED && me.getButton() == BUTTON1 ) {
+                    EditMode nextMode = new EditMode(modePanel);
+                    modePanel.setMode(nextMode);
+                }
             }
             
             public void processMouseMotionEvent ( MouseEvent me ) {
                 // When you move the mouse, update the box with the new coords
+                if ( me.getID() == MOUSE_DRAGGED ) {
+                    updateCoords(  )
+                }
             }
             
             public void processMouseWheelEvent ( MouseWheelEvent mwe ) {

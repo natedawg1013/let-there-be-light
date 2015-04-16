@@ -53,10 +53,11 @@ public class InputSettings extends JPanel implements ActionListener {
 //			List<Integer> sam = AudioInput.getSampleRates((String) input.getSelectedItem());
 //	    	for(int i : sam) sampleRate.addItem(i);
 //		}
-		if(ae.getSource()==set){
+		if(ae.getSource()==set) {
 			String name = (String) input.getSelectedItem();
 			Integer sample = (Integer) sampleRate.getSelectedItem();
 			runner.updateFourier(new AudioInput(name, sample, 8192));
+			runner.showMainMenu(True);
 			///TODO: Add dropdown for buffer length
 		}
 	}
