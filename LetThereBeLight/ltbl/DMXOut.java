@@ -4,7 +4,7 @@ public class DMXOut implements Output{
 
 
 
-    public DMXout(String portbox, String dmxverbox) {
+    public DMXOut(String portbox, String dmxverbox) {
     	
     }
     
