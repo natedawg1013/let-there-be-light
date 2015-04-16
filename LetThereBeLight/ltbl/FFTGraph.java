@@ -4,9 +4,10 @@ import javax.swing.JPanel;
 
 public class FFTGraph extends JPanel {
     
-    
-    public placeBox ( FFTBoxOverlay over ) {
-        
+    private Runner r;
+
+    public FFTGraph ( Runner run ) {
+        r = run;
     }
     
 }

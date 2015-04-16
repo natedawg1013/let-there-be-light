@@ -6,7 +6,7 @@ public class FFTBox {
     private double[] relativeDimensions;
     
     public FFTBox () {
-        dim = new double[4];
+        relativeDimensions = new double[4];
     }
     
     public void setDimensions ( int[] dim, int xOut, int yOut ) {
@@ -17,11 +17,11 @@ public class FFTBox {
     }
     
     public int[] getDimensions ( int xDim, int yDim ) {
-        newDim = new int[4];
-        newDim[0] = (int) xDim*relativeDimensions[0];
-        newDim[1] = (int) yDim*relativeDimensions[1];
-        newDim[2] = (int) xDim*relativeDimensions[2];
-        newDim[3] = (int) yDim*relativeDimensions[3];
+        int[] newDim = new int[4];
+        newDim[0] = (int) (xDim*relativeDimensions[0]);
+        newDim[1] = (int) (yDim*relativeDimensions[1]);
+        newDim[2] = (int) (xDim*relativeDimensions[2]);
+        newDim[3] = (int) (yDim*relativeDimensions[3]);
         return newDim;
     }
 }

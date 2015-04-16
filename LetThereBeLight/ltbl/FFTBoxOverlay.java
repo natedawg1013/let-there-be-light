@@ -27,17 +27,17 @@ public class FFTBoxOverlay extends JPanel {
         yOuter = y;
     }
     
-    public void setdimensions ( int x0, int y0, int x1, int y1 ) {
+    public void setDimensions ( int x0, int y0, int x1, int y1 ) {
         dimensions = new int[4];
         dimensions[0] = x0;
         dimensions[1] = y0;
         dimensions[2] = x1;
-        dimensions[3] = x2;
+        dimensions[3] = y1;
         // assuming setOuter has been called, this should work
         box.setDimensions( dimensions, xOuter, yOuter );
     }
     
-    public void getDimensions () {
+    public int[] getDimensions () {
         return dimensions;
     }
 }

@@ -15,9 +15,9 @@ import javax.swing.JComboBox;
 
 import java.util.Enumeration;
 import javax.comm.CommPortIdentifier;
+import java.util.ArrayList;
 
-
-public class OutputSettings extends JPanel {
+public class OutputSettings extends JPanel implements ActionListener {
     
     Runner runner;
     JButton set;
@@ -29,7 +29,7 @@ public class OutputSettings extends JPanel {
     
     private void getSerialPorts() {
         
-        Enumeration portList = CommPortIdentifier.getPortIdentifiers;
+        Enumeration portList = CommPortIdentifier.getPortIdentifiers();
         
         while(portList.hasMoreElements()) {
             CommPortIdentifier i = (CommPortIdentifier) portList.nextElement();
@@ -43,6 +43,7 @@ public class OutputSettings extends JPanel {
         
         runner = r;
         set = new JButton("Set");
+        GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 4;
         c.gridy = 1;
@@ -71,32 +72,32 @@ public class OutputSettings extends JPanel {
         dmxver_box.addItem("DMX 512");
         dmxver_box.addActionListener(this);
         this.add(dmxver_box);
-        
-        
-        public void actionPerformed(ActionEvent ae) {
-            if(e.getSource()==set) {
-                Output out = null;
-                if(((String) output_box.getSelectedItem()).equals("Serial"){
-                    out = new DMXOut((String) port_box.getSelectedItem(), 
-                    (String) dmxver_box,getSelectedItem);
-                    port_box.removeAllItems();
-                    this.getSerialPorts();
-                    for(int i = 0; i < serialList.size(); i++) 
-                       port_box.addItem(serialList.get(i));
-                }
-                else {
-                    out = new SimOut((String) dmxver_box,getSelectedItem);
-                    port_box.removeAllItems();
-                    port_box.addItem("Not Applicable");
-                }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent ae) {
+        if(ae.getSource()==set) {
+            Output out = null;
+            if( ( (String) output_box.getSelectedItem() ).equals("Serial") ){
+                out = new DMXOut( (String) port_box.getSelectedItem(),
+                                  (String) dmxver_box.getSelectedItem() );
+                port_box.removeAllItems();
+                this.getSerialPorts();
+                for(int i = 0; i < serialList.size(); i++)
+                    port_box.addItem(serialList.get(i));
             }
-            
-   
+            else {
+                out = new SimOut( (String) dmxver_box.getSelectedItem() );
+                port_box.removeAllItems();
+                port_box.addItem("Not Applicable");
+            }
         }
+
+
+    }
         
         ///TODO: 
         //need function to get available serial ports
         //on action event from output box, if serial, rebuild port box from the getSerialPorts method
         //if simulator, rebuild port box with just "Not Applicable" element
-    }
 }

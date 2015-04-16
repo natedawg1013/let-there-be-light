@@ -57,7 +57,7 @@ public class InputSettings extends JPanel implements ActionListener {
 			String name = (String) input.getSelectedItem();
 			Integer sample = (Integer) sampleRate.getSelectedItem();
 			runner.updateFourier(new AudioInput(name, sample, 8192));
-			runner.showMainMenu(True);
+			runner.showMainMenu(true);
 			///TODO: Add dropdown for buffer length
 		}
 	}
