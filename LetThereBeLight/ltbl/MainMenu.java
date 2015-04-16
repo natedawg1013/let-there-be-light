@@ -125,4 +125,8 @@ public class MainMenu extends JPanel implements ActionListener{
 			//STOP
 		}
 	}
+	
+	BarGraph getBarGraph(){
+		return graph;
+	}
 }

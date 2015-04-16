@@ -9,7 +9,7 @@ import java.util.List;
 import javax.swing.JFrame;
 
 
-public class Runner implements EventListener{
+public class Runner implements EventListener, Runnable{
 	private JFrame menuFrame;
 	private JFrame osFrame;
 	private JFrame isFrame;
@@ -23,13 +23,13 @@ public class Runner implements EventListener{
 	private List<Output> outputs;
 	private List<FFTBox> boxes;
 	private FourierAnalysis fourrier;
+	private Thread update;
 	
     public static void main(String[] args) {
     	Runner runner = new Runner();
     	//instantiate runner;
         //instantiate all classes
-    	runner.showMainMenu(true);
-    	
+    	runner.showMainMenu(true);    	
     }
     
     public Runner(){
@@ -64,6 +64,9 @@ public class Runner implements EventListener{
     	
     	menuFrame.pack();
     	menuFrame.setVisible(true);
+    	
+    	update = new Thread(this, "update");
+    	update.start();
     }
     
     public void showMainMenu(boolean state){
@@ -102,4 +105,16 @@ public class Runner implements EventListener{
     	//update bar graph
     	
     }
+    
+    public void run(){
+		while(true){
+			menu.getBarGraph().update();
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 }
