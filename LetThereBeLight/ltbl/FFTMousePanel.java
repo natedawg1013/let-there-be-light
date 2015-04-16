@@ -286,20 +286,7 @@ public class FFTMousePanel extends JPanel implements MouseListener, MouseMotionL
             }
         }
         
-        public Mode getMode ( EMode m, FFTMousePanel mp ) {
-            switch (m) {
-                case ADD:
-                    return new AddMode(mp);
-                case ADD_DRAW_BOX:
-                    return new AddDrawBoxMode(mp);
-                case EDIT:
-                    return new EditMode(mp);
-                case EDIT_RESIZE_BOX:
-                    return new EditResizeBoxMode(mp);
-                case EDIT_MOVE_BOX:
-                    return new EditMoveBoxMode(mp);
-            }
-        }
+        
         
     }
     
@@ -337,6 +324,21 @@ public class FFTMousePanel extends JPanel implements MouseListener, MouseMotionL
     public void setSize () {
         sizeX = this.getWidth();
         sizeY = this.getHeight();
+    }
+    
+    public EMode.Mode getMode ( EMode m, FFTMousePanel mp ) {
+        switch (m) {
+            case EMode.ADD:
+                return new EMode.AddMode(mp);
+            case EMode.ADD_DRAW_BOX:
+                return new EMode.AddDrawBoxMode(mp);
+            case EMode.EDIT:
+                return new EMode.EditMode(mp);
+            case EMode.EDIT_RESIZE_BOX:
+                return new EMode.EditResizeBoxMode(mp);
+            case EMode.EDIT_MOVE_BOX:
+                return new EMode.EditMoveBoxMode(mp);
+        }
     }
     
     public void mouseClicked ( MouseEvent me ) {
