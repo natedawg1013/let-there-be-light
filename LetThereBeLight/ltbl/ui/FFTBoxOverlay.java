@@ -1,5 +1,8 @@
 package ltbl.ui;
 import javax.swing.JPanel;
+import java.awt.Color;
+import java.util.Random;
+import java.awt.Rectangle;
 
 import ltbl.algo.FFTBox;
 
@@ -14,6 +17,11 @@ public class FFTBoxOverlay extends JPanel {
         // make box
         box = new FFTBox();
         // initially we want it to be not showed until we set its size via the MousePanel
+        Random rand = new Random();
+        float r = rand.nextFloat();
+        float g = rand.nextFloat();
+        float b = rand.nextFloat();
+        this.setBackground( new Color( r, g, b ) );
     }
     
     // Sets the size of the box based on the graph's dimensions and box's current relative dimensions
@@ -40,6 +48,7 @@ public class FFTBoxOverlay extends JPanel {
         this.setSize( Math.abs(x0-x1), Math.abs(y0-y1) );
         this.setLocation( Math.min(x0,x1), Math.min(y0,y1) );
         this.setVisible(true);
+        this.paintImmediately( this.getBounds(null) );
     }
     
     public int[] getDimensions () {
