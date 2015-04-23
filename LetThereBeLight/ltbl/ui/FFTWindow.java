@@ -39,9 +39,12 @@ public class FFTWindow extends JPanel implements ActionListener{
     	
     	GridBagConstraints c = new GridBagConstraints();
     	c.gridx = c.gridy = 0;
+    	c.weighty = 1.0;
     	c.weightx = .80;
         this.add( graphPane, c );
+    	this.add( mousePanel, c );
         c.weightx = .20;
+        c.weighty = .10;
     	c.gridx = 1;
     	this.add( addBox, c );
     	mousePanel.setSize();
