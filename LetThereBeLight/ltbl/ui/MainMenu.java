@@ -4,6 +4,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -36,6 +37,7 @@ public class MainMenu extends JPanel implements ActionListener{
 	JButton start;
 	JButton stop;
 	BarGraph graph;
+	ArrayList<ActionListener> actionListeners;
 
 	//BAR GRAPH BOX PENDING
 
@@ -50,6 +52,7 @@ public class MainMenu extends JPanel implements ActionListener{
 		start = new JButton("Start");
 		stop = new JButton("Stop");
 		graph = new BarGraph();
+		actionListeners = new ArrayList<ActionListener>();
 		
 		setPositions();
 		
@@ -90,7 +93,10 @@ public class MainMenu extends JPanel implements ActionListener{
 		output_options.addActionListener(this);
 	}
 
-
+	public void addActionListener(ActionListener al){
+		actionListeners.add(al);
+		
+	}
 
 	//BUTTON ACTIONS AND EVENTS
 	@Override
@@ -112,14 +118,23 @@ public class MainMenu extends JPanel implements ActionListener{
 		}
 
 		else if(ae.getSource()==start) {
-			//START
-
+			ActionEvent event = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "start");
+			for(ActionListener al : actionListeners){
+				al.actionPerformed(event);
+			}
 		}
 
 		else if(ae.getSource()==stop) {
-			//STOP
+			ActionEvent event = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "stop");
+			for(ActionListener al : actionListeners){
+				al.actionPerformed(event);
+			}
 		}
 	}
+	
+	/*public LineGraph getLineGraph(){
+		return graph;
+	}*/
 	
 	public BarGraph getBarGraph(){
 		return graph;
