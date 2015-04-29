@@ -1,11 +1,65 @@
 package ltbl.algo;
 
+import java.io.IOException;
+
+import javax.sound.sampled.LineUnavailableException;
+
+import ltbl.algo.Complex;
+import ltbl.algo.FFT;
 import ltbl.io.AudioInput;
 
 public class FourierAnalysis {
     private AudioInput in;
+	int bufLen;
+	
+	public FourierAnalysis(AudioInput i, int len){
+		in=i;
+		bufLen=len;
+	}
     
     public void setInput(AudioInput i){
     	in=i;
     }
+    
+    public AudioInput getInput(){
+    	return in;
+    }
+    
+	public void begin(){
+		try {
+			in.begin();
+		} catch (LineUnavailableException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+	 
+	public boolean ready(){
+		return in.bufLen()==bufLen;
+	}
+	
+	public float[] process(){
+		if(in.getBuffer().length() != in.getBuffer().getSize())
+			return new float[bufLen];
+		byte[] array = in.getBuf();
+		Complex[] x = new Complex[bufLen];
+		for(int i=0;i<bufLen;i++){
+			x[i]=new Complex(array[i],0);
+		}
+		Complex[] y = FFT.fft(x);
+		float[] f = new float[bufLen];
+		for(int i=0;i<bufLen/2;i++){
+			f[i]=(float) y[i].abs();
+		}
+		return f;
+	}
+	
+	void end(){
+		try {
+			in.end();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }
