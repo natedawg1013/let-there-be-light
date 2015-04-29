@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.sound.sampled.Line;
+import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.Mixer;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -77,9 +78,14 @@ public class InputSettings extends JPanel implements ActionListener {
 		}
 		//if set button pressed
 		if(ae.getSource()==set){
-			String name = (String) input.getSelectedItem();
-			Integer sample = (Integer) sampleRate.getSelectedItem();
-			runner.updateFourier(new AudioInput(name, sample, 8192));
+			Mixer.Info card = AudioInput.getSoundCards().get(cards.getSelectedIndex());
+			Line.Info port = AudioInput.getSources(card).get(input.getSelectedIndex());
+			try {
+				runner.updateFourier(new AudioInput(card,  port, 8192));
+			} catch (LineUnavailableException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 }

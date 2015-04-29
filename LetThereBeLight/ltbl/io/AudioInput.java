@@ -1,4 +1,5 @@
 package ltbl.io;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -6,11 +7,75 @@ import javax.sound.sampled.*;
 
 import ltbl.util.RingBuffer;
 
-public class AudioInput{
-	private RingBuffer rb;
+public class AudioInput extends Thread{
+	volatile public RingBuffer rb;
+	volatile Line port = null;
+	volatile TargetDataLine line = null;
 	
-	public AudioInput(String name, int samplerate, int bufferLength){
-		rb = new RingBuffer(bufferLength);
+	Boolean running;
+	Thread input = null;
+	volatile AudioFormat af;
+	
+	public RingBuffer getBuffer(){
+		return rb;
+	}
+
+	public AudioInput(Mixer.Info mi, Line.Info li, int bufLen) throws LineUnavailableException{
+		af = new AudioFormat(48000, 8, 1, true, false);
+		rb = new RingBuffer(bufLen);
+		Mixer mixer = AudioSystem.getMixer(mi);
+		port = mixer.getLine(li);
+		line = AudioSystem.getTargetDataLine(af);
+		mixer.open();
+		for(Line.Info l : getSources(mi))
+			AudioSystem.getLine(l).close();
+		port.open();
+		if (line == null)
+			throw new UnsupportedOperationException("No recording device found");
+		
+	}
+	
+	public void begin() throws LineUnavailableException{
+		af = new AudioFormat(48000, 8, 1, true, false);
+		line.open(af);
+		line.start();
+		running = Boolean.valueOf(true);
+		input = new Thread(this,"input");
+		input.start();
+	}
+	
+	public void run(){
+		while(running){
+			byte[] buf2 = new byte[rb.getSize()/20];
+			line.read(buf2, 0, buf2.length);
+			int len = line.read(buf2, 0, buf2.length);
+			rb.write(buf2, len);
+		}
+		synchronized(this){
+			notify();
+		}
+	}
+	
+	public void end() throws IOException{
+		running=false;
+		synchronized(input){
+			try {
+				input.wait();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		line.stop();
+		line.close();
+	}
+
+	public int bufLen(){
+		return rb.length();
+	}
+	
+	public byte[] getBuf(){
+		return rb.peek(rb.length());
 	}
 	
 	public static List<Mixer.Info> getSoundCards(){
@@ -38,11 +103,11 @@ public class AudioInput{
 	public static List<Line.Info> getTargets(Mixer.Info card){
 		Mixer m = AudioSystem.getMixer(card);
 		Line.Info[] lines = m.getTargetLineInfo();
-		ArrayList<Line.Info> sources = new ArrayList<Line.Info>();
+		ArrayList<Line.Info> targets = new ArrayList<Line.Info>();
 		for (Line.Info li : lines){
-			sources.add(li);
+			targets.add(li);
 		}
-		return sources;
+		return targets;
 	}
 }
 

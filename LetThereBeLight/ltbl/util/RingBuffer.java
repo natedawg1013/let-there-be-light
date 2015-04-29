@@ -3,12 +3,14 @@ public class RingBuffer{
 	private byte[] ring;
 	private int next=0;
 	int length=0;
+	int size;
 	
 	public RingBuffer(int size){
 		ring = new byte[size];
+		this.size=size;
 	}
 	
-	public void write(byte[] in, int len){
+	public synchronized void write(byte[] in, int len){
 		int remaining = ring.length-next;
 		int inStart=Math.max(0,len-ring.length);
 		if(len>ring.length) len=ring.length;
@@ -27,7 +29,7 @@ public class RingBuffer{
 		}
 	}
 	
-	public byte[] peek(int len){
+	public synchronized byte[] peek(int len){
 		int n = Math.min(length, len);
 		byte[] buf = new byte[n];
 		int start = (next-length+ring.length)%ring.length;
@@ -39,7 +41,7 @@ public class RingBuffer{
 		return buf;
 	}
 	
-	public byte[] read(int len){
+	public synchronized byte[] read(int len){
 		byte[] buf=peek(len);
 		length-=buf.length;
 		return buf;
@@ -47,5 +49,9 @@ public class RingBuffer{
 	
 	public int length(){
 		return length;
+	}
+	
+	public int getSize(){
+		return size;
 	}
 }
