@@ -1,5 +1,4 @@
 package ltbl.ui;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -11,6 +10,8 @@ import javax.swing.JTabbedPane;
 
 
 public class PeriodicEffectWindow extends JTabbedPane implements ActionListener {
+	private static final long serialVersionUID = 9053219904660535723L;
+	
 	AddButton button;
 	JPanel dummy;
 	
@@ -35,6 +36,8 @@ public class PeriodicEffectWindow extends JTabbedPane implements ActionListener 
 	}
 	
 	class AddButton extends JPanel{
+		private static final long serialVersionUID = -1582164838948355271L;
+		
 		JButton add;
 		public AddButton(){
 			super(new GridLayout());

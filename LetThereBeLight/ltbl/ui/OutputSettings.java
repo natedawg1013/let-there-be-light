@@ -20,8 +20,9 @@ import ltbl.io.Output;
 import ltbl.io.SimOut;
 
 public class OutputSettings extends JPanel implements ActionListener {
-    
-    Runner runner;
+	private static final long serialVersionUID = -3103307847981620153L;
+	
+	Runner runner;
     JButton set;
     JComboBox<String> output_box;
     JComboBox<String> port_box;

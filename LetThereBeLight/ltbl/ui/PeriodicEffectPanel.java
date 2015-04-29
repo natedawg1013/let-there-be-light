@@ -1,18 +1,18 @@
 package ltbl.ui;
 
-import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class PeriodicEffectPanel extends JPanel implements ActionListener{
+	private static final long serialVersionUID = 3596912008204436686L;
+
 	JLabel temp;
 	JLabel onOff;
 	JCheckBox on;
