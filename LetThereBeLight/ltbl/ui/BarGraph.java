@@ -10,22 +10,22 @@ import ltbl.algo.FourierAnalysis;
 
 public class BarGraph extends JPanel{
 	private static final long serialVersionUID = 4570416097915326118L;
-	private FourierAnalysis analysis;
-    private int[] buckets;
+    private float[] buckets;
     
     private final int BARS = 8;
     private final float SPACING = 0.1f;
-    private final int MAX_HEIGHT = 10000;
+    private final int MAX_HEIGHT = 1000;
     
     public BarGraph(FourierAnalysis a){
     	super();
-    	analysis=a;
-    	buckets = getRandomBuckets();
+    	buckets = new float[BARS];
+    	for(int i=0;i<buckets.length;i++) buckets[i] = 0;
     }
     
     public BarGraph(){
     	super();
-    	analysis=null;
+    	buckets = new float[BARS];
+    	for(int i=0;i<buckets.length;i++) buckets[i] = 0;
     }
     
     @Override
@@ -47,19 +47,18 @@ public class BarGraph extends JPanel{
     }
     
     //later will be replaced with method to get data from FourierAnalysis
-    public void update(){
+    /*public void update(){
     	buckets=getRandomBuckets();
     	this.repaint();
-    }
+    }*/
     
-    //for now, gets random bar heights
-    private int[] getRandomBuckets(){
-    	int[] buckets = new int[BARS];
+    public void update(float[] in){
     	for(int i=0;i<BARS;i++){
-    		buckets[i]=(int)(Math.random()*10000);
-    		
+    		buckets[i]=0.0f;
     	}
-    	return buckets;
-    }
-    
+    	for(int i=0;i<in.length;i++){
+    		buckets[i/((in.length/BARS)+1)]+=in[i];
+    	}
+    	this.repaint();
+    }    
 }
