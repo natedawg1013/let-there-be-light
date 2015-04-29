@@ -2,14 +2,16 @@ package ltbl.control;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.EventListener;
 import java.util.List;
 
+import javax.sound.sampled.LineUnavailableException;
 import javax.swing.JFrame;
 
 import ltbl.algo.FFTBox;
 import ltbl.algo.FourierAnalysis;
+import ltbl.algo.LinearLog;
 import ltbl.io.AudioInput;
 import ltbl.io.Output;
 import ltbl.ui.FFTWindow;
@@ -19,7 +21,7 @@ import ltbl.ui.OutputSettings;
 import ltbl.ui.PeriodicEffectWindow;
 
 
-public class Runner implements EventListener, Runnable{
+public class Runner implements ActionListener, Runnable{
 	private JFrame menuFrame;
 	private JFrame osFrame;
 	private JFrame isFrame;
@@ -32,8 +34,9 @@ public class Runner implements EventListener, Runnable{
 	private FFTWindow fw;
 	private List<Output> outputs;
 	private List<FFTBox> boxes;
-	private FourierAnalysis fourrier;
+	private FourierAnalysis fourier;
 	private Thread update;
+	private volatile boolean running;
 	
     public static void main(String[] args) {
     	Runner runner = new Runner();
@@ -50,13 +53,14 @@ public class Runner implements EventListener, Runnable{
     	fw=new FFTWindow(this);
     	outputs = new ArrayList<Output>();
     	boxes = new ArrayList<FFTBox>();
-    	fourrier = new FourierAnalysis();
+    	fourier = new FourierAnalysis(null, 8192);
     	
     	menuFrame = new JFrame("Let There Be Light");
     	osFrame = new JFrame("Output Settings");
-    	isFrame = new JFrame("Inout Settings");
+    	isFrame = new JFrame("Input Settings");
     	peFrame = new JFrame("Time-Based Effects");
     	fwFrame = new JFrame("Sound-Based Effects");
+    	running = false;
     	
     	menuFrame.add(menu);
     	osFrame.add(os);
@@ -75,6 +79,8 @@ public class Runner implements EventListener, Runnable{
     	
     	menuFrame.pack();
     	menuFrame.setVisible(true);
+    	
+    	menu.addActionListener(this);
     	
     	update = new Thread(this, "update");
     	update.start();
@@ -100,14 +106,37 @@ public class Runner implements EventListener, Runnable{
     }
     
     public void showFFTWindow(boolean state){
+    	fwFrame.pack();
     	fwFrame.setVisible(state);
     }
     
     public void updateFourier(AudioInput in){
-    	fourrier.setInput(in);
+    	fourier.setInput(in);
+    }
+    
+    public FourierAnalysis getFourier(){
+    	return fourier;
     }
     
     public void actionPerformed(ActionEvent e){
+    	if(e.getSource()==menu){
+    		String cmd = e.paramString();
+    		cmd = cmd.substring(cmd.indexOf("cmd"));
+    		cmd = cmd.substring(cmd.indexOf('=')+1);
+    		cmd = cmd.substring(0, cmd.indexOf(','));
+    		if(cmd.equals("start")){
+    			running=true;
+    			try {
+					fourier.getInput().begin();
+				} catch (LineUnavailableException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+    			
+    		}
+    		else
+    			running=false;
+    	}
     	//for FFTBox in list
     		//give box fourier analysis
     		//have box update lights
@@ -119,12 +148,15 @@ public class Runner implements EventListener, Runnable{
     
     public void run(){
 		while(true){
-			menu.getBarGraph().update();
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			if(running){
+				float[] points=LinearLog.logFromLinear(fourier.process(), 100);
+				menu.getBarGraph().update(LinearLog.loglog(points));
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 	}
