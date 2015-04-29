@@ -7,7 +7,6 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import ltbl.Runner;
 
 public class Runner extends JPanel implements ActionListener{
 	private static final long serialVersionUID = 667570696430914921L;
