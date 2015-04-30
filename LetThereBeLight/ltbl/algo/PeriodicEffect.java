@@ -55,7 +55,6 @@ public class PeriodicEffect{
 	}
 	
 	public void update(){
-		System.out.println("update() called");
 		if(running && oscillator != null && runner.getOutput() != null){
 			for(int i : channels){
 				runner.getOutput().setChannel(i, oscillator.getValue());

@@ -12,7 +12,6 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
-import javax.swing.JTextField;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 
@@ -26,10 +25,8 @@ public class PeriodicEffectPanel extends JPanel implements ActionListener{
 	JLabel onOff;
 	JCheckBox on;
 	JLabel lPeriod;
-	//JTextField period;
 	JLabel seconds;
 	JLabel lPW;
-	//JTextField pulsewidth;
 	OutList outs;
 	PeriodicEffect pe;
 	JSpinner period;
@@ -43,20 +40,16 @@ public class PeriodicEffectPanel extends JPanel implements ActionListener{
 		onOff = new JLabel("Enabled:");
 		on = new JCheckBox();
 		lPeriod = new JLabel("Period:");
-		//period = new JTextField(5);
 		seconds = new JLabel("seconds");
 		lPW = new JLabel("Pulsewidth %");
-		//pulsewidth = new JTextField(5);
 		update = new JButton("Update");
 		outs = new OutList(this);
 		pe=new PeriodicEffect(r);
 		this.setPreferredSize(this.getSize());
-		SpinnerModel periodModel = new SpinnerNumberModel(0.1, 0.1, 120.0, 0.1);
+		SpinnerModel periodModel = new SpinnerNumberModel(1, 0.1, 120.0, 0.1);
 		period=new JSpinner(periodModel);
-		//period.setEditor(new JSpinner.NumberEditor(period, "#"));
-		SpinnerModel pulsewidthModel = new SpinnerNumberModel(50, 0.0, 100.0, 1);
+		SpinnerModel pulsewidthModel = new SpinnerNumberModel(50, 0.0, 100.0, .1);
 		pulsewidth=new JSpinner(pulsewidthModel);
-		//pulsewidth.setEditor(new JSpinner.NumberEditor(period, "#"));
 		type.addItem("sine"); type.addItem("square");
 		type.addItem("triangle"); type.addItem("sawtooth");
 		type.addItem("pulse");
@@ -111,7 +104,6 @@ public class PeriodicEffectPanel extends JPanel implements ActionListener{
 			if(((String)type.getSelectedItem()).equals("pulse")){
 				float d = ((SpinnerNumberModel) pulsewidth.getModel()).getNumber().floatValue();
 				pe.setLFO((String) type.getSelectedItem(), p, d/100);
-				System.out.println("pulse instantiated");
 			}
 			else{
 				pe.setLFO((String) type.getSelectedItem(), p);

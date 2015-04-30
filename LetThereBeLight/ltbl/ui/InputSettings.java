@@ -63,7 +63,6 @@ public class InputSettings extends JPanel implements ActionListener {
 			input.removeAllItems();
 	    	for(Line.Info s : in){
 	    		input.addItem(s.toString());
-	    		System.out.println(s.toString());
 	    	}
 	    	if(in.size() == 0){
 	    		input.setEnabled(false);
