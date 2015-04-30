@@ -36,7 +36,8 @@ public class MainMenu extends JPanel implements ActionListener{
 	JButton time_based_effects;
 	JButton start;
 	JButton stop;
-	BarGraph graph;
+	LineGraph graph;
+	//BarGraph graph;
 	ArrayList<ActionListener> actionListeners;
 
 	//BAR GRAPH BOX PENDING
@@ -51,7 +52,8 @@ public class MainMenu extends JPanel implements ActionListener{
 		output_options = new JButton("Output Options");
 		start = new JButton("Start");
 		stop = new JButton("Stop");
-		graph = new BarGraph();
+		//graph = new BarGraph();
+		graph = new LineGraph();
 		actionListeners = new ArrayList<ActionListener>();
 		
 		setPositions();
@@ -132,11 +134,11 @@ public class MainMenu extends JPanel implements ActionListener{
 		}
 	}
 	
-	/*public LineGraph getLineGraph(){
-		return graph;
-	}*/
-	
-	public BarGraph getBarGraph(){
+	public LineGraph getLineGraph(){
 		return graph;
 	}
+	
+	/*public BarGraph getBarGraph(){
+		return graph;
+	}*/
 }

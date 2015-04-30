@@ -11,7 +11,7 @@ public class LineGraph extends JPanel{
 	private static final long serialVersionUID = 4570416097915326118L;
     private float[] points;
     
-    private final int MAX_HEIGHT = 100;
+    private final int MAX_HEIGHT = 5000;
     
     public LineGraph(FourierAnalysis a){
     	super();

@@ -8,27 +8,31 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+import ltbl.control.Runner;
+
 
 public class PeriodicEffectWindow extends JTabbedPane implements ActionListener {
 	private static final long serialVersionUID = 9053219904660535723L;
 	
 	AddButton button;
 	JPanel dummy;
+	Runner runner;
 	
-	public PeriodicEffectWindow(){
+	public PeriodicEffectWindow(Runner r){
 		super();
 		button = new AddButton();
 		dummy = new JPanel();
 		button.addActionListener(this);
 		this.addTab("1", dummy);
 		this.setTabComponentAt(0, button);
+		runner=r;
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource()==button.add){
 			this.remove(this.getTabCount()-1);
-			this.addTab(String.valueOf(this.getTabCount()+1), new PeriodicEffectPanel());
+			this.addTab(String.valueOf(this.getTabCount()+1), new PeriodicEffectPanel(runner));
 			this.addTab("", dummy);
 			this.setTabComponentAt(this.getTabCount()-1, button);
 		}

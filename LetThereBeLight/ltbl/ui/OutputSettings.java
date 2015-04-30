@@ -51,11 +51,12 @@ public class OutputSettings extends JPanel implements ActionListener {
         c.gridx = 4;
         c.gridy = 1;
         this.add(set, c);
+        set.addActionListener(this);
         
         JLabel output_label = new JLabel("Output");
         this.add(output_label);
         output_box = new JComboBox<String>();
-        output_box.setEditable(true);
+        output_box.setEditable(false);
         output_box.addItem("Serial");
         output_box.addItem("Simulator");
         output_box.addActionListener(this);
@@ -64,14 +65,14 @@ public class OutputSettings extends JPanel implements ActionListener {
         JLabel port = new JLabel("Port");
         this.add(port);
         port_box = new JComboBox<String>();
-        port_box.setEditable(true);
+        port_box.setEditable(false);
         port_box.addActionListener(this);
         this.add(port_box);
         
         JLabel DMXver = new JLabel("DMX Ver.");
         this.add(DMXver);
         dmxver_box = new JComboBox<String>();
-        dmxver_box.setEditable(true);
+        dmxver_box.setEditable(false);
         dmxver_box.addItem("DMX 512");
         dmxver_box.addActionListener(this);
         this.add(dmxver_box);
@@ -94,6 +95,7 @@ public class OutputSettings extends JPanel implements ActionListener {
                 port_box.removeAllItems();
                 port_box.addItem("Not Applicable");
             }
+            runner.setOutput(out);
         }
         if(ae.getSource()==output_box){
         	if(output_box.getSelectedIndex()==0)

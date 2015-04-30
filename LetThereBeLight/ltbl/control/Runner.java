@@ -5,20 +5,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.sound.sampled.LineUnavailableException;
 import javax.swing.JFrame;
-
-import ltbl.algo.FFTBox;
-import ltbl.algo.FourierAnalysis;
-import ltbl.algo.LinearLog;
-import ltbl.io.AudioInput;
-import ltbl.io.Output;
-import ltbl.ui.FFTWindow;
-import ltbl.ui.InputSettings;
-import ltbl.ui.MainMenu;
-import ltbl.ui.OutputSettings;
-import ltbl.ui.PeriodicEffectWindow;
+import ltbl.algo.*;
+import ltbl.io.*;
+import ltbl.ui.*;
 
 
 public class Runner implements ActionListener, Runnable{
@@ -32,7 +23,8 @@ public class Runner implements ActionListener, Runnable{
 	private InputSettings is;
 	private PeriodicEffectWindow pe;
 	private FFTWindow fw;
-	private List<Output> outputs;
+	private Output out;
+	private List<PeriodicEffect> periodicEffects;
 	private List<FFTBox> boxes;
 	private FourierAnalysis fourier;
 	private Thread update;
@@ -49,11 +41,12 @@ public class Runner implements ActionListener, Runnable{
     	menu = new MainMenu(this);
     	os=new OutputSettings(this);
     	is=new InputSettings(this);
-    	pe=new PeriodicEffectWindow();
+    	pe=new PeriodicEffectWindow(this);
     	fw=new FFTWindow(this);
-    	outputs = new ArrayList<Output>();
+    	out = new DummyOut();
     	boxes = new ArrayList<FFTBox>();
-    	fourier = new FourierAnalysis(null, 8192);
+    	fourier = new FourierAnalysis(new DummyAudioInput(), 8192);
+    	periodicEffects = new ArrayList<PeriodicEffect>();
     	
     	menuFrame = new JFrame("Let There Be Light");
     	osFrame = new JFrame("Output Settings");
@@ -86,8 +79,16 @@ public class Runner implements ActionListener, Runnable{
     	update.start();
     }
     
+    public void addPeriodicEffect(PeriodicEffect e){
+    	periodicEffects.add(e);
+    }
+    
     public void showMainMenu(boolean state){
     	menuFrame.setVisible(state);
+    }
+    
+    public void setOutput(Output o){
+    	out=o;
     }
     
     public void showOutputSettings(boolean state){
@@ -110,7 +111,7 @@ public class Runner implements ActionListener, Runnable{
     	fwFrame.setVisible(state);
     }
     
-    public void updateFourier(AudioInput in){
+    public void updateFourier(TrueAudioInput in){
     	fourier.setInput(in);
     }
     
@@ -154,7 +155,14 @@ public class Runner implements ActionListener, Runnable{
 		while(true){
 			if(running){
 				float[] points=LinearLog.logFromLinear(fourier.process(), 100);
-				menu.getBarGraph().update(LinearLog.loglog(points));
+				//menu.getBarGraph().update(LinearLog.loglog(points));
+				menu.getLineGraph().update(points);
+				for(PeriodicEffect e : periodicEffects){
+					e.update();
+				}
+				if(out!=null){
+					out.update();
+				}
 				try {
 					Thread.sleep(100);
 				} catch (InterruptedException e) {
@@ -163,5 +171,10 @@ public class Runner implements ActionListener, Runnable{
 				}
 			}
 		}
+	}
+
+	public Output getOutput() {
+		return out;
+		
 	}
 }
