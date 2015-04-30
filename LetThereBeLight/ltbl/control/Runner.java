@@ -118,6 +118,10 @@ public class Runner implements ActionListener, Runnable{
     	return fourier;
     }
     
+    public void addBox(FFTBox b) {
+    	boxes.add(b);
+    }
+    
     public void actionPerformed(ActionEvent e){
     	if(e.getSource()==menu){
     		String cmd = e.paramString();

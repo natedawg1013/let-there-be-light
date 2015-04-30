@@ -2,6 +2,7 @@ package ltbl.ui;
 
 import javax.swing.JPanel;
 
+import java.awt.Dimension;
 import java.awt.GridBagLayout;
 
 import javax.swing.JLayeredPane;
@@ -20,7 +21,7 @@ public class FFTWindow extends JPanel implements ActionListener{
     private JLayeredPane graphPane;
     private FFTGraph graph;
     private FFTMousePanel mousePanel;
-    private JButton addBox;
+    private JButton addBox, deleteBox;
 
     public FFTWindow( Runner r ) {
         super( new GridBagLayout() );
@@ -30,30 +31,50 @@ public class FFTWindow extends JPanel implements ActionListener{
         mousePanel = new FFTMousePanel( runner, graphPane );
         addBox = new JButton("Add");
         addBox.addActionListener(this);
+        deleteBox = new JButton("Delete");
+        deleteBox.addActionListener(this);
         setPositions();
+        //this.setVisible(true);
     }
 	
     private void setPositions(){
-    	graphPane.add( graph, 0 );
-    	graphPane.add( mousePanel, 1 );
+    	//graphPane.add( graph, 0 );
+    	//graphPane.add( mousePanel, 1 );
     	
     	GridBagConstraints c = new GridBagConstraints();
+    	Dimension d = new Dimension(720, 480);
     	c.gridx = c.gridy = 0;
-    	c.weighty = 1.0;
-    	c.weightx = .80;
+    	c.weightx = 1.0;
+    	c.weighty = .9;
+    	c.gridwidth = 2;
+		graphPane.setPreferredSize(d);
+		graph.setPreferredSize(d);
+		mousePanel.setPreferredSize(d);
         this.add( graphPane, c );
+    	this.add( graph, c );
     	this.add( mousePanel, c );
-        c.weightx = .20;
-        c.weighty = .10;
-    	c.gridx = 1;
+    	c.gridwidth = 1;
+        c.weightx = .50;
+        c.weighty = .1;
+    	c.gridy = 1;
     	this.add( addBox, c );
+    	c.gridx = 1;
+    	this.add( deleteBox, c );
     	mousePanel.setSize();
     }
     
     @Override
     public void actionPerformed(ActionEvent ae) {
-        if(ae.getSource()==addBox){
+        if (ae.getSource()==addBox) {
             mousePanel.setState( FFTMousePanel.EState.ADD );
+        }
+        else if (ae.getSource()==deleteBox) {
+        	int level = JLayeredPane.getLayer(mousePanel);
+        	if ( level-- > 0 ) {
+        		FFTBoxOverlay nix = (FFTBoxOverlay) graphPane.getComponentsInLayer(level)[0];
+        		graphPane.remove( nix );
+        		graphPane.setLayer(mousePanel, level);
+        	}
         }
     }
 

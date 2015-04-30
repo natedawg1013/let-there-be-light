@@ -3,6 +3,8 @@ package ltbl.ui;
 import javax.swing.JPanel;
 import javax.swing.JLayeredPane;
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.*;
 
 import javax.swing.SwingUtilities;
@@ -49,15 +51,17 @@ public class FFTMousePanel extends JPanel implements MouseListener, MouseMotionL
 			if ( me.getID() == MouseEvent.MOUSE_PRESSED &&
 					SwingUtilities.isLeftMouseButton(me) ) {
 				// synchronize?
-				FFTBoxOverlay newBox = new FFTBoxOverlay();
+				FFTBoxOverlay newBox = new FFTBoxOverlay(runner);
 				this.statePanel.setState(EState.ADD_DRAW_BOX);
 				AddDrawBoxState nextState = (AddDrawBoxState) this.statePanel.inputState;
 				nextState.setInitialCoords( me.getX(), me.getY() );
 				newBox.setDimensions( me.getX(), me.getY(), me.getX(), me.getY() );
 				JLayeredPane layers = this.statePanel.boxLayers;
-				int level = layers.getLayer(statePanel);
+				int level = JLayeredPane.getLayer(statePanel);
 				layers.setLayer( statePanel, level+1 );
-				layers.add( newBox, level );
+				//System.out.println(level);
+				layers.add( newBox, new Integer(level) );
+				System.out.println(layers.getComponentCountInLayer(level));
 				nextState.setBox(newBox);
 			}
 		}
@@ -90,6 +94,7 @@ public class FFTMousePanel extends JPanel implements MouseListener, MouseMotionL
 				// and make the box inside the overlay get loaded with ratios of bounding coords to dimensions
 				// should we bring up a menu that has more settings now or later when you edit it?
 				statePanel.setState(EState.EDIT);
+				boxAdded.getSettings();
 			}
 		}
 
@@ -144,23 +149,32 @@ public class FFTMousePanel extends JPanel implements MouseListener, MouseMotionL
 				if ( boxFocused != null ) {
 					if ( SwingUtilities.isLeftMouseButton(me) &&
 							me.getClickCount() > 1 ) {
-						// Haven't implemented boxSettings yet, but stuff should go here
+						boxFocused.getSettings();
 					}
 					else if ( SwingUtilities.isRightMouseButton(me) ) {
-						// Need to implement right click menu
+						// Need to implement right click menu or not
 					}
 				}
 			}
-
 			if ( me.getID() == MouseEvent.MOUSE_PRESSED &&
 					SwingUtilities.isLeftMouseButton(me) ) {
 				FFTBoxOverlay boxFocused = getFocus( me.getX(), me.getY() );
 				if ( boxFocused != null ) {
+					int edge = boxFocused.onEdge( me.getX(), me.getY() );
 					// check for edges
-					statePanel.setState(EState.EDIT_MOVE_BOX);
-					EditMoveBoxState nextState = (EditMoveBoxState) statePanel.inputState;
-					nextState.setBox(boxFocused);
-					nextState.setInitialCoords( me.getX(), me.getY() );
+					if ( edge != -1 ) {
+						statePanel.setState(EState.EDIT_RESIZE_BOX);
+						EditResizeBoxState nextState = (EditResizeBoxState) statePanel.inputState;
+						nextState.setBox(boxFocused);
+						nextState.setInitialCoords ( me.getX(), me.getY() );
+						nextState.setEdge(edge);
+					}
+					else {
+						statePanel.setState(EState.EDIT_MOVE_BOX);
+						EditMoveBoxState nextState = (EditMoveBoxState) statePanel.inputState;
+						nextState.setBox(boxFocused);
+						nextState.setInitialCoords( me.getX(), me.getY() );
+					}
 				}
 			}
 		}
@@ -176,12 +190,14 @@ public class FFTMousePanel extends JPanel implements MouseListener, MouseMotionL
 
 		// grab the highest box on the stack and move it to the top of the stack
 		private FFTBoxOverlay getFocus ( int x, int y ) {
+			//System.out.println(x+" "+y);
 			JLayeredPane stack = statePanel.boxLayers;
-			int stackHeight = stack.getLayer(statePanel);
-			for ( int i = stackHeight-1; i > 0; --i ) {
+			int stackHeight = JLayeredPane.getLayer(statePanel);
+			for ( int i = stackHeight-1; i >= 0; --i ) {
 				if ( stack.getComponentCountInLayer(i) == 1 ) { 
 					FFTBoxOverlay box = (FFTBoxOverlay) stack.getComponentsInLayer(i)[0];
-					if ( box.contains(x,y) ) {
+					//System.out.println(box);
+					if ( box.isInside(x,y) ) {
 						// switch focus to this box
 						FFTBoxOverlay oldFocus = (FFTBoxOverlay) stack.getComponentsInLayer(stackHeight-1)[0];
 						stack.setLayer( oldFocus, i );
@@ -272,7 +288,9 @@ public class FFTMousePanel extends JPanel implements MouseListener, MouseMotionL
 
 	public class EditResizeBoxState extends State {
 
+		private int[] initMouseCoords, initBoxCoords;
 		private int side;
+		private FFTBoxOverlay resizeBox;
 
 		public EditResizeBoxState ( FFTMousePanel mp ) {
 			super(mp);
@@ -280,15 +298,92 @@ public class FFTMousePanel extends JPanel implements MouseListener, MouseMotionL
 
 		public void processMouseEvent ( MouseEvent me ) {
 			// When you release the mouse, switch state into Edit
+			if ( me.getID() == MouseEvent.MOUSE_RELEASED &&
+				SwingUtilities.isLeftMouseButton(me) ) {
+				statePanel.setState(EState.EDIT);
+			}
 		}
 
 		public void processMouseMotionEvent ( MouseEvent me ) {
 			// When you move the mouse, update the box with the new coords
+			if ( me.getID() == MouseEvent.MOUSE_DRAGGED ) {
+				updateCoords( me.getX(), me.getY() );
+			}
 		}
 
 		public void processMouseWheelEvent ( MouseWheelEvent mwe ) {
 			// Do nothing
 		}
+		
+		
+		public void setBox ( FFTBoxOverlay b ) {
+			resizeBox = b;
+			initBoxCoords = b.getDimensions();
+		}
+		
+		public void setEdge ( int e ) {
+			side = e;
+		}
+		
+		public void setInitialCoords ( int x, int y ) {
+			initMouseCoords = new int[2];
+			initMouseCoords[0] = x;
+			initMouseCoords[1] = y;
+		}
+		
+		public void updateCoords ( int x, int y ) {
+			int diffx = x-initMouseCoords[0];
+			int diffy = y-initMouseCoords[1];
+			int[] newCoords = new int[4];
+			newCoords[0] = initBoxCoords[0];
+			newCoords[1] = initBoxCoords[1];
+			newCoords[2] = initBoxCoords[2];
+			newCoords[3] = initBoxCoords[3];
+			
+			switch(side) {
+			case 0:
+				// moving the left side of the box
+				newCoords[0] = Math.min(initBoxCoords[0]+diffx, initBoxCoords[2]);
+				newCoords[2] = Math.max(initBoxCoords[0]+diffx, initBoxCoords[2]);
+				break;
+			case 1:
+				// moving the top side of the box
+				newCoords[1] = Math.min(initBoxCoords[1]+diffy, initBoxCoords[3]);
+				newCoords[3] = Math.max(initBoxCoords[1]+diffy, initBoxCoords[3]);
+				break;
+			case 2:
+				// moving the right side of the box
+				newCoords[0] = Math.min(initBoxCoords[2]+diffx, initBoxCoords[0]);
+				newCoords[2] = Math.max(initBoxCoords[2]+diffx, initBoxCoords[0]);
+				break;
+			case 3:
+				// moving the top side of the box
+				newCoords[1] = Math.min(initBoxCoords[3]+diffy, initBoxCoords[1]);
+				newCoords[3] = Math.max(initBoxCoords[3]+diffy, initBoxCoords[1]);
+				break;
+			default:
+			}
+			if ( newCoords[0] < 0 ) {
+				newCoords[2] -= newCoords[0];
+				newCoords[0] = 0;
+			}
+			else if ( newCoords[2] > statePanel.getWidth() ) {
+				newCoords[0] += statePanel.getWidth() - newCoords[2];
+				newCoords[2] = statePanel.getWidth();
+			}
+
+			if ( newCoords[1] < 0 ) {
+				newCoords[3] -= newCoords[1];
+				newCoords[1] = 0;
+			}
+			else if ( newCoords[3] > statePanel.getHeight() ) {
+				newCoords[1] += statePanel.getHeight() - newCoords[3];
+				newCoords[3] = statePanel.getHeight();
+			}
+
+			resizeBox.setDimensions( newCoords[0], newCoords[1], newCoords[2], newCoords[3] );
+		}
+
 	}
 
 
@@ -311,14 +406,17 @@ public class FFTMousePanel extends JPanel implements MouseListener, MouseMotionL
 		runner = r;
 		boxLayers = g;
 		boxOverlays = new ArrayList<FFTBoxOverlay>();
-		sizeX = this.getWidth();
-		sizeY = this.getHeight();
 		this.setOpaque(false);
-		this.setVisible(false);
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
 		this.addMouseWheelListener(this);
 		this.addComponentListener(this);
+		//this.setBackground(Color.blue);
+		sizeX = this.getWidth();
+		sizeY = this.getHeight();
+		setState( EState.EDIT );
+		this.setVisible(true);
+		
 	}
 
 	public void setState ( EState m ) {
@@ -331,6 +429,7 @@ public class FFTMousePanel extends JPanel implements MouseListener, MouseMotionL
 	}
 
 	public State getState ( EState m, FFTMousePanel mp ) {
+		System.out.println(m);
 		switch (m) {
 		case ADD:
 			return new AddState(mp);
@@ -348,6 +447,8 @@ public class FFTMousePanel extends JPanel implements MouseListener, MouseMotionL
 	}
 
 	public void mouseClicked ( MouseEvent me ) {
+		System.out.println("click");
+		//this.paint(this.getGraphics());
 		inputState.processMouseEvent(me);
 	}
 

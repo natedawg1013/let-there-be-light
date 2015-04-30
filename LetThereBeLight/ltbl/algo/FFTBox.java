@@ -1,12 +1,16 @@
 package ltbl.algo;
 
+import ltbl.control.Runner;
+
 public class FFTBox {
     
     // relative to the outer boundaries of the space
     private double[] relativeDimensions;
+    private Runner runner;
     
-    public FFTBox () {
+    public FFTBox ( Runner r ) {
         relativeDimensions = new double[4];
+        runner = r;
     }
     
     public void setDimensions ( int[] dim, int xOut, int yOut ) {
