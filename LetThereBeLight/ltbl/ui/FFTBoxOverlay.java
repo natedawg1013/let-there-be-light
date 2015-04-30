@@ -1,10 +1,12 @@
 package ltbl.ui;
 import javax.swing.BorderFactory;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.util.Random;
 import java.awt.Rectangle;
@@ -20,6 +22,8 @@ public class FFTBoxOverlay extends JPanel {
     private FFTBox box;
     private Runner runner;
     private static int borderRadius = 8;
+    private FFTBoxSettings settings;
+    private JFrame settingsFrame;
     
     public FFTBoxOverlay ( Runner run ) {
     	runner = run;
@@ -34,6 +38,12 @@ public class FFTBoxOverlay extends JPanel {
         this.setBackground( new Color( r, g, b, 0x20 ) );
         this.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
         this.setOpaque(false);
+        settings = new FFTBoxSettings( runner, box );
+        settingsFrame = new JFrame("Effects Settings");
+        settingsFrame.add(settings);
+    	settingsFrame.setMinimumSize(new Dimension(500,300));
+    	settingsFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+    	
     }
     
     public void paintComponent( Graphics g ) {
@@ -75,8 +85,8 @@ public class FFTBoxOverlay extends JPanel {
     }
     
     public void getSettings () {
-    	FFTBoxSettings boxSet = new FFTBoxSettings( runner, box );
-    	boxSet.setVisible(true);
+    	settingsFrame.pack();
+    	settingsFrame.setVisible(true);
     }
     
     public boolean isInside ( int x, int y ) {
