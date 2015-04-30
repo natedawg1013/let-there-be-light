@@ -12,7 +12,7 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
 import ltbl.control.Runner;
-import ltbl.io.AudioInput;
+import ltbl.io.TrueAudioInput;
 
 
 public class InputSettings extends JPanel implements ActionListener {
@@ -32,9 +32,9 @@ public class InputSettings extends JPanel implements ActionListener {
     	sampleRate = new JComboBox<Integer>();
     	set = new JButton("Set");
     	//get lists of cards, lines, and sample rates
-    	List<Mixer.Info> cardList = AudioInput.getSoundCards();
+    	List<Mixer.Info> cardList = TrueAudioInput.getSoundCards();
     	for(Mixer.Info m : cardList) cards.addItem(m.getName());
-    	List<Line.Info> in = AudioInput.getSources(cardList.get(0));
+    	List<Line.Info> in = TrueAudioInput.getSources(cardList.get(0));
     	for(Line.Info s : in) input.addItem(s.toString());
     	int[] rates = {22050, 44100, 48000};
     	for(int i : rates) sampleRate.addItem(i);
@@ -58,8 +58,8 @@ public class InputSettings extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent ae) {
 		//if card selection changed
 		if(ae.getSource()==cards){
-			List<Mixer.Info> cardList = AudioInput.getSoundCards();
-			List<Line.Info> in = AudioInput.getSources(cardList.get(cards.getSelectedIndex()));
+			List<Mixer.Info> cardList = TrueAudioInput.getSoundCards();
+			List<Line.Info> in = TrueAudioInput.getSources(cardList.get(cards.getSelectedIndex()));
 			input.removeAllItems();
 	    	for(Line.Info s : in){
 	    		input.addItem(s.toString());
@@ -78,10 +78,10 @@ public class InputSettings extends JPanel implements ActionListener {
 		}
 		//if set button pressed
 		if(ae.getSource()==set){
-			Mixer.Info card = AudioInput.getSoundCards().get(cards.getSelectedIndex());
-			Line.Info port = AudioInput.getSources(card).get(input.getSelectedIndex());
+			Mixer.Info card = TrueAudioInput.getSoundCards().get(cards.getSelectedIndex());
+			Line.Info port = TrueAudioInput.getSources(card).get(input.getSelectedIndex());
 			try {
-				runner.updateFourier(new AudioInput(card,  port, 8192));
+				runner.updateFourier(new TrueAudioInput(card,  port, 8192));
 			} catch (LineUnavailableException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

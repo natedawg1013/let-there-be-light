@@ -9,7 +9,13 @@ public class DMXOut implements Output{
     }
     
 	@Override
-	public void setChannel(int channel, int value) {
+	public void setChannel(int channel, float value) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void update() {
 		// TODO Auto-generated method stub
 		
 	}

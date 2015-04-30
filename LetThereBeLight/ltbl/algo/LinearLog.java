@@ -33,7 +33,7 @@ public class LinearLog{
 	}
 	
 	public static int logToLin(int index, int max, int samples, int sampleRate){
-		double top = Math.log(20000)/Math.log(2);
+		double top = Math.log(5000)/Math.log(2);
 		double bottom = Math.log(20)/Math.log(2);
 		double power = (((double)index/max)*(top-bottom) + bottom);
 		double freq = Math.pow(2,  power);

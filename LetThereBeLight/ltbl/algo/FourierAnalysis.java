@@ -7,6 +7,7 @@ import javax.sound.sampled.LineUnavailableException;
 import ltbl.algo.Complex;
 import ltbl.algo.FFT;
 import ltbl.io.AudioInput;
+import ltbl.io.TrueAudioInput;
 
 public class FourierAnalysis {
     private AudioInput in;
@@ -17,7 +18,7 @@ public class FourierAnalysis {
 		bufLen=len;
 	}
     
-    public void setInput(AudioInput i){
+    public void setInput(TrueAudioInput i){
     	in=i;
     }
     
@@ -40,15 +41,15 @@ public class FourierAnalysis {
 	
 	public float[] process(){
 		if(in.getBuffer().length() != in.getBuffer().getSize())
-			return new float[bufLen];
+			return new float[in.getBuffer().getSize()];
 		byte[] array = in.getBuf();
-		Complex[] x = new Complex[bufLen];
-		for(int i=0;i<bufLen;i++){
+		Complex[] x = new Complex[in.getBuffer().getSize()];
+		for(int i=0;i<in.getBuffer().getSize();i++){
 			x[i]=new Complex(array[i],0);
 		}
 		Complex[] y = FFT.fft(x);
-		float[] f = new float[bufLen];
-		for(int i=0;i<bufLen/2;i++){
+		float[] f = new float[in.getBuffer().getSize()];
+		for(int i=0;i<in.getBuffer().getSize()/2;i++){
 			f[i]=(float) y[i].abs();
 		}
 		return f;
