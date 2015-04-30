@@ -19,6 +19,8 @@ public class LinearLog{
 				total+=lin[j];
 			}
 			total/=(float)(next-prev);
+			total/=(1+((len-i)*2.0f
+					/len));
 			log[i]=total;
 		}
 		return log;

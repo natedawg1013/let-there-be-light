@@ -1,13 +1,12 @@
 package ltbl.io;
 import java.io.IOException;
-
-import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.*;
 
 import ltbl.util.RingBuffer;
 
-public interface AudioInput{
+public interface AudioInput {
 	public RingBuffer getBuffer();
-
+	
 	public void begin() throws LineUnavailableException;
 	
 	public void run();
@@ -17,5 +16,6 @@ public interface AudioInput{
 	public int bufLen();
 	
 	public byte[] getBuf();
+
 }
 

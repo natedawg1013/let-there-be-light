@@ -25,9 +25,9 @@ public class RGBLight extends SimLight{
 	
 	public void update(float[] data){
 		float r, g, b;
-		r=data[channel[0]]/256.0f;
-		g=data[channel[1]]/256.0f;
-		b=data[channel[2]]/256.0f;
+		r=data[channel[0]];
+		g=data[channel[1]];
+		b=data[channel[2]];
 		setBackground(new Color(r,g,b));
 	}
 }

@@ -13,7 +13,7 @@ public class LineGraph extends JPanel{
     private float[] points;
     private Color color;
     
-    private final int MAX_HEIGHT = 5000;
+    private final int MAX_HEIGHT = 100;
     
     public LineGraph(FourierAnalysis a){
     	super();
@@ -56,6 +56,6 @@ public class LineGraph extends JPanel{
     
     public void update(float[] points){
     	this.points=points;
-    	this.repaint();
+    	//this.repaint();
     }
 }

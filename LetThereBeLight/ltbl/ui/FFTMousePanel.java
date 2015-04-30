@@ -58,6 +58,10 @@ public class FFTMousePanel extends JPanel implements MouseListener, MouseMotionL
 				newBox.setDimensions( me.getX(), me.getY(), me.getX(), me.getY() );
 				JLayeredPane layers = this.statePanel.boxLayers;
 				int level = JLayeredPane.getLayer(statePanel);
+				if ( level > 1 && layers.getComponentCountInLayer(level-1) == 1 ) {
+					FFTBoxOverlay oldTop = (FFTBoxOverlay) layers.getComponentsInLayer(level-1)[0];
+					oldTop.toggleSelected();
+				}
 				layers.setLayer( statePanel, level+1 );
 				//System.out.println(level);
 				layers.add( newBox, new Integer(level) );
@@ -193,13 +197,15 @@ public class FFTMousePanel extends JPanel implements MouseListener, MouseMotionL
 			//System.out.println(x+" "+y);
 			JLayeredPane stack = statePanel.boxLayers;
 			int stackHeight = JLayeredPane.getLayer(statePanel);
-			for ( int i = stackHeight-1; i >= 0; --i ) {
+			for ( int i = stackHeight-1; i > 0; --i ) {
 				if ( stack.getComponentCountInLayer(i) == 1 ) { 
 					FFTBoxOverlay box = (FFTBoxOverlay) stack.getComponentsInLayer(i)[0];
 					//System.out.println(box);
 					if ( box.isInside(x,y) ) {
 						// switch focus to this box
 						FFTBoxOverlay oldFocus = (FFTBoxOverlay) stack.getComponentsInLayer(stackHeight-1)[0];
+						oldFocus.toggleSelected();
+						box.toggleSelected();
 						stack.setLayer( oldFocus, i );
 						stack.setLayer( box, stackHeight-1 );
 						return box;
@@ -407,6 +413,7 @@ public class FFTMousePanel extends JPanel implements MouseListener, MouseMotionL
 		boxLayers = g;
 		boxOverlays = new ArrayList<FFTBoxOverlay>();
 		this.setOpaque(false);
+		this.setBackground(new Color(0,0,0,0));
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
 		this.addMouseWheelListener(this);

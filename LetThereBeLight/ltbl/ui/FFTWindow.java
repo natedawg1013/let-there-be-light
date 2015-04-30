@@ -38,8 +38,8 @@ public class FFTWindow extends JPanel implements ActionListener{
     }
 	
     private void setPositions(){
-    	//graphPane.add( graph, 0 );
-    	//graphPane.add( mousePanel, 1 );
+    	graphPane.add( graph, new Integer(0) );
+    	graphPane.add( mousePanel, new Integer(1) );
     	
     	GridBagConstraints c = new GridBagConstraints();
     	Dimension d = new Dimension(720, 480);
@@ -51,8 +51,8 @@ public class FFTWindow extends JPanel implements ActionListener{
 		graph.setPreferredSize(d);
 		mousePanel.setPreferredSize(d);
         this.add( graphPane, c );
-    	this.add( graph, c );
     	this.add( mousePanel, c );
+    	this.add( graph, c );
     	c.gridwidth = 1;
         c.weightx = .50;
         c.weighty = .1;
@@ -77,5 +77,10 @@ public class FFTWindow extends JPanel implements ActionListener{
         	}
         }
     }
+
+	public void updateGraph(float[] points) {
+		graph.update(points);
+		graphPane.repaint();
+	}
 
 }

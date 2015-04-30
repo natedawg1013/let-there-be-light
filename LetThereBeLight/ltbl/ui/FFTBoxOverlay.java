@@ -35,7 +35,7 @@ public class FFTBoxOverlay extends JPanel {
         int r = rand.nextInt(0x100);
         int g = rand.nextInt(0x100);
         int b = rand.nextInt(0x100);
-        this.setBackground( new Color( r, g, b, 0x20 ) );
+        this.setBackground( new Color( r, g, b, 0x40 ) );
         this.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
         this.setOpaque(false);
         settings = new FFTBoxSettings( runner, box );
@@ -58,6 +58,14 @@ public class FFTBoxOverlay extends JPanel {
         // FFTBox stores its bounding dimensions as doubles from 0-1
         // where 0 and 1 are the outermost dimensions on the graph
         dimensions = box.getDimensions( xOuter, yOuter );
+    }
+    
+    public void toggleSelected () {
+    	Color c = getBackground();
+    	int a = c.getAlpha();
+    	a ^= 0x60;
+    	this.setBackground( new Color( c.getRed(), c.getGreen(), c.getBlue(), a ) );
+    	//this.paintImmediately(this.getBounds());
     }
     
     // sets the size of the graph's dimensions

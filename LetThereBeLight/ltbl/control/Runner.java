@@ -156,7 +156,7 @@ public class Runner implements ActionListener, Runnable{
 			if(running){
 				float[] points=LinearLog.logFromLinear(fourier.process(), 100);
 				//menu.getBarGraph().update(LinearLog.loglog(points));
-				menu.getLineGraph().update(points);
+				menu.getBarGraph().update(points);
 				fw.updateGraph(points);
 				for(PeriodicEffect e : periodicEffects){
 					e.update();
