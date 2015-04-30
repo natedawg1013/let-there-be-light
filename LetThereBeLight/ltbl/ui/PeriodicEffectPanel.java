@@ -101,13 +101,8 @@ public class PeriodicEffectPanel extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource()==update){
 			float p = ((SpinnerNumberModel) period.getModel()).getNumber().floatValue();
-			if(((String)type.getSelectedItem()).equals("pulse")){
-				float d = ((SpinnerNumberModel) pulsewidth.getModel()).getNumber().floatValue();
-				pe.setLFO((String) type.getSelectedItem(), p, d/100);
-			}
-			else{
-				pe.setLFO((String) type.getSelectedItem(), p);
-			}
+			float d = ((SpinnerNumberModel) pulsewidth.getModel()).getNumber().floatValue();
+			pe.setLFO((String) type.getSelectedItem(), p, d/100);
 			pe.setEnabled(true);
 		}
 		if(e.getSource()==type){

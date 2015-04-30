@@ -1,4 +1,5 @@
 package ltbl.ui;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -53,7 +54,7 @@ public class MainMenu extends JPanel implements ActionListener{
 		start = new JButton("Start");
 		stop = new JButton("Stop");
 		//graph = new BarGraph();
-		graph = new LineGraph();
+		graph = new LineGraph(Color.BLACK);
 		actionListeners = new ArrayList<ActionListener>();
 		
 		setPositions();

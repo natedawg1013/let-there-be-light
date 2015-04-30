@@ -1,5 +1,6 @@
 package ltbl.ui;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
@@ -10,17 +11,23 @@ import ltbl.algo.FourierAnalysis;
 public class LineGraph extends JPanel{
 	private static final long serialVersionUID = 4570416097915326118L;
     private float[] points;
+    private Color color;
     
     private final int MAX_HEIGHT = 5000;
     
     public LineGraph(FourierAnalysis a){
     	super();
     	points = new float[0];
+    	this.setOpaque(false);
+    	this.setBackground(new Color(0,0,0));
     }
     
-    public LineGraph(){
+    public LineGraph(Color c){
     	super();
     	points = new float[0];
+    	color=c;
+    	this.setOpaque(false);
+    	this.setBackground(new Color(0,0,0, 0));
     }
     
     @Override
@@ -32,6 +39,7 @@ public class LineGraph extends JPanel{
     	int y = this.getHeight();
     	double scaling = (double) y/MAX_HEIGHT;			//vertical scaling
     	double width = ((double)(x)/points.length);	//horizontal scaling
+    	graphics.setColor(color);
     	for(int i=0;i<points.length-1;i++){
     		int h1 =  y - (int) (points[i]*scaling);
     		int h2 =  y - (int) (points[i+1]*scaling);
@@ -46,8 +54,8 @@ public class LineGraph extends JPanel{
     	this.repaint();
     }
     
-    public void update(float[] bytes){
-    	points=bytes;
+    public void update(float[] points){
+    	this.points=points;
     	this.repaint();
     }
 }

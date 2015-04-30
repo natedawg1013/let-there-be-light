@@ -3,7 +3,12 @@ package ltbl.algo;
 import java.util.ArrayList;
 
 import ltbl.control.Runner;
-
+/**
+ * Settings for a periodic effect,
+ * manages LFO
+ * @author Nathan Brnard
+ *
+ */
 public class PeriodicEffect{
 	private LFO oscillator;
 	private ArrayList<Integer> channels;
@@ -16,24 +21,34 @@ public class PeriodicEffect{
 		running=false;
 		runner=r;
 	}
-	
+	/**
+	 * Sets whether or not effect is enabled
+	 * @param enabled state of effect
+	 */
 	public void setEnabled(boolean enabled){
 		running=enabled;
 	}
-	
-	public void setLFO(String type, double period){
+	/**
+	 * Creates a new LFO
+	 * @param type Type of LFO (sine, square, triangle, sawtooth, pulse)
+	 * @param period Period of waveform in seconds
+	 */
+	public void setLFO(String type, double period, double dutyCycle){
 		switch(type){
 		case "sine":
-			oscillator=new Sine(period);
+			oscillator=new LFO.Sine(period);
 			break;
 		case "square":
-			oscillator=new Square(period);
+			oscillator=new LFO.Square(period);
 			break;
 		case "triangle":
-			oscillator=new Triangle(period);
+			oscillator=new LFO.Triangle(period);
 			break;
 		case "sawtooth":
-			oscillator=new Sawtooth(period);
+			oscillator=new LFO.Sawtooth(period);
+			break;
+		case "pulse":
+			oscillator=new LFO.Pulse(period, dutyCycle);
 			break;
 		default:
 			break;
@@ -42,18 +57,17 @@ public class PeriodicEffect{
 		oscillator.pause(false);
 		
 	}
-	public void setLFO(String type, double period, double dutyCycle){
-		if(type.equals("pulse")){
-			oscillator=new Pulse(period, dutyCycle);
-			oscillator.start();
-			oscillator.pause(false);
-		}
-	}
 	
+	/**
+	 * Adds ch to list of DMX channels to be controlled by this effect
+	 * @param ch channel number to add
+	 */
 	public void addChannel(int ch){
 		channels.add(ch);
 	}
-	
+	/**
+	 * Updates DMC channels under this effect's control
+	 */
 	public void update(){
 		if(running && oscillator != null && runner.getOutput() != null){
 			for(int i : channels){
