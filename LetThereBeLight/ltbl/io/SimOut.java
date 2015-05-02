@@ -11,7 +11,7 @@ public class SimOut implements Output, Runnable {
 	private SimPanel panel;
 	private JFrame frame;
 
-    public SimOut(String dmxverbox) {
+    public SimOut() {
     	values = new float[512];
     	panel = new SimPanel();
     	frame = new JFrame("Simulator");

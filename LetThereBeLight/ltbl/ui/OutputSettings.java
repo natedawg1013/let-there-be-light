@@ -18,6 +18,7 @@ import java.util.Enumeration;
 import java.util.ArrayList;
 
 import ltbl.control.Runner;
+import ltbl.io.DMXOut;
 import ltbl.io.Output;
 import ltbl.io.SerialComm;
 import ltbl.io.SimOut;
@@ -29,42 +30,38 @@ public class OutputSettings extends JPanel implements ActionListener {
 	JButton set;
 	JComboBox<String> output_box;
 	JComboBox<String> port_box;
-	JComboBox<Integer> baud_box;
-	List<String> serialList = new ArrayList<String>();
-	List<CommPortIdentifier> ports;
+	JComboBox<Integer> baudBox;
+	List<CommPortIdentifier> portList;
 	JLabel output_label;
 	JLabel port;
 	JLabel baudRate;
 	
+	
 	public OutputSettings(Runner r) {
 		super(new GridBagLayout());
 		runner = r;
-		set = new JButton("Set");
+		output_box=new JComboBox<String>();
 		output_label = new JLabel("Output");
-		output_box = new JComboBox<String>();
 		port = new JLabel("Port");
 		port_box = new JComboBox<String>();
-		baudRate = new JLabel("baud");
-		baud_box = new JComboBox<Integer>();
-		
-		set.addActionListener(this);
+		baudRate = new JLabel("Baud");
+		baudBox = new JComboBox<Integer>();
+		set = new JButton("Set");
+
 		output_box.addItem("Serial");
 		output_box.addItem("Simulator");
 		output_box.addActionListener(this);
 		port_box.setEditable(false);
-		port_box.addActionListener(this);
-		baud_box.setEditable(false);
-		for(int i : SerialComm.BAUD_RATES) baud_box.addItem(i);
-		baud_box.addActionListener(this);
-		ports=ltbl.io.SerialComm.listPorts();
-		port_box.removeAllItems();
-		for(CommPortIdentifier id : ports){
+		baudBox.setEditable(false);
+		baudBox.addActionListener(this);
+		set.addActionListener(this);
+		for(int i : SerialComm.BAUD_RATES) baudBox.addItem(i);
+		portList=SerialComm.listPorts();
+		for(CommPortIdentifier id : portList)
 			port_box.addItem(id.getName());
-		}
 		
 		GridBagConstraints c = new GridBagConstraints();
 			c.fill = GridBagConstraints.HORIZONTAL;
-			c.anchor = GridBagConstraints.CENTER;
 			c.gridx = 0; c.gridy = 0;
 		this.add(output_label, c);
 			c.gridx=1;
@@ -76,11 +73,9 @@ public class OutputSettings extends JPanel implements ActionListener {
 			c.gridx=4;
 		this.add(baudRate, c);
 			c.gridx=5;
-		this.add(baud_box, c);
+		this.add(baudBox, c);
 			c.gridy=1;
 		this.add(set, c);
-		
-		
 	}
 
 	@Override
@@ -88,33 +83,26 @@ public class OutputSettings extends JPanel implements ActionListener {
 		if(ae.getSource()==set) {
 			Output out = null;
 			if( ( (String) output_box.getSelectedItem() ).equals("Serial") ){
-				//out = new DMXOut( (String) port_box.getSelectedItem(),
-				//				  (String) dmxver_box.getSelectedItem() );
+				out = new DMXOut( portList.get(port_box.getSelectedIndex()),
+								  (Integer) baudBox.getSelectedItem() );
 			}
 			else {
-				out = new SimOut( (String) baud_box.getSelectedItem() );
-				port_box.removeAllItems();
-				port_box.addItem("Not Applicable");
+				out = new SimOut();
 			}
-			runner.setOutput(out);
 		}
 		if(ae.getSource()==output_box){
-			if(((String)output_box.getSelectedItem()).equals("Serial")){
+			if(output_box.getSelectedIndex()==0){
 				port_box.setEnabled(true);
-				ports=ltbl.io.SerialComm.listPorts();
+				baudBox.setEnabled(true);
 				port_box.removeAllItems();
-				for(CommPortIdentifier id : ports){
+				portList=SerialComm.listPorts();
+				for(CommPortIdentifier id : portList){
 					port_box.addItem(id.getName());
 				}
-				baud_box.removeAllItems();
-				baud_box.setEditable(true);
-				for(int i : SerialComm.BAUD_RATES) baud_box.addItem(i);
 			}
 			else{
-				port_box.removeAllItems();
 				port_box.setEnabled(false);
-				baud_box.removeAllItems();
-				baud_box.setEnabled(false);
+				baudBox.setEnabled(false);
 			}
 		}
 
