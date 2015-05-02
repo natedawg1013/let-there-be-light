@@ -11,6 +11,7 @@ import ltbl.io.AudioInput;
 public class FourierAnalysis {
     private AudioInput in;
 	int bufLen;
+	private float[] dataPoints;
 	
 	public FourierAnalysis(AudioInput i, int len){
 		in=i;
@@ -23,6 +24,10 @@ public class FourierAnalysis {
     
     public AudioInput getInput(){
     	return in;
+    }
+    
+    public float[] getData(){
+    	return dataPoints;
     }
     
 	public void begin(){
@@ -52,6 +57,7 @@ public class FourierAnalysis {
 		for(int i=0;i<bufLen/2;i++){
 			f[i]=(float) y[i].abs();
 		}
+		dataPoints=f;
 		return f;
 	}
 	

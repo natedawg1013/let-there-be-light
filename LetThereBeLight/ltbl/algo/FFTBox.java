@@ -1,16 +1,24 @@
 package ltbl.algo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ltbl.control.Runner;
 
 public class FFTBox {
     
     // relative to the outer boundaries of the space
     private double[] relativeDimensions;
+    private int frqMin, frqMax;
+    private float ampMin, ampMax;
     private Runner runner;
+    private List<Integer> outs;
+    private FourierAnalysis fourier;
     
     public FFTBox ( Runner r ) {
         relativeDimensions = new double[4];
         runner = r;
+        outs = new ArrayList<Integer>();
     }
     
     public void setDimensions ( int[] dim, int xOut, int yOut ) {
@@ -27,5 +35,22 @@ public class FFTBox {
         newDim[2] = (int) (xDim*relativeDimensions[2]);
         newDim[3] = (int) (yDim*relativeDimensions[3]);
         return newDim;
+    }
+    
+    public void update(){
+    	boolean flag=false;
+    	for(int i=frqMin; i<=frqMax;i++){
+    		if(fourier.getData()[i] < ampMax &&
+    		   fourier.getData()[i] > ampMin ){
+    			flag=true;
+    			break;
+    		}
+    	}
+    	for(int i : outs){
+    		if(flag)
+    			runner.getOutput().setChannel(i, 1.0f);
+    		else
+    			runner.getOutput().setChannel(i, 0.0f);
+    	}
     }
 }
