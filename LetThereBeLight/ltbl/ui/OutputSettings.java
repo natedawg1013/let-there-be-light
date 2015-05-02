@@ -89,6 +89,7 @@ public class OutputSettings extends JPanel implements ActionListener {
 			else {
 				out = new SimOut();
 			}
+			runner.setOutput(out);
 		}
 		if(ae.getSource()==output_box){
 			if(output_box.getSelectedIndex()==0){
