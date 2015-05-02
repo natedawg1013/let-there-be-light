@@ -35,7 +35,7 @@ public class FFTBoxOverlay extends JPanel {
         int r = rand.nextInt(0x100);
         int g = rand.nextInt(0x100);
         int b = rand.nextInt(0x100);
-        this.setBackground( new Color( r, g, b, 0x40 ) );
+        this.setBackground( new Color( r, g, b, 0x80 ) );
         this.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
         this.setOpaque(false);
         settings = new FFTBoxSettings( runner, box );
@@ -63,7 +63,7 @@ public class FFTBoxOverlay extends JPanel {
     public void toggleSelected () {
     	Color c = getBackground();
     	int a = c.getAlpha();
-    	a ^= 0x60;
+    	a ^= 0xc0;
     	this.setBackground( new Color( c.getRed(), c.getGreen(), c.getBlue(), a ) );
     	//this.paintImmediately(this.getBounds());
     }

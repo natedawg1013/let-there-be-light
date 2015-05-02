@@ -65,7 +65,7 @@ public class FFTMousePanel extends JPanel implements MouseListener, MouseMotionL
 				layers.setLayer( statePanel, level+1 );
 				//System.out.println(level);
 				layers.add( newBox, new Integer(level) );
-				System.out.println(layers.getComponentCountInLayer(level));
+				//System.out.println(layers.getComponentCountInLayer(level));
 				nextState.setBox(newBox);
 			}
 		}
@@ -436,7 +436,7 @@ public class FFTMousePanel extends JPanel implements MouseListener, MouseMotionL
 	}
 
 	public State getState ( EState m, FFTMousePanel mp ) {
-		System.out.println(m);
+		//System.out.println(m);
 		switch (m) {
 		case ADD:
 			return new AddState(mp);
@@ -454,7 +454,7 @@ public class FFTMousePanel extends JPanel implements MouseListener, MouseMotionL
 	}
 
 	public void mouseClicked ( MouseEvent me ) {
-		System.out.println("click");
+		//System.out.println("click");
 		//this.paint(this.getGraphics());
 		inputState.processMouseEvent(me);
 	}
