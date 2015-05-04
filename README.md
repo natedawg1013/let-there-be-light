@@ -8,9 +8,13 @@ An open source light controller that takes input from a microphone, or from soun
 Downloads
 ---------
 **under construction**
+
 Windows (32-bit and 64-bit) Installer
+
 Linux (32-bit and 64-bit) Installer
+
 Mac OS X Installer
+
 Standalone (portable, Windows, Linux, Mac)
 
 Overview
