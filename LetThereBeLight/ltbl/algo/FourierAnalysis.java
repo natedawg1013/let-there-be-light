@@ -1,7 +1,5 @@
 package ltbl.algo;
 
-import java.io.IOException;
-
 import javax.sound.sampled.LineUnavailableException;
 
 import ltbl.algo.Complex;
@@ -50,23 +48,18 @@ public class FourierAnalysis {
 		byte[] array = in.getBuf();
 		Complex[] x = new Complex[bufLen];
 		for(int i=0;i<bufLen;i++){
-			x[i]=new Complex(array[i],0);
+			x[i]=new Complex(array[i]/127f,0);
 		}
 		Complex[] y = FFT.fft(x);
 		float[] f = new float[bufLen];
 		for(int i=0;i<bufLen/2;i++){
-			f[i]=(float) y[i].abs();
+			f[i]=(float) (y[i].abs()+y[bufLen-1-i].abs())/2;
 		}
 		dataPoints=f;
 		return f;
 	}
 	
 	void end(){
-		try {
-			in.end();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		in.end();
 	}
 }

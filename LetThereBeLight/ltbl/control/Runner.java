@@ -51,7 +51,7 @@ public class Runner implements ActionListener, Runnable{
     	fw=new FFTWindow(this);
     	out = new DummyOut();
     	boxes = new ArrayList<FFTBox>();
-    	fourier = new FourierAnalysis(new DummyAudioInput(), 2048);
+    	fourier = new FourierAnalysis(new DummyAudioInput(), 8192);
     	periodicEffects = new ArrayList<PeriodicEffect>();
     	
     	menuFrame = new JFrame("Let There Be Light");
@@ -163,7 +163,8 @@ public class Runner implements ActionListener, Runnable{
 				float[] points=LinearLog.logFromLinear(fourier.process(), 100);
 				//menu.getBarGraph().update(LinearLog.loglog(points));
 				menu.getBarGraph().update(points);
-				fw.updateGraph(points);
+				//fw.updateGraph(points);
+				fw.updateGraph(LinearLog.loglog(points));
 				for(PeriodicEffect e : periodicEffects){
 					e.update();
 				}

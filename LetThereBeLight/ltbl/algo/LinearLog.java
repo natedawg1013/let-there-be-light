@@ -19,7 +19,7 @@ public class LinearLog{
 				total+=lin[j];
 			}
 			total/=(float)(next-prev);
-			//total/=( 1+( (len-i)*3.0f/len) );
+			total/=( 1+( (len-i)*3.0f/len) );
 			log[i]=total;
 		}
 		return log;
@@ -28,7 +28,7 @@ public class LinearLog{
 	public static float[] loglog(float[] samples){
 		float[] result = new float[samples.length];
 		for(int i=0;i<samples.length;i++){
-			result[i]=(float) (Math.log(samples[i]+1)/Math.log(1.4)) * 3;
+			result[i]=(float) (Math.log(samples[i]));
 		}
 		return result;
 	}

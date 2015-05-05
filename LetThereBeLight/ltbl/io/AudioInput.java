@@ -1,5 +1,4 @@
 package ltbl.io;
-import java.io.IOException;
 import javax.sound.sampled.*;
 
 import ltbl.util.RingBuffer;
@@ -11,7 +10,7 @@ public interface AudioInput {
 	
 	public void run();
 	
-	public void end() throws IOException;
+	public void end();
 
 	public int bufLen();
 	

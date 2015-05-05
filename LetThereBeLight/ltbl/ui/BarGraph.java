@@ -14,7 +14,6 @@ public class BarGraph extends JPanel{
     
     private final int BARS = 8;
     private final float SPACING = 0.1f;
-    private final int MAX_HEIGHT = 100000;
     
     public BarGraph(FourierAnalysis a){
     	super();
@@ -36,11 +35,10 @@ public class BarGraph extends JPanel{
     	int x = this.getWidth();		//get panel size
     	int y = this.getHeight();
     	int barWidth = (int) ((x*(1-SPACING))/BARS);	//horizontal scaling
-    	double scaling = (double) y/MAX_HEIGHT;			//vertical scaling
     	graphics.setColor(new Color(127, 127, 127));	//set shape color to gray
     	for(int i=0;i<BARS;i++){
-    		int start =  y - (int) (buckets[i]*scaling);
-    		int height = (int) (buckets[i]*scaling);
+    		int start = (int) ((1-buckets[i]) * y);
+    		int height = (int) (buckets[i]*y);
     		graphics.fillRect((int) (barWidth*(1+SPACING)*i), start, barWidth, height);
     	}
     	
@@ -58,6 +56,9 @@ public class BarGraph extends JPanel{
     	}
     	for(int i=0;i<in.length;i++){
     		buckets[i/((in.length/BARS)+1)]+=in[i];
+    	}
+    	for(int i=0;i<BARS;i++){
+    		buckets[i]/=(in.length/BARS);
     	}
     	this.repaint();
     }    
