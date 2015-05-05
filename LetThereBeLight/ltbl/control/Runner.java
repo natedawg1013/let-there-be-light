@@ -5,8 +5,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.Line.Info;
 import javax.sound.sampled.LineUnavailableException;
 import javax.swing.JFrame;
+
 import ltbl.algo.*;
 import ltbl.io.*;
 import ltbl.ui.*;
@@ -30,11 +36,11 @@ public class Runner implements ActionListener, Runnable{
 	private Thread update;
 	private volatile boolean running;
 	
-    public static void main(String[] args) {
+    public static void main(String[] args) throws LineUnavailableException {
     	Runner runner = new Runner();
     	//instantiate runner;
         //instantiate all classes
-    	runner.showMainMenu(true);    	
+    	runner.showMainMenu(true);  
     }
     
     public Runner(){
@@ -45,7 +51,7 @@ public class Runner implements ActionListener, Runnable{
     	fw=new FFTWindow(this);
     	out = new DummyOut();
     	boxes = new ArrayList<FFTBox>();
-    	fourier = new FourierAnalysis(new DummyAudioInput(), 8192);
+    	fourier = new FourierAnalysis(new DummyAudioInput(), 2048);
     	periodicEffects = new ArrayList<PeriodicEffect>();
     	
     	menuFrame = new JFrame("Let There Be Light");

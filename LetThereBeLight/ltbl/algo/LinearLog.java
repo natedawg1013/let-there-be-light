@@ -19,7 +19,7 @@ public class LinearLog{
 				total+=lin[j];
 			}
 			total/=(float)(next-prev);
-			total/=( 1+( (len-i)*4.0f/len) );
+			//total/=( 1+( (len-i)*3.0f/len) );
 			log[i]=total;
 		}
 		return log;

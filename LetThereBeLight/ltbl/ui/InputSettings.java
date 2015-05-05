@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-import javax.sound.sampled.Line;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.Mixer;
 import javax.swing.JButton;
@@ -12,14 +11,12 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
 import ltbl.control.Runner;
-import ltbl.io.AudioInput;
 import ltbl.io.TrueAudioInput;
 
 
 public class InputSettings extends JPanel implements ActionListener {
 	private static final long serialVersionUID = -997194328110445776L;
-	JComboBox<String> cards;
-	JComboBox<String> input;
+	JComboBox<String> mixers;
 	JComboBox<Integer> sampleRate;
 	JButton   set;
 	Runner runner;
@@ -27,62 +24,36 @@ public class InputSettings extends JPanel implements ActionListener {
     public InputSettings(Runner r){
     	super();
     	runner = r;		//need runner for passing new AudioIn to other components
-    	this.setLayout(new GridLayout(2,3));
-    	cards = new JComboBox<String>();
-    	input = new JComboBox<String>();
+    	this.setLayout(new GridLayout(2,2));
+    	mixers = new JComboBox<String>();
     	sampleRate = new JComboBox<Integer>();
     	set = new JButton("Set");
     	//get lists of cards, lines, and sample rates
-    	List<Mixer.Info> cardList = TrueAudioInput.getSoundCards();
-    	for(Mixer.Info m : cardList) cards.addItem(m.getName());
-    	List<Line.Info> in = TrueAudioInput.getSources(cardList.get(0));
-    	for(Line.Info s : in) input.addItem(s.toString());
+    	List<Mixer.Info> cardList = TrueAudioInput.getAvailableMixers();
+    	for(Mixer.Info m : cardList) mixers.addItem(m.getName());
     	int[] rates = {22050, 44100, 48000};
     	for(int i : rates) sampleRate.addItem(i);
+    	sampleRate.setSelectedIndex(1);
     	setPositions();
-    	input.addActionListener(this);
     	set.addActionListener(this);
-    	cards.addActionListener(this);
+    	mixers.addActionListener(this);
     }
     
     private void setPositions(){
     	//set positions as per GridLayout
-    	this.add(cards);
-    	this.add(input);
+    	this.add(mixers);
     	this.add(sampleRate);
-    	this.add(new JPanel());
     	this.add(new JPanel());
     	this.add(set);
     }
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
-		//if card selection changed
-		if(ae.getSource()==cards){
-			List<Mixer.Info> cardList = TrueAudioInput.getSoundCards();
-			List<Line.Info> in = TrueAudioInput.getSources(cardList.get(cards.getSelectedIndex()));
-			input.removeAllItems();
-	    	for(Line.Info s : in){
-	    		input.addItem(s.toString());
-	    		System.out.println(s.toString());
-	    	}
-	    	if(in.size() == 0){
-	    		input.setEnabled(false);
-	    		set.setEnabled(false);
-	    	}
-	    	else{
-	    		input.setEnabled(true);
-	    		set.setEnabled(true);
-	    		input.setSelectedIndex(0);
-	    	}
-	    	
-		}
 		//if set button pressed
 		if(ae.getSource()==set){
-			Mixer.Info card = TrueAudioInput.getSoundCards().get(cards.getSelectedIndex());
-			Line.Info port = TrueAudioInput.getSources(card).get(input.getSelectedIndex());
+			Mixer.Info mixer = TrueAudioInput.getAvailableMixers().get(mixers.getSelectedIndex());
 			try {
-				runner.updateFourier(new TrueAudioInput(card,  port, 8192));
+				runner.updateFourier(new TrueAudioInput(mixer,  (Integer) sampleRate.getSelectedItem(), 2048));
 			} catch (LineUnavailableException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -14,7 +14,7 @@ public class BarGraph extends JPanel{
     
     private final int BARS = 8;
     private final float SPACING = 0.1f;
-    private final int MAX_HEIGHT = 1000;
+    private final int MAX_HEIGHT = 100000;
     
     public BarGraph(FourierAnalysis a){
     	super();
