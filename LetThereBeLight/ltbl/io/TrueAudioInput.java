@@ -48,7 +48,7 @@ public class TrueAudioInput extends Thread implements AudioInput{
 		}
 	}
 	
-	public void end() throws IOException{
+	public void end(){
 		running=false;
 		synchronized(input){
 			try {

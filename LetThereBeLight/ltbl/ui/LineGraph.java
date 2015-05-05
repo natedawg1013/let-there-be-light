@@ -13,8 +13,6 @@ public class LineGraph extends JPanel{
     private float[] points;
     private Color color;
     
-    private final int MAX_HEIGHT = 2000;
-    
     public LineGraph(FourierAnalysis a){
     	super();
     	points = new float[0];
@@ -37,12 +35,13 @@ public class LineGraph extends JPanel{
     	Graphics2D graphics = (Graphics2D) g;
     	int x = this.getWidth();		//get panel size
     	int y = this.getHeight();
-    	double scaling = (double) y/MAX_HEIGHT;			//vertical scaling
     	double width = ((double)(x)/points.length);	//horizontal scaling
     	graphics.setColor(color);
     	for(int i=0;i<points.length-1;i++){
-    		int h1 =  y - (int) (points[i]*scaling);
-    		int h2 =  y - (int) (points[i+1]*scaling);
+    		//int h1 = (int) ((1-points[i])*y);
+    		//int h2 =  (int) ((1-points[i+1])*y);
+    		int h1 = (int) ((3/4-points[i]/40)*y)*5;
+    		int h2 =  (int) ((3/4-points[i+1]/40)*y)*5;
     		graphics.drawLine((int)(i*width), h1, (int)((i+1)*width), h2);
     	}
     	

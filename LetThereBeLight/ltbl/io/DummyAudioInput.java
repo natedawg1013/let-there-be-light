@@ -1,5 +1,4 @@
 package ltbl.io;
-import java.io.IOException;
 
 import ltbl.util.RingBuffer;
 
@@ -16,7 +15,7 @@ public class DummyAudioInput implements AudioInput{
 	public void run(){
 	}
 	
-	public void end() throws IOException{
+	public void end(){
 	}
 
 	public int bufLen(){
