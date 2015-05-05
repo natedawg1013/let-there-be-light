@@ -1,16 +1,16 @@
 package ltbl.util;
 public class RingBuffer{
-	private byte[] ring;
+	private float[] ring;
 	private int next=0;
 	int length=0;
 	int size;
 	
 	public RingBuffer(int size){
-		ring = new byte[size];
+		ring = new float[size];
 		this.size=size;
 	}
 	
-	public synchronized void write(byte[] in, int len){
+	public synchronized void write(float[] in, int len){
 		int remaining = ring.length-next;
 		int inStart=Math.max(0,len-ring.length);
 		if(len>ring.length) len=ring.length;
@@ -29,9 +29,9 @@ public class RingBuffer{
 		}
 	}
 	
-	public synchronized byte[] peek(int len){
+	public synchronized float[] peek(int len){
 		int n = Math.min(length, len);
-		byte[] buf = new byte[n];
+		float[] buf = new float[n];
 		int start = (next-length+ring.length)%ring.length;
 		int s = Math.min(ring.length-start, len);
 		System.arraycopy(ring, start, buf, 0, s);
@@ -41,8 +41,8 @@ public class RingBuffer{
 		return buf;
 	}
 	
-	public synchronized byte[] read(int len){
-		byte[] buf=peek(len);
+	public synchronized float[] read(int len){
+		float[] buf=peek(len);
 		length-=buf.length;
 		return buf;
 	}

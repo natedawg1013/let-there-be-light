@@ -5,7 +5,7 @@ import javax.sound.sampled.*;
 import ltbl.util.RingBuffer;
 
 public interface AudioInput {
-	public RingBuffer getBuffer();
+	public RingBuffer<float> getBuffer();
 	
 	public void begin() throws LineUnavailableException;
 	
@@ -15,7 +15,7 @@ public interface AudioInput {
 
 	public int bufLen();
 	
-	public byte[] getBuf();
+	public float[] getBuf();
 
 }
 
