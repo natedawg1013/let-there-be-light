@@ -41,7 +41,7 @@ public class AudioIn implements Runnable{
 	
 	public void run(){
 		while(running){
-			int ssize=(int)af.getSampleRate();
+			int ssize=(int)af.getSampleRate()/20;
 			int fsize=af.getFrameSize();
 			byte[] buf2 = new byte[ssize*fsize];
 			line.read(buf2, 0, buf2.length);
