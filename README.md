@@ -21,6 +21,22 @@ Overview
 --------
 under construction
 
+Usage Notes
+--------
+**Windows**
+
+**Linux**
+
+**Mac**
+
+If you get an 
+"Exception in thread "main" java.lang.UnsupportedClassVersionError: ltbl/control/Runner : Unsupported major.minor version 51.0",
+Download the latest JRE and JDK for your system.
+
+JRE: https://www.java.com/en/download/
+
+JDK: http://www.oracle.com/technetwork/java/javase/downloads/index.html
+
 TODO
 ----
 *Get Sound-based effects working
