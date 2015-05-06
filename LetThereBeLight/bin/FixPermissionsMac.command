@@ -11,8 +11,6 @@ done
 DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 cd "$DIR"
-# chmod 0100 ./lib/Mac_OS_X/librxtxSerial64.jnilib
-
 OSTYPE=$(uname -m)
-sudo chown root:wheel /lib/Mac_OS_X/$OSTYPE/librxtxSerial.jnilib
-sudo chmod 755 /lib/Mac_OS_X/$OSTYPE/librxtxSerial.jnilib
+sudo chown root:wheel ./lib/Mac_OS_X/$OSTYPE/librxtxSerial.jnilib
+sudo chmod 755 ./lib/Mac_OS_X/$OSTYPE/librxtxSerial.jnilib

@@ -3,6 +3,8 @@ let-there-be-light
 
 ![Screenshot](https://github.com/natedawg1013/let-there-be-light/raw/dev/img/screenshot1.png)
 
+Overview
+--------
 An open source light controller that takes input from a microphone, or from sound playing through a computer, and uses it to control a DMX lighting system based on user presets.
 
 Downloads
@@ -17,9 +19,6 @@ Mac OS X Installer
 
 Standalone (portable, Windows, Linux, Mac)
 
-Overview
---------
-under construction
 
 Usage Notes
 --------
@@ -38,8 +37,8 @@ Once the permissions have been set, you can run ltbl using "run.command"
 open() failed with errno=13
 	at java.lang.ClassLoader$NativeLibrary.load(Native Method)
 >```
->This is caused when the RXTX libraries do not have access to shared memory or the permissions are net set for execution.
->To fix this, run SetPermissionsMac.sh as an administrator
+>This is caused when the RXTX libraries do not have access to shared memory or the permissions are not set for execution.
+>To fix this, run "SetPermissionsMac.command" as an administrator
 
 #
 
