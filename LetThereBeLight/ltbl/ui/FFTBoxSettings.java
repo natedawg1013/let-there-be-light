@@ -43,12 +43,6 @@ public class FFTBoxSettings extends JPanel implements ActionListener {
         this.add(set, c);
         set.addActionListener(this);
         
-        outputs = new JComboBox<String>();
-        outputs.setEditable(true);
-        outputs.addItem("One Channel (Mono)");
-        outputs.addItem("Three Channels (RGB)");
-        outputs.addActionListener(this);
-        this.add(outputs, c);
         
         c.gridx = 0;
         c.gridy = 0;
@@ -59,9 +53,17 @@ public class FFTBoxSettings extends JPanel implements ActionListener {
         this.add( new JLabel("Channel 2"), c );
         c.gridx = 3;
         this.add( new JLabel("Channel 3"), c );
+
+        c.gridx = 0;
+        c.gridy = 1;
+        outputs = new JComboBox<String>();
+        outputs.setEditable(true);
+        outputs.addItem("One Channel (Mono)");
+        outputs.addItem("Three Channels (RGB)");
+        outputs.addActionListener(this);
+        this.add(outputs, c);
         
         c.gridx = 1;
-        c.gridy = 1;
         channel1 = new JSpinner();
         channel1.setEnabled(false);
         this.add( channel1, c );
@@ -71,7 +73,7 @@ public class FFTBoxSettings extends JPanel implements ActionListener {
         this.add( channel2, c );
         c.gridx = 3;
         channel3 = new JSpinner();
-        channel2.setEnabled(false);
+        channel3.setEnabled(false);
         this.add( channel3, c );
         
         SpinnerNumberModel levelModel = new SpinnerNumberModel(1.0, 0.0, 1.0, 0.1);

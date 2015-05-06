@@ -19,6 +19,7 @@ public class FFTBox {
     public FFTBox ( Runner r ) {
         relativeDimensions = new double[4];
         runner = r;
+        fourier = r.getFourier();
         outs = new TreeMap<Integer, Float>();
         ready = false;
     }
@@ -54,19 +55,23 @@ public class FFTBox {
     public void update(){
     	if (ready) {
 	    	boolean flag=false;
+	    	//System.out.println(fourier.getData());
 	    	float [] points = fourier.getData();
-	    	int frqMin = points.length * (int)relativeDimensions[0];
-	    	int frqMax = points.length * (int)relativeDimensions[2];
-	    	for ( int i=frqMin; i<=frqMax && !flag; ++i ) {
-	    		float relAmp = (3/4 - points[i])/8;
-	    		if ( relativeDimensions[1] < relAmp && relativeDimensions[3] > relAmp ) {
-	    			flag = true;
-	    		}
-	    	}
-    		if(flag) {
-    			for(int i : outs.keySet()){
-	    			runner.getOutput().setChannel(i, outs.get(i) );
-	    		}
+	    	if ( points != null ) {
+		    	int frqMin = points.length * (int)relativeDimensions[0];
+		    	int frqMax = points.length * (int)relativeDimensions[2];
+		    	for ( int i=frqMin; i<=frqMax && !flag; ++i ) {
+		    		// TODO: use the correct scaling here
+		    		float relAmp = (3/4 - points[i])/8;
+		    		if ( relativeDimensions[1] < relAmp && relativeDimensions[3] > relAmp ) {
+		    			flag = true;
+		    		}
+		    	}
+	    		if(flag) {
+	    			for(int i : outs.keySet()){
+		    			runner.getOutput().setChannel(i, outs.get(i) );
+		    		}
+		    	}
 	    	}
     	}
     }
