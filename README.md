@@ -23,8 +23,32 @@ Standalone (portable, Windows, Linux, Mac)
 Usage Notes
 --------
 ###Windows###
+Run ltbl using "run.bat"
+
+#####Common Windows problems#####
+>```
+Can't load AMD 64-bit .dll on a
+IA 32-bit platform thrown while loading gnu.io.RXTXCommDriver
+Exception in thread "main" java.lang.reflect.InvocationTargetException
+        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+        at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+        at java.lang.reflect.Method.invoke(Unknown Source)
+        at org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader.main(JarRsrcLoa
+der.java:58)
+>```
+>This is likely because you have a 64-bit system but have a 32-bit installation of Java installed.
+>To fix this, we recommend that install the latest 64-bit version of Java from https://java.com/en/download/
+
+>Or you can manually run in 32-bit mode by changing "run.bat" to contain only the following
+>```
+@echo off
+java -Djava.library.path=.\lib\Windows\i368-mingw32 -jar "Let There Be Light.jar"
+>```
+>If you decide to change "run.bat", we suggest you make a backup of it first.
 
 ###Linux###
+Run ltbl using "run.sh"
 
 ###Mac###
 
