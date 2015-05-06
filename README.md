@@ -28,17 +28,25 @@ Usage Notes
 
 ###Mac###
 
-First run the included "SetPermissionsMac.command" as an administrator
-
-Once the permissions have been set, you can run ltbl using "run.command"
+Run ltbl using "run.command"
 
 #####Common Mac problems#####
+>```
+Sorry, try again.
+>```
+>This can happen when "run.command" attempts to set proper permissions on the RXTX libraries, but can't because it was unable to acquire administrator privilages. You may have typed your password incorrectly or you may not be an administrator.
+>If you are an administrator and you do not have a password, you will unfortunately need to assign a password to your account or use an administrator account that has a password.
+
+>https://support.apple.com/en-au/HT202035
+
+#
+
 >```
 open() failed with errno=13
 	at java.lang.ClassLoader$NativeLibrary.load(Native Method)
 >```
 >This is caused when the RXTX libraries do not have access to shared memory or the permissions are not set for execution.
->To fix this, run "SetPermissionsMac.command" as an administrator
+>To fix this, use "run.command" as an administrator
 
 #
 
@@ -62,6 +70,12 @@ java.lang.UnsatisfiedLinkError: no rxtxSerial in java.library.path thrown while 
 >JRE: https://www.java.com/en/download/
 
 >JDK: http://www.oracle.com/technetwork/java/javase/downloads/index.html
+
+#
+>If you are running Mac OS X 10.5.8 or earlier and any of the above issues persist, it could be because you are typing your password wrong when prompted, your account is not an administrator, or that your account does not have a password.
+>If you do not have a password, you will unfortunately need to assign a password to your account or use an administrator account that has a password.
+
+>https://support.apple.com/en-au/HT202035
 
 TODO
 ----
