@@ -86,7 +86,21 @@ java.lang.UnsatisfiedLinkError: no rxtxSerial in java.library.path thrown while 
 #
 
 >```
->Exception in thread "main" java.lang.UnsupportedClassVersionError: ltbl/control/Runner : Unsupported major.minor version 51.0",
+Exception in thread "main" java.lang.UnsupportedClassVersionError: ltbl/control/Runner : Unsupported major.minor version 51.0
+	at java.lang.ClassLoader.defineClass1(Native Method)
+	at java.lang.ClassLoader.defineClassCond(ClassLoader.java:637)
+	at java.lang.ClassLoader.defineClass(ClassLoader.java:621)
+	at java.security.SecureClassLoader.defineClass(SecureClassLoader.java:141)
+	at java.net.URLClassLoader.defineClass(URLClassLoader.java:283)
+	at java.net.URLClassLoader.access$000(URLClassLoader.java:58)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:197)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:190)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:306)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:247)
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:249)
+	at org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader.main(JarRsrcLoader.java:56)
 >```
 >This is caused because Let There Be Light was designed for Java 7 and uses the terminal to call Java. On Mac OS X, to call Java from the terminal, you must have both JRE and JDK installed.
 >To fix this, download the latest JRE and JDK for your system.
