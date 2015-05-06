@@ -29,6 +29,15 @@ Usage Notes
 
 **Mac**
 
+First run SetPermissionsMac.sh in terminal as an administrator
+
+Once the permissions have been set, you can run runMAC.sh in terminal
+
+if you get an
+"open() failed with errno=13
+	at java.lang.ClassLoader$NativeLibrary.load(Native Method)"
+run SetPermissionsMac.sh as an administrator
+
 If you get an 
 "Exception in thread "main" java.lang.UnsupportedClassVersionError: ltbl/control/Runner : Unsupported major.minor version 51.0",
 Download the latest JRE and JDK for your system.
