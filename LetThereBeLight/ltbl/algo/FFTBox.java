@@ -144,8 +144,10 @@ public class FFTBox implements FourierUpdateListener, OutputSource{
 
 	private boolean isInBox(FourierAnalysis a){
 		float [] points = a.getData();
+		if(points==null) return false;
 		int frqMin = (int) (points.length * relativeDimensions[0]);
 		int frqMax = (int) (points.length * relativeDimensions[2]);
+		System.out.println(relativeDimensions[0]);
 		for ( int i=frqMin; i<=frqMax; ++i ) {
 			float relAmp = (points[i]);
 			if ( relativeDimensions[1] < relAmp && relativeDimensions[3] > relAmp ) {

@@ -29,7 +29,7 @@ public class FFTBoxOverlay extends JPanel {
     	runner = run;
         // make box
         box = new FFTBox(run);
-        runner.addBox(box);
+        runner.getOutput().addSource(box);
         // initially we want it to be not showed until we set its size via the MousePanel
         Random rand = new Random();
         int r = rand.nextInt(0x100);
