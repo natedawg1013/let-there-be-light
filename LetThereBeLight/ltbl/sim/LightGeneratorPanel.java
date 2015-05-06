@@ -112,7 +112,6 @@ public class LightGeneratorPanel extends JPanel implements ActionListener{
 				int nChannel = ((SpinnerNumberModel) channel0.getModel()).getNumber().intValue();
 				int nColor = ((SpinnerNumberModel) color.getModel()).getNumber().intValue();
 				panel.addLight(new ColoredLight(nChannel, nColor, count));
-				panel.redraw();
 			}
 			else if(type.getSelectedIndex()==1){
 				int nChannel0 = ((SpinnerNumberModel) channel0.getModel()).getNumber().intValue();

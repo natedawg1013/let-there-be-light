@@ -85,15 +85,10 @@ public class FourierAnalysis extends Thread{
 		this.begin();
 		while(true){
 			if(!paused){
-				System.out.println("running");
 				process();
-				System.out.println("processed");
 				for(FourierUpdateListener l : listeners){
 					l.update(this);
 				}
-			}
-			else{
-				System.out.println("paused");
 			}
 			try {
 				Thread.sleep(50);

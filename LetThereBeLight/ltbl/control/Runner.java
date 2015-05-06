@@ -30,12 +30,13 @@ public class Runner implements ActionListener/*, Runnable*/{
 	private List<PeriodicEffect> periodicEffects;
 	private List<FFTBox> boxes;
 	private FourierAnalysis fourier;
+	private Thread outThread;
 	
     public static void main(String[] args) throws LineUnavailableException {
     	Runner runner = new Runner();
     	//instantiate runner;
         //instantiate all classes
-    	runner.showMainMenu(true);  
+    	runner.showMainMenu(true);
     }
     
     public Runner(){
@@ -75,8 +76,6 @@ public class Runner implements ActionListener/*, Runnable*/{
     	menuFrame.pack();
     	menuFrame.setVisible(true);
     	
-    	//update = new Thread(this, "update");
-    	//update.start();
     }
     
     public void addPeriodicEffect(PeriodicEffect e){
@@ -88,7 +87,17 @@ public class Runner implements ActionListener/*, Runnable*/{
     }
     
     public void setOutput(Output o){
+    	out.stop();
+    	try {
+			if(outThread != null) outThread.join();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	o.copy(out);
     	out=o;
+    	outThread = new Thread(o, "output");
+    	outThread.start();
     }
     
     public void showOutputSettings(boolean state){

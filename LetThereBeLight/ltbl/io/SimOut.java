@@ -14,6 +14,7 @@ public class SimOut implements Output, Runnable {
 	private SimPanel panel;
 	private JFrame frame;
 	ArrayList<OutputSource> sources;
+	private volatile boolean running;
 
     public SimOut() {
     	sources= new ArrayList<OutputSource>();
@@ -45,7 +46,8 @@ public class SimOut implements Output, Runnable {
 
 	@Override
 	public void run() {
-		while(true){
+		running=true;
+		while(running){
 			update();
 			try {
 				Thread.sleep(50);
@@ -55,5 +57,24 @@ public class SimOut implements Output, Runnable {
 			}
 		}
 		
+	}
+
+	@Override
+	public void copy(Output other) {
+		this.sources = new ArrayList<OutputSource>(other.getSources());
+	}
+
+	@Override
+	public ArrayList<OutputSource> getSources() {
+		return new ArrayList<OutputSource>(sources);
+	}
+
+	@Override
+	public void stop() {
+		running=false;		
+	}
+	
+	public void show(){
+		frame.setVisible(true);
 	}
 }

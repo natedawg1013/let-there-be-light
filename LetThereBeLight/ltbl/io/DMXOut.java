@@ -1,11 +1,14 @@
 package ltbl.io;
 
+import java.util.ArrayList;
+
 import ltbl.iface.Output;
 import ltbl.iface.OutputSource;
 import gnu.io.*;
 
 public class DMXOut implements Output{
 	SerialComm comm;
+	ArrayList<OutputSource> sources;
     
 	public DMXOut(CommPortIdentifier port, int baud) {
 		try {
@@ -14,6 +17,7 @@ public class DMXOut implements Output{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		sources=new ArrayList<OutputSource>();
     }
 	@Override
 	public void setChannel(int channel, float value) {
@@ -28,6 +32,26 @@ public class DMXOut implements Output{
 	}
 	@Override
 	public void addSource(OutputSource o) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void copy(Output other) {
+		this.sources = new ArrayList<OutputSource>(other.getSources());
+	}
+
+	@Override
+	public ArrayList<OutputSource> getSources() {
+		return new ArrayList<OutputSource>(sources);
+	}
+	@Override
+	public void stop() {
 		// TODO Auto-generated method stub
 		
 	}

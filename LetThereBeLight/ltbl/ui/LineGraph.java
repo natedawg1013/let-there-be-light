@@ -47,12 +47,6 @@ public class LineGraph extends JPanel implements FourierUpdateListener{
     	}
     }
     
-    //later will be replaced with method to get data from FourierAnalysis
-    public void update(){
-    	//points=getRandomPoints();
-    	this.repaint();
-    }
-    
     public void update(float[] points){
     	this.points=points;
     	//this.repaint();

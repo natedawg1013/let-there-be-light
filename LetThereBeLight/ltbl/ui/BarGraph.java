@@ -48,6 +48,7 @@ public class BarGraph extends JPanel implements FourierUpdateListener{
 	@Override
 	public void update(FourierAnalysis a) {
 		float[] in = a.getData();
+		if(in==null) return;
 		for(int i=0;i<BARS;i++){
     		buckets[i]=0.0f;
     	}

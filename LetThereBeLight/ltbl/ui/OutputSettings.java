@@ -31,6 +31,7 @@ public class OutputSettings extends JPanel implements ActionListener {
 	JLabel output_label;
 	JLabel port;
 	JLabel baudRate;
+	SimOut sim;
 	
 	
 	public OutputSettings(Runner r) {
@@ -43,6 +44,7 @@ public class OutputSettings extends JPanel implements ActionListener {
 		baudRate = new JLabel("Baud");
 		baudBox = new JComboBox<Integer>();
 		set = new JButton("Set");
+		sim=null;
 
 		output_box.addItem("Serial");
 		output_box.addItem("Simulator");
@@ -83,7 +85,9 @@ public class OutputSettings extends JPanel implements ActionListener {
 								  (Integer) baudBox.getSelectedItem() );
 			}
 			else {
-				out = new SimOut();
+				if(sim==null) sim = new SimOut();
+				out = sim;
+				sim.show();
 			}
 			runner.setOutput(out);
 		}

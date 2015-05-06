@@ -3,23 +3,23 @@ package ltbl.algo;
 import java.util.ArrayList;
 
 import ltbl.control.Runner;
+import ltbl.iface.Output;
+import ltbl.iface.OutputSource;
 /**
  * Settings for a periodic effect,
  * manages LFO
  * @author Nathan Brnard
  *
  */
-public class PeriodicEffect{
+public class PeriodicEffect implements OutputSource{
 	private LFO oscillator;
 	private ArrayList<Integer> channels;
 	private boolean running;
-	private Runner runner;
 	
 	public PeriodicEffect(Runner r){
 		oscillator=null;
 		channels = new ArrayList<Integer>();
 		running=false;
-		runner=r;
 	}
 	/**
 	 * Sets whether or not effect is enabled
@@ -66,12 +66,13 @@ public class PeriodicEffect{
 		channels.add(ch);
 	}
 	/**
-	 * Updates DMC channels under this effect's control
+	 * Updates DMX channels under this effect's control
 	 */
-	public void update(){
-		if(running && oscillator != null && runner.getOutput() != null){
+	@Override
+	public void getOutputs(Output o) {
+		if(running && oscillator != null){
 			for(int i : channels){
-				runner.getOutput().setChannel(i, oscillator.getValue());
+				o.setChannel(i, oscillator.getValue());
 			}
 		}
 	}

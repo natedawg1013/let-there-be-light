@@ -59,6 +59,7 @@ public class PeriodicEffectPanel extends JPanel implements ActionListener{
 		r.addPeriodicEffect(pe);
 		pe.setEnabled(true);
 		pulsewidth.setEnabled(false);
+		r.getOutput().addSource(pe);
 		
 	}
 	

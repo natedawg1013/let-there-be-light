@@ -33,7 +33,6 @@ public class FFTBox implements FourierUpdateListener, OutputSource{
 		relativeDimensions[2] = ( (double) dim[2] ) / xOut;
 		relativeDimensions[3] = ( (double) dim[3] ) / yOut;
 		ready = true;
-		System.out.println("Dimensions set");
 	}
 
 	public int[] getDimensions ( int xDim, int yDim ) {
@@ -147,7 +146,6 @@ public class FFTBox implements FourierUpdateListener, OutputSource{
 		if(points==null) return false;
 		int frqMin = (int) (points.length * relativeDimensions[0]);
 		int frqMax = (int) (points.length * relativeDimensions[2]);
-		System.out.println(relativeDimensions[0]);
 		for ( int i=frqMin; i<=frqMax; ++i ) {
 			float relAmp = (points[i]);
 			if ( relativeDimensions[1] < relAmp && relativeDimensions[3] > relAmp ) {

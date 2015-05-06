@@ -95,25 +95,5 @@ public class TrueAudioInput extends Thread implements AudioInput{
 		}
 		return mixers;
 	}
-	
-	/*public static List<TargetDataLine.Info> getSupportedTargets(Mixer.Info mixerInfo){
-		ArrayList<TargetDataLine.Info> lines = new ArrayList<TargetDataLine.Info>();
-		Mixer mixer = AudioSystem.getMixer(mixerInfo);
-		Line.Info info = mixer.getTargetLineInfo()
-		for(Line.Info info : mixer.getTargetLineInfo()) {
-			if(TargetDataLine.class.isAssignableFrom(info.getLineClass())) {
-				TargetDataLine.Info info2 = (TargetDataLine.Info) info;
-				AudioFormat[] formats = info2.getFormats();
-				for(AudioFormat format : formats) {
-					if(format.getEncoding().equals(AudioFormat.Encoding.PCM_UNSIGNED) &&
-						format.getFrameSize()==1 && format.getSampleSizeInBits()==8 &&
-						format.getChannels()==1){
-						mixers.add(mixerInfo);
-						break;
-					}
-				}
-			}
-		}
-	}*/
 }
 
