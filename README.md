@@ -1,4 +1,4 @@
-let-there-be-light
+Let There Be Light
 =========
 
 ![Screenshot](https://github.com/natedawg1013/let-there-be-light/raw/dev/img/screenshot1.png)

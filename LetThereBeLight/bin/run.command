@@ -12,7 +12,16 @@ DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 cd "$DIR"
 
-OSTYPE=$(uname -m)
+#check java version
+java -d64 -version
+if [ $? == 0 ]
+	then
+	OSTYPE=x86_64
+else
+	OSTYPE=i386
+fi
+
+#check for permissions
 OWNS=$(stat -f "%OLp" ./lib/Mac_OS_X/$OSTYPE/librxtxSerial.jnilib)
 
 if test "$OWNS" -ne '755'
@@ -22,4 +31,5 @@ if test "$OWNS" -ne '755'
 	sudo chmod 755 ./lib/Mac_OS_X/$OSTYPE/librxtxSerial.jnilib
 fi
 
-java -Djava.library.path=./lib/Mac_OS_X/$OSTYPE -jar 'Let There Be Light.jar'
+java -Djava.library.path=./lib/Mac_OS_X/x86_64 -jar 'Let There Be Light.jar'
+
