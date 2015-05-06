@@ -32,4 +32,3 @@ if test "$OWNS" -ne '755'
 fi
 
 java -Djava.library.path=./lib/Mac_OS_X/x86_64 -jar 'Let There Be Light.jar'
-
