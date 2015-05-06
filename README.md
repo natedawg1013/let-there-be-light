@@ -31,7 +31,7 @@ Usage Notes
 
 First run SetPermissionsMac.sh in terminal as an administrator
 
-Once the permissions have been set, you can run runMAC.sh in terminal
+Once the permissions have been set, you can run ltbl by double clicking run.command
 
 if you get an
 "open() failed with errno=13
