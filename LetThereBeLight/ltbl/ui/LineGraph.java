@@ -41,7 +41,7 @@ public class LineGraph extends JPanel{
     		//int h1 = (int) ((1-points[i])*y);
     		//int h2 =  (int) ((1-points[i+1])*y);
     		int h1 = (int) ((3/4-points[i]/40)*y)*5;
-    		int h2 =  (int) ((3/4-points[i+1]/40)*y)*5;
+    		int h2 = (int) ((3/4-points[i+1]/40)*y)*5;
     		graphics.drawLine((int)(i*width), h1, (int)((i+1)*width), h2);
     	}
     	

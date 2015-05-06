@@ -168,6 +168,9 @@ public class Runner implements ActionListener, Runnable{
 				for(PeriodicEffect e : periodicEffects){
 					e.update();
 				}
+				for(FFTBox b : boxes){
+					b.update();
+				}
 				if(out!=null){
 					out.update();
 				}

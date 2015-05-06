@@ -3,12 +3,16 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
+
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.TreeMap;
 
 import javax.swing.JButton;
 
@@ -20,86 +24,118 @@ public class FFTBoxSettings extends JPanel implements ActionListener {
     private Runner runner;
     
     private FFTBox box;
-    JButton add;
+    JButton set;
     JComboBox<String> outputs;
-    JComboBox<Integer> start_amplitude;
-    JComboBox<Integer> end_amplitude;
-    JComboBox<Integer> start_frequency;
-    JComboBox<Integer> end_frequency;
+    JSpinner channel1, channel2, channel3;
+    JSpinner level1, level2, level3;
     
     public FFTBoxSettings(Runner r, FFTBox b) {
         super( new GridBagLayout() );
         runner = r;
         box = b;
-        add = new JButton("Add");
+        
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
+        
         c.gridx = 4;
         c.gridy = 1;
-        this.add(add, c);
+        set = new JButton("Set");
+        this.add(set, c);
+        set.addActionListener(this);
         
-        JLabel output_label = new JLabel("Outputs");
-        this.add(output_label);
-        start_amplitude = new JComboBox<Integer>();
-        end_amplitude = new JComboBox<Integer>();
-        start_frequency = new JComboBox<Integer>();
-        end_frequency = new JComboBox<Integer>();
         outputs = new JComboBox<String>();
-        
         outputs.setEditable(true);
-        start_amplitude.setEditable(true);
-        end_amplitude.setEditable(true);
-        start_frequency.setEditable(true);
-        end_frequency.setEditable(true);
-        
-        
-        // adding channels 1 & 2 for now 
-        // adding temporary amplitude and freq. ranges as well
-        // this will have to be fixed later today
-        outputs.addItem("Channel 1");
-        outputs.addItem("Channel 2");
+        outputs.addItem("One Channel (Mono)");
+        outputs.addItem("Three Channels (RGB)");
         outputs.addActionListener(this);
-        this.add(outputs);
+        this.add(outputs, c);
         
-        int amps[] = {0, 100, 200};
-        int freqs[] = {22050, 44100, 48000};
+        c.gridx = 0;
+        c.gridy = 0;
+        this.add( new JLabel("Channel Options"), c );
+        c.gridx = 1;
+        this.add( new JLabel("Channel 1"), c );
+        c.gridx = 2;
+        this.add( new JLabel("Channel 2"), c );
+        c.gridx = 3;
+        this.add( new JLabel("Channel 3"), c );
         
-        for(int i : freqs) {
-         start_frequency.addItem(i);
-         end_frequency.addItem(i);
-        }
+        c.gridx = 1;
+        c.gridy = 1;
+        channel1 = new JSpinner();
+        channel1.setEnabled(false);
+        this.add( channel1, c );
+        c.gridx = 2;
+        channel2 = new JSpinner();
+        channel2.setEnabled(false);
+        this.add( channel2, c );
+        c.gridx = 3;
+        channel3 = new JSpinner();
+        channel2.setEnabled(false);
+        this.add( channel3, c );
         
-        for(int j : amps) {
-            start_amplitude.addItem(j);
-            end_amplitude.addItem(j);
-        }
-        
-        start_amplitude.addActionListener(this);
-        end_amplitude.addActionListener(this);
-        start_frequency.addActionListener(this);
-        end_amplitude.addActionListener(this);
-        
-        this.add(start_amplitude);
-        this.add(end_amplitude);
-        this.add(start_frequency);
-        this.add(end_frequency);
-        
-        
-        
+        SpinnerNumberModel levelModel = new SpinnerNumberModel(1.0, 0.0, 1.0, 0.1);
+        c.gridx = 1;
+        c.gridy = 2;
+        level1 = new JSpinner(levelModel);
+        level1.setEnabled(false);
+        this.add( level1, c );
+        c.gridx = 2;
+        level2 = new JSpinner(levelModel);
+        level2.setEnabled(false);
+        this.add( level2, c );
+        c.gridx = 3;
+        level3 = new JSpinner(levelModel);
+        level3.setEnabled(false);
+        this.add( level3, c );
     }
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-        /*
-        if(ae.getSource()==add) {
-            
-           box.setDimensions((Integer)start_frequency.getSelectedItem(),
-             (Integer)start_amplitude.getSelectedItem(), (Integer)end_frequency.getSelectedItem(),
-             (Integer)end_amplitude.getSelectedItem());
-            
+        if ( ae.getSource() == outputs ) {
+        	if ( outputs.getSelectedIndex() == 0 ) {
+        		// One channel
+        		channel1.setEnabled(true);
+        		channel2.setEnabled(false);
+        		channel3.setEnabled(false);
+        		level1.setEnabled(true);
+        		level2.setEnabled(false);
+        		level3.setEnabled(false);
+        	}
+        	else if ( outputs.getSelectedIndex() == 1 ) {
+        		// Three channels
+        		channel1.setEnabled(true);
+        		channel2.setEnabled(true);
+        		channel3.setEnabled(true);
+        		level1.setEnabled(true);
+        		level2.setEnabled(true);
+        		level3.setEnabled(true);
+        	}
         }
-        */
-        
+        else if ( ae.getSource() == set ) {
+        	TreeMap<Integer, Float> channels = new TreeMap<Integer, Float>();
+        	Integer ch;
+        	Float lv;
+        	if ( outputs.getSelectedIndex() == 0 ) {
+        		// One channel
+        		ch = (Integer) channel1.getValue();
+        		lv = ((SpinnerNumberModel) level1.getModel()).getNumber().floatValue();
+        		channels.put(ch, lv);
+        	}
+        	else if ( outputs.getSelectedIndex() == 1 ) {
+        		// Three channels
+        		ch = (Integer) channel1.getValue();
+        		lv = ((SpinnerNumberModel) level1.getModel()).getNumber().floatValue();
+        		channels.put(ch, lv);
+        		ch = (Integer) channel2.getValue();
+        		lv = ((SpinnerNumberModel) level2.getModel()).getNumber().floatValue();
+        		channels.put(ch, lv);
+        		ch = (Integer) channel3.getValue();
+        		lv = ((SpinnerNumberModel) level2.getModel()).getNumber().floatValue();
+        		channels.put(ch, lv);
+        	}
+        	box.setOutputs(channels);
+        }
     }
     
     
