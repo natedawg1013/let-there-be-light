@@ -14,10 +14,13 @@ import javax.swing.JButton;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import ltbl.algo.FourierAnalysis;
 import ltbl.control.Runner;
+import ltbl.iface.FourierUpdateListener;
 
-public class FFTWindow extends JPanel implements ActionListener{
-    private Runner runner;
+public class FFTWindow extends JPanel implements ActionListener, FourierUpdateListener{
+	private static final long serialVersionUID = 6071964663827731183L;
+	private Runner runner;
     private JLayeredPane graphPane;
     private FFTGraph graph;
     private FFTMousePanel mousePanel;
@@ -80,6 +83,12 @@ public class FFTWindow extends JPanel implements ActionListener{
 
 	public void updateGraph(float[] points) {
 		graph.update(points);
+		graphPane.repaint();
+	}
+
+	@Override
+	public void update(FourierAnalysis a) {
+		graph.update(a);
 		graphPane.repaint();
 	}
 

@@ -7,8 +7,9 @@ import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
 import ltbl.algo.FourierAnalysis;
+import ltbl.iface.FourierUpdateListener;
 
-public class BarGraph extends JPanel{
+public class BarGraph extends JPanel implements FourierUpdateListener{
 	private static final long serialVersionUID = 4570416097915326118L;
     private float[] buckets;
     
@@ -43,15 +44,11 @@ public class BarGraph extends JPanel{
     	}
     	
     }
-    
-    //later will be replaced with method to get data from FourierAnalysis
-    /*public void update(){
-    	buckets=getRandomBuckets();
-    	this.repaint();
-    }*/
-    
-    public void update(float[] in){
-    	for(int i=0;i<BARS;i++){
+
+	@Override
+	public void update(FourierAnalysis a) {
+		float[] in = a.getData();
+		for(int i=0;i<BARS;i++){
     		buckets[i]=0.0f;
     	}
     	for(int i=0;i<in.length;i++){
@@ -61,5 +58,5 @@ public class BarGraph extends JPanel{
     		buckets[i]/=(in.length/BARS);
     	}
     	this.repaint();
-    }    
+	}    
 }

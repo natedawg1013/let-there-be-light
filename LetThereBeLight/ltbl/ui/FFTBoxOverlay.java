@@ -2,7 +2,6 @@ package ltbl.ui;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 
 import java.awt.Color;
@@ -16,7 +15,8 @@ import ltbl.control.Runner;
 
 
 public class FFTBoxOverlay extends JPanel {
-    // store location/dimensions of box as fractions of the graph's dimensions
+	private static final long serialVersionUID = -2758325029512626906L;
+	// store location/dimensions of box as fractions of the graph's dimensions
     private int [] dimensions; // x0, y0, x1, y1
     private int xOuter, yOuter;
     private FFTBox box;

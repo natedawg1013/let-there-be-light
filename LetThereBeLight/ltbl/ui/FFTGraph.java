@@ -4,21 +4,19 @@ import java.awt.Color;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
+import ltbl.algo.FourierAnalysis;
 import ltbl.control.Runner;
+import ltbl.iface.FourierUpdateListener;
 
 
-public class FFTGraph extends JPanel {
-    
-    /**
-	 * 
-	 */
-	private Runner r;
+public class FFTGraph extends JPanel implements FourierUpdateListener{
+	private static final long serialVersionUID = 8617015277422852517L;
+
     private LineGraph lg;
 
     public FFTGraph ( Runner run ) {
     	super();
     	this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        r = run;
         lg = new LineGraph( Color.WHITE );
         this.add(lg);
         this.setOpaque(true);
@@ -34,5 +32,10 @@ public class FFTGraph extends JPanel {
     public void update(float[] points){
     	lg.update(points);
     }
+
+	@Override
+	public void update(FourierAnalysis a) {
+		lg.update(a);
+	}
     
 }

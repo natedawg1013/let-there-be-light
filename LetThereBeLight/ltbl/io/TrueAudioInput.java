@@ -1,19 +1,19 @@
 package ltbl.io;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.sound.sampled.*;
 
+import ltbl.iface.AudioInput;
 import ltbl.util.RingBuffer;
 
 public class TrueAudioInput extends Thread implements AudioInput{
 	volatile public RingBuffer rb;
 	volatile TargetDataLine line = null;
-	
 	Boolean running;
 	Thread input = null;
 	volatile AudioFormat af;
+	Mixer mixer;
 	
 	public RingBuffer getBuffer(){
 		return rb;
@@ -22,7 +22,7 @@ public class TrueAudioInput extends Thread implements AudioInput{
 	public TrueAudioInput(Mixer.Info mi, int sampleRate, int bufLen) throws LineUnavailableException{
 		af = new AudioFormat(sampleRate, 8, 1, true, false);
 		rb = new RingBuffer(bufLen);
-		Mixer mixer = AudioSystem.getMixer(mi);
+		mixer = AudioSystem.getMixer(mi);
 		mixer.open();
 		line = (TargetDataLine) AudioSystem.getLine(mixer.getTargetLineInfo()[0]);
 		line = AudioSystem.getTargetDataLine(af, mi);
@@ -60,6 +60,7 @@ public class TrueAudioInput extends Thread implements AudioInput{
 		}
 		line.stop();
 		line.close();
+		mixer.close();
 	}
 
 	public int bufLen(){

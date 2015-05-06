@@ -28,7 +28,7 @@ public class LinearLog{
 	public static float[] loglog(float[] samples){
 		float[] result = new float[samples.length];
 		for(int i=0;i<samples.length;i++){
-			result[i]=(float) (Math.log(samples[i]));
+			result[i]=(float) (Math.log(samples[i]))*10;
 		}
 		return result;
 	}

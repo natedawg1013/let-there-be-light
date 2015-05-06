@@ -1,4 +1,4 @@
-package ltbl.io;
+package ltbl.iface;
 import javax.sound.sampled.*;
 
 import ltbl.util.RingBuffer;

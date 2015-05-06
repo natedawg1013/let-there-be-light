@@ -4,7 +4,6 @@ import javax.swing.JPanel;
 import javax.swing.JLayeredPane;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.event.*;
 
 import javax.swing.SwingUtilities;
@@ -23,7 +22,9 @@ import ltbl.control.Runner;
  */
 
 
-public class FFTMousePanel extends JPanel implements MouseListener, MouseMotionListener, MouseWheelListener, ComponentListener {
+public class FFTMousePanel extends JPanel implements MouseListener,MouseMotionListener,
+													 MouseWheelListener, ComponentListener {
+	private static final long serialVersionUID = 3698473995741472990L;
 
 	public enum EState {
 		ADD, ADD_DRAW_BOX,

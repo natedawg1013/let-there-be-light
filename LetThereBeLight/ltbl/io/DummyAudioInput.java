@@ -1,5 +1,6 @@
 package ltbl.io;
 
+import ltbl.iface.AudioInput;
 import ltbl.util.RingBuffer;
 
 public class DummyAudioInput implements AudioInput{

@@ -53,7 +53,6 @@ public class InputSettings extends JPanel implements ActionListener {
 		if(ae.getSource()==set){
 			Mixer.Info mixer = TrueAudioInput.getAvailableMixers().get(mixers.getSelectedIndex());
 			try {
-				runner.getFourier().getInput().end();
 				runner.updateFourier(new TrueAudioInput(mixer,  (Integer) sampleRate.getSelectedItem(), 8192));
 			} catch (LineUnavailableException e) {
 				// TODO Auto-generated catch block

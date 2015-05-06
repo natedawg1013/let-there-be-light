@@ -13,13 +13,9 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 
-import java.util.Enumeration;
-//import javax.comm.CommPortIdentifier;
-import java.util.ArrayList;
-
 import ltbl.control.Runner;
+import ltbl.iface.Output;
 import ltbl.io.DMXOut;
-import ltbl.io.Output;
 import ltbl.io.SerialComm;
 import ltbl.io.SimOut;
 

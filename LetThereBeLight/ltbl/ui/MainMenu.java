@@ -1,5 +1,4 @@
 package ltbl.ui;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -54,8 +53,7 @@ public class MainMenu extends JPanel implements ActionListener{
 		start = new JButton("Start");
 		stop = new JButton("Stop");
 		graph = new BarGraph();
-		//graph = new LineGraph(Color.BLACK);
-		actionListeners = new ArrayList<ActionListener>();
+		runner.getFourier().addUpdateListener(graph);
 		
 		setPositions();
 		
@@ -96,11 +94,6 @@ public class MainMenu extends JPanel implements ActionListener{
 		output_options.addActionListener(this);
 	}
 
-	public void addActionListener(ActionListener al){
-		actionListeners.add(al);
-		
-	}
-
 	//BUTTON ACTIONS AND EVENTS
 	@Override
 	public void actionPerformed(ActionEvent ae){
@@ -121,25 +114,11 @@ public class MainMenu extends JPanel implements ActionListener{
 		}
 
 		else if(ae.getSource()==start) {
-			ActionEvent event = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "start");
-			for(ActionListener al : actionListeners){
-				al.actionPerformed(event);
-			}
+			runner.getFourier().pause(false);
 		}
 
 		else if(ae.getSource()==stop) {
-			ActionEvent event = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "stop");
-			for(ActionListener al : actionListeners){
-				al.actionPerformed(event);
-			}
+			runner.getFourier().pause(true);
 		}
-	}
-	
-	/*public LineGraph getLineGraph(){
-		return graph;
-	}*/
-	
-	public BarGraph getBarGraph(){
-		return graph;
 	}
 }

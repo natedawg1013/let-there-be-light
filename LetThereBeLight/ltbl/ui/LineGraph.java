@@ -7,8 +7,9 @@ import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
 import ltbl.algo.FourierAnalysis;
+import ltbl.iface.FourierUpdateListener;
 
-public class LineGraph extends JPanel{
+public class LineGraph extends JPanel implements FourierUpdateListener{
 	private static final long serialVersionUID = 4570416097915326118L;
     private float[] points;
     private Color color;
@@ -37,14 +38,13 @@ public class LineGraph extends JPanel{
     	int y = this.getHeight();
     	double width = ((double)(x)/points.length);	//horizontal scaling
     	graphics.setColor(color);
-    	for(int i=0;i<points.length-1;i++){
-    		//int h1 = (int) ((1-points[i])*y);
-    		//int h2 =  (int) ((1-points[i+1])*y);
-    		int h1 = (int) ((3/4-points[i]/40)*y)*5;
-    		int h2 = (int) ((3/4-points[i+1]/40)*y)*5;
+    	for(int i=1;i<points.length-1;i++){
+    		//int h1 = (int) (-points[i]*y/150);
+    		//int h2 = (int) (-points[i+1]*y/150);
+    		int h1 = (int) ((1-points[i])*y);
+    		int h2 = (int) ((1-points[i+1])*y);
     		graphics.drawLine((int)(i*width), h1, (int)((i+1)*width), h2);
     	}
-    	
     }
     
     //later will be replaced with method to get data from FourierAnalysis
@@ -57,4 +57,10 @@ public class LineGraph extends JPanel{
     	this.points=points;
     	//this.repaint();
     }
+
+	@Override
+	public void update(FourierAnalysis a) {
+		this.points=a.getData();
+		
+	}
 }

@@ -6,19 +6,16 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.DataLine;
-import javax.sound.sampled.Line.Info;
 import javax.sound.sampled.LineUnavailableException;
 import javax.swing.JFrame;
 
 import ltbl.algo.*;
+import ltbl.iface.Output;
 import ltbl.io.*;
 import ltbl.ui.*;
 
 
-public class Runner implements ActionListener, Runnable{
+public class Runner implements ActionListener/*, Runnable*/{
 	private JFrame menuFrame;
 	private JFrame osFrame;
 	private JFrame isFrame;
@@ -33,8 +30,6 @@ public class Runner implements ActionListener, Runnable{
 	private List<PeriodicEffect> periodicEffects;
 	private List<FFTBox> boxes;
 	private FourierAnalysis fourier;
-	private Thread update;
-	private volatile boolean running;
 	
     public static void main(String[] args) throws LineUnavailableException {
     	Runner runner = new Runner();
@@ -44,14 +39,16 @@ public class Runner implements ActionListener, Runnable{
     }
     
     public Runner(){
+    	fourier = new FourierAnalysis(new DummyAudioInput(), 8192);
+    	fourier.start();
     	menu = new MainMenu(this);
     	os=new OutputSettings(this);
     	is=new InputSettings(this);
     	pe=new PeriodicEffectWindow(this);
     	fw=new FFTWindow(this);
+    	fourier.addUpdateListener(fw);
     	out = new DummyOut();
     	boxes = new ArrayList<FFTBox>();
-    	fourier = new FourierAnalysis(new DummyAudioInput(), 8192);
     	periodicEffects = new ArrayList<PeriodicEffect>();
     	
     	menuFrame = new JFrame("Let There Be Light");
@@ -59,7 +56,6 @@ public class Runner implements ActionListener, Runnable{
     	isFrame = new JFrame("Input Settings");
     	peFrame = new JFrame("Time-Based Effects");
     	fwFrame = new JFrame("Sound-Based Effects");
-    	running = false;
     	
     	menuFrame.add(menu);
     	osFrame.add(os);
@@ -79,10 +75,8 @@ public class Runner implements ActionListener, Runnable{
     	menuFrame.pack();
     	menuFrame.setVisible(true);
     	
-    	menu.addActionListener(this);
-    	
-    	update = new Thread(this, "update");
-    	update.start();
+    	//update = new Thread(this, "update");
+    	//update.start();
     }
     
     public void addPeriodicEffect(PeriodicEffect e){
@@ -130,24 +124,20 @@ public class Runner implements ActionListener, Runnable{
     }
     
     public void actionPerformed(ActionEvent e){
-    	if(e.getSource()==menu){
-    		String cmd = e.paramString();
-    		cmd = cmd.substring(cmd.indexOf("cmd"));
-    		cmd = cmd.substring(cmd.indexOf('=')+1);
-    		cmd = cmd.substring(0, cmd.indexOf(','));
-    		if(cmd.equals("start")){
-    			running=true;
-    			try {
-					fourier.getInput().begin();
-				} catch (LineUnavailableException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-    			
-    		}
-    		else
-    			running=false;
-    	}
+//    	if(e.getSource()==menu){
+//    		String cmd = e.paramString();
+//    		cmd = cmd.substring(cmd.indexOf("cmd"));
+//    		cmd = cmd.substring(cmd.indexOf('=')+1);
+//    		cmd = cmd.substring(0, cmd.indexOf(','));
+//    		if(cmd.equals("start")){
+//    			running=true;
+//				fourier.pause(true);
+//    		}
+//    		else{
+//    			running=false;
+//    			fourier.pause(true);
+//    		}
+//    	}
     	//for FFTBox in list
     		//give box fourier analysis
     		//have box update lights
@@ -157,32 +147,29 @@ public class Runner implements ActionListener, Runnable{
     	
     }
     
-    public void run(){
+    /*public void run(){
 		while(true){
 			if(running){
 				float[] points=LinearLog.logFromLinear(fourier.process(), 100);
 				//menu.getBarGraph().update(LinearLog.loglog(points));
 				menu.getBarGraph().update(points);
-				//fw.updateGraph(points);
-				fw.updateGraph(LinearLog.loglog(points));
+				fw.updateGraph(points);
+				//fw.updateGraph(LinearLog.loglog(points));
 				for(PeriodicEffect e : periodicEffects){
 					e.update();
-				}
-				for(FFTBox b : boxes){
-					b.update();
 				}
 				if(out!=null){
 					out.update();
 				}
 				try {
-					Thread.sleep(100);
+					Thread.sleep(25);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
 		}
-	}
+	}*/
 
 	public Output getOutput() {
 		return out;

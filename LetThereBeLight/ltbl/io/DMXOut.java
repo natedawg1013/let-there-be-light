@@ -1,5 +1,6 @@
 package ltbl.io;
 
+import ltbl.iface.Output;
 import gnu.io.*;
 
 public class DMXOut implements Output{
