@@ -53,6 +53,8 @@ public class FFTMousePanel extends JPanel implements MouseListener,MouseMotionLi
 					SwingUtilities.isLeftMouseButton(me) ) {
 				// synchronize?
 				FFTBoxOverlay newBox = new FFTBoxOverlay(runner);
+				setSize();
+				newBox.setOuter( sizeX, sizeY );
 				this.statePanel.setState(EState.ADD_DRAW_BOX);
 				AddDrawBoxState nextState = (AddDrawBoxState) this.statePanel.inputState;
 				nextState.setInitialCoords( me.getX(), me.getY() );

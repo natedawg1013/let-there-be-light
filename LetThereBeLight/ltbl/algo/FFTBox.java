@@ -12,7 +12,7 @@ import ltbl.util.Pair;
 public class FFTBox implements FourierUpdateListener, OutputSource{
 
 	// relative to the outer boundaries of the space
-	private double[] relativeDimensions;
+	private double left, bottom, right, top;
 	private ArrayList<Pair<Integer, Integer>> settings;
 	private ArrayList<Pair<Integer, Float>> outs;
 	private boolean ready;
@@ -20,7 +20,6 @@ public class FFTBox implements FourierUpdateListener, OutputSource{
 	private boolean rgb;
 
 	public FFTBox ( Runner r ) {
-		relativeDimensions = new double[4];
 		settings = new ArrayList<Pair<Integer, Integer>>();
 		outs = new ArrayList<Pair<Integer, Float>>();
 		ready = false;
@@ -28,20 +27,21 @@ public class FFTBox implements FourierUpdateListener, OutputSource{
 	}
 
 	public void setDimensions ( int[] dim, int xOut, int yOut ) {
-		relativeDimensions[0] = ( (double) dim[0] ) / xOut;
-		relativeDimensions[1] = ( (double) dim[1] ) / yOut;
-		relativeDimensions[2] = ( (double) dim[2] ) / xOut;
-		relativeDimensions[3] = ( (double) dim[3] ) / yOut;
-		ready = true;
+		//System.out.println(xOut + " " + yOut);
+		// invert dimensions vertically because 0 is the top of the screen
+		left = ( (double) dim[0] ) / xOut;
+		bottom = 1.0 - ( (double) dim[3] ) / yOut;
+		right = ( (double) dim[2] ) / xOut;
+		top = 1.0 -( (double) dim[1] ) / yOut;
 	}
 
 	public int[] getDimensions ( int xDim, int yDim ) {
 		int[] newDim = new int[4];
 		if (ready) {
-			newDim[0] = (int) (xDim*relativeDimensions[0]);
-			newDim[1] = (int) (yDim*relativeDimensions[1]);
-			newDim[2] = (int) (xDim*relativeDimensions[2]);
-			newDim[3] = (int) (yDim*relativeDimensions[3]);
+			newDim[0] = (int) (xDim*left);
+			newDim[1] = (int) (yDim*(1.0-top));
+			newDim[2] = (int) (xDim*right);
+			newDim[3] = (int) (yDim*(1.0-bottom));
 		}
 		else {
 			for ( int i = 0; i < newDim.length; ++i ) {
@@ -59,6 +59,7 @@ public class FFTBox implements FourierUpdateListener, OutputSource{
 		autoValX = avx;
 		autoValY = avy;
 		this.rgb = rgb;
+		ready = true;
 	}
 
 	@Override
@@ -132,7 +133,7 @@ public class FFTBox implements FourierUpdateListener, OutputSource{
 			int ch=1;
 			if(rgb) ch=3;
 			outs = new ArrayList<Pair<Integer, Float>>();
-			for(int i=0;i<ch;i++){
+			for( int i = 0; i < ch; ++i ){
 				Pair<Integer, Float> temp = new Pair<Integer, Float>();
 				temp.first=settings.get(i).first;
 				temp.second=0.0f;
@@ -144,11 +145,11 @@ public class FFTBox implements FourierUpdateListener, OutputSource{
 	private boolean isInBox(FourierAnalysis a){
 		float [] points = a.getData();
 		if(points==null) return false;
-		int frqMin = (int) (points.length * relativeDimensions[0]);
-		int frqMax = (int) (points.length * relativeDimensions[2]);
+		int frqMin = (int) (points.length * left);
+		int frqMax = (int) (points.length * right);
 		for ( int i=frqMin; i<=frqMax; ++i ) {
 			float relAmp = (points[i]);
-			if ( relativeDimensions[1] < relAmp && relativeDimensions[3] > relAmp ) {
+			if ( bottom < relAmp && top > relAmp ) {
 				return true;
 			}
 		}
@@ -159,18 +160,18 @@ public class FFTBox implements FourierUpdateListener, OutputSource{
 		boolean flag=false;
 		float hueVal=-1.0f;
 		float [] points = a.getData();
-		int frqMin = (int) (points.length * relativeDimensions[0]);
-		int frqMax = (int) (points.length * relativeDimensions[2]);
+		int frqMin = (int) (points.length * left);
+		int frqMax = (int) (points.length * right);
 		for ( int i=frqMin; i<=frqMax && !flag; ++i ) {
 			float relAmp = (points[i]);
-			if ( relativeDimensions[1] < relAmp && relativeDimensions[3] > relAmp ) {
+			if ( bottom < relAmp && top > relAmp ) {
 				flag = true;
 				if(val){
 					if(autoValX){
 						hueVal=((float)i)/(frqMax-frqMin);
 					}
 					if(autoValY){
-						hueVal=(float) (relAmp/(relativeDimensions[3]-relativeDimensions[1]));
+						hueVal=(float) (relAmp/(top-bottom));
 					}
 				}
 				else{
@@ -178,7 +179,7 @@ public class FFTBox implements FourierUpdateListener, OutputSource{
 						hueVal=((float)i)/(frqMax-frqMin);
 					}
 					if(autoHueY){
-						hueVal=(float) (relAmp/(relativeDimensions[3]-relativeDimensions[1]));
+						hueVal=(float) (relAmp/(top-bottom));
 					}
 				}
 			}
