@@ -11,6 +11,12 @@ import javax.swing.JPanel;
 
 import ltbl.control.Runner;
 
+/** 
+ * @author Ashwin Menon
+ * @author Tom Hongsmatip 
+ * */
+
+
 //one bar graph window that shows real-time display of the audio db vs frequency
 //six buttons
 //-sound based effects
@@ -40,7 +46,7 @@ public class MainMenu extends JPanel implements ActionListener{
 	BarGraph graph;
 	ArrayList<ActionListener> actionListeners;
 
-	//BAR GRAPH BOX PENDING
+
 
 	public MainMenu(Runner r) {
 		super(new GridBagLayout());
@@ -59,7 +65,13 @@ public class MainMenu extends JPanel implements ActionListener{
 		
 		addActionListeners();
 	}
-	private void setPositions(){
+	
+	
+	/** Description of setPositions()
+	 * positions buttons on the menu window
+	 */
+	
+         private void setPositions(){
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.NONE;
 		c.anchor = GridBagConstraints.CENTER;
@@ -94,7 +106,9 @@ public class MainMenu extends JPanel implements ActionListener{
 		output_options.addActionListener(this);
 	}
 
-	//BUTTON ACTIONS AND EVENTS
+	/** Description of actionPerformed(ActionEvent ae) 
+	 * Button actions and events 
+	 * */
 	@Override
 	public void actionPerformed(ActionEvent ae){
 		if(ae.getSource()==sound_based_effects){

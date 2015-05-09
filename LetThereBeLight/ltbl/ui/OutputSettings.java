@@ -1,5 +1,15 @@
 package ltbl.ui;
 
+
+/** This class generates a menu which allows the user to
+ *  set his/her output options 
+ *  
+ *  @author Ashwin Menon
+ *  @author Nathan Bernard
+ *  
+ */
+
+
 import gnu.io.CommPortIdentifier;
 
 import java.awt.GridBagConstraints;
@@ -24,8 +34,8 @@ public class OutputSettings extends JPanel implements ActionListener {
 	
 	Runner runner;
 	JButton set;
-	JComboBox<String> output_box;
-	JComboBox<String> port_box;
+	JComboBox<String> output_box; 
+	JComboBox<String> port_box;   
 	JComboBox<Integer> baudBox;
 	List<CommPortIdentifier> portList;
 	JLabel output_label;
@@ -77,6 +87,11 @@ public class OutputSettings extends JPanel implements ActionListener {
 	}
 
 	@Override
+	
+	/** Description of actionPerformed(ActionEvent ae) 
+	 *  sets the output based on the users choice 
+	 * */
+	
 	public void actionPerformed(ActionEvent ae) {
 		if(ae.getSource()==set) {
 			Output out = null;
@@ -91,7 +106,7 @@ public class OutputSettings extends JPanel implements ActionListener {
 			}
 			runner.setOutput(out);
 		}
-		if(ae.getSource()==output_box){
+		if(ae.getSource()==output_box) {
 			if(output_box.getSelectedIndex()==0){
 				port_box.setEnabled(true);
 				baudBox.setEnabled(true);
@@ -109,8 +124,5 @@ public class OutputSettings extends JPanel implements ActionListener {
 
 	}
 		
-		///TODO: 
-		//need function to get available serial ports
-		//on action event from output box, if serial, rebuild port box from the getSerialPorts method
-		//if simulator, rebuild port box with just "Not Applicable" element
+
 }
