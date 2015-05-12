@@ -18,6 +18,10 @@ import ltbl.algo.FFTBox;
 import ltbl.control.Runner;
 import ltbl.util.Pair;
 
+// FFTBoxSettings contains corresponding light effects from a box that a user drew
+// Functional cohesion. FFTBoxSettings sets paramaters for FFTBox which works with all other FFT related classes towards the task of creating a usable signal output
+// FFTBoxSettings collaborates with FFTBox through Control coupling. FFTBoxSettings manipulates the behavior of FFTBox(es)
+
 public class FFTBoxSettings extends JPanel implements ActionListener {
 	private static final long serialVersionUID = -6430031583947372067L;
 

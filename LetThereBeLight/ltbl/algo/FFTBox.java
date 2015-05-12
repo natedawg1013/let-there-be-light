@@ -9,6 +9,17 @@ import ltbl.iface.Output;
 import ltbl.iface.OutputSource;
 import ltbl.util.Pair;
 
+// The FFTBox class is the back-end of each box drawn on the FFTGraph
+// The FFTBox class makes use of the "Visitor" and "Observer" design patterns
+// Functional Cohesion. FFTBox works with all other FFT related classes towards the task of creating a usable signal output
+// FFTBox collaborates with the following classes
+// FFTBoxOverlay - Content Coupling. FFTBoxOverlay is dependant on the shape and size of FFTBox
+// FFTBoxSettings - Control coupling. FFTBoxSettings manipulates the behavior of FFTBox(es)
+// FourierAnalysis - FFTBox and FFTBoxOverlay (inherited by FFTBox) will change signal output depending on FFTBox coordinates and the information/data that passes through its set parameters from FourierAnalysis
+// FFTWindow - DataCoupling. FFTWindow holds and displays the contents of FFTBox
+
+
+
 public class FFTBox implements FourierUpdateListener, OutputSource{
 
 	// relative to the outer boundaries of the space

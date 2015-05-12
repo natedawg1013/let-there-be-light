@@ -8,6 +8,12 @@ import ltbl.algo.FourierAnalysis;
 import ltbl.control.Runner;
 import ltbl.iface.FourierUpdateListener;
 
+// The class FFTGraph displays an amplitude vs. frequency graph of the current sound input
+// Communicational/informational cohesion. FFTGraph operates the same data that BarGraph operates, but displays it differently, and instead allows the FFT classes to interact with it
+// FFTGraph collaborates with the following classes
+// FFTBoxOverlay - Content coupling. FFTBoxOverlay is a visible interface of FFTBox. Information from FourierAnalysis is displayed through FFTGraph, and the data is interpreted depending on the coordinates of a particular FFTBox/FFTBoxOverlay
+// FourierAnalysis - Content Coupling. FFTGraph will display a graph that depends on the data from FourierAnalysis
+
 
 public class FFTGraph extends JPanel implements FourierUpdateListener{
 	private static final long serialVersionUID = 8617015277422852517L;

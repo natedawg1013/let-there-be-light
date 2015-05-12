@@ -16,6 +16,18 @@ import ltbl.iface.Output;
 import ltbl.io.*;
 import ltbl.ui.*;
 
+// The class Runner is the back-end for MainMenu and allows data transfer between different classes
+// Functional cohesion. Runner is essentially the backbone of the MainMenu and allows other classes to communicate with each other through Runner
+// Controls when processing and output happens
+// Communicational/informational cohesion. For all classes that Runner interacts with, they handle and operate the same data. Runner just enables classes to pass data to another class, like a servant or messenger.
+// Runner collaborates with the following classes
+// MainMenu - Control coupling. Runner controls the flow of classes called from MainMenu
+// FFTMousePanel - Control coupling
+// PeriodicEffect - Control coupling
+// PeriodicEffectWindow - Control coupling
+// OutputSettings - Control coupling
+// DMXOut - Control coupling
+// SimOut - Control coupling
 
 public class Runner{
 	private JFrame menuFrame;

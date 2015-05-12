@@ -13,6 +13,9 @@ import javax.swing.JPanel;
 import ltbl.control.Runner;
 import ltbl.io.TrueAudioInput;
 
+// InputSettings generates an audio input object
+// Sequential cohesion. AudioInput first checks all inputs for further processing by InputSettings
+// InputSettings collaborates with AudioInput through Control coupling. InputSettings manipulates the behavior of Input
 
 public class InputSettings extends JPanel implements ActionListener {
 	private static final long serialVersionUID = -997194328110445776L;

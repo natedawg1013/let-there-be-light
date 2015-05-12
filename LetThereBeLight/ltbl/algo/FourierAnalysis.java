@@ -9,6 +9,18 @@ import ltbl.algo.FFT;
 import ltbl.iface.AudioInput;
 import ltbl.iface.FourierUpdateListener;
 
+// The class FourierAnalysis takes sound input and performs Fourier Analysis on it
+// Sequential cohesion. The output from AudioInput because the processed input for FourierAnalysis
+// FourierAnalysis makes use of the "Observer" design pattern
+// FourierAnalysis collaborates with the following classes
+// AudioInput - Data coupling. AudioInput is passed on to FourierAnalysis for processing
+// BarGraph - Content coupling. BarGraph will display a graph that depends on the data from FourierAnalysis
+// FFTWindow - Data coupling. FFTWindow holds and displays the contents of FFTBoxv
+// FFTBox - FFTBox and FFTBoxOverlay (inherited by FFTBox) will change signal output depending on FFTBox coordinates and the information/data that passes through its set parameters from FourierAnalysis
+// FFTGraph - Content coupling. FFTGraph will display a graph that depends on the data from FourierAnalysis
+// RingBuffer - Data coupling. RingBuffer then becomes a method to carry data to FourierAnalysis for data processing
+
+
 public class FourierAnalysis extends Thread{
 	private AudioInput in;
 	int bufLen;

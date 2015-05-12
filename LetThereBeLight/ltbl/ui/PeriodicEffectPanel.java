@@ -18,6 +18,10 @@ import javax.swing.SpinnerNumberModel;
 import ltbl.algo.PeriodicEffect;
 import ltbl.control.Runner;
 
+// The class PeriodicEffectPanel displays a panel for the user to interact with to change the effects of PeriodicEffect
+// Communicational/informational cohesion. PeriodicEffectPanel will relay variable updates to PeriodicEffects which will affect how that class works
+// PeriodicEffectPanel collaborates with PeriodicEffect through Control coupling. PeriodicEffectPanel is the settings that manipulate the behavior of PeriodicEffect
+
 public class PeriodicEffectPanel extends JPanel implements ActionListener{
 	private static final long serialVersionUID = 3596912008204436686L;
 	JLabel lType;

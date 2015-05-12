@@ -10,6 +10,12 @@ import javax.swing.JTabbedPane;
 
 import ltbl.control.Runner;
 
+// PeriodicEffectWindow holds the GUI for PeriodicEffectPanel(s)
+// Temporal cohesion. PeriodicEffecWindow shows up only when the user wants to open the effect panel of PeriodicEffectPanel
+// PeriodicEffectWindow collaborates with the following classes
+// PeriodicEffect - Common coupling. PeriodicEffectWindow only contains the elements of PeriodicEffect
+// Runner - Control coupling. Runner controls the flow of classes called from MainMenuv
+
 
 public class PeriodicEffectWindow extends JTabbedPane implements ActionListener {
 	private static final long serialVersionUID = 9053219904660535723L;

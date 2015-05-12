@@ -13,6 +13,12 @@ import java.awt.Rectangle;
 import ltbl.algo.FFTBox;
 import ltbl.control.Runner;
 
+// FFTBoxOverlay shows on the graph where a particular FFTBox is
+// Functional Cohesion. FFTBoxOverlay is essentially the visible part of FFTBox
+// FFTBoxOverlay collaborates with the following classes
+// FFTBox - Content Coupling. FFTBoxOverlay is dependant on the shape and size of FFTBox
+// FFTMousePanel - Control coupling. FFTMousePanel detects user input and relays the input information to FFTBoxOverlay
+// FFTGraph - Content coupling. FFTBoxOverlay is a visible interface of FFTBox. Information from FourierAnalysis is displayed through FFTGraph, and the data is interpreted depending on the coordinates of a particular FFTBox/FFTBoxOverlay
 
 public class FFTBoxOverlay extends JPanel {
 	private static final long serialVersionUID = -2758325029512626906L;

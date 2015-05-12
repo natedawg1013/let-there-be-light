@@ -18,6 +18,12 @@ import ltbl.algo.FourierAnalysis;
 import ltbl.control.Runner;
 import ltbl.iface.FourierUpdateListener;
 
+// The FFTWindow class holds all FFT related classes in a UI window
+// Functional Cohesion. All parts of FFT contribute to the task of the FFT Module
+// FFTWindow collaborates with the following classes
+// FourierAnalysis - DataCoupling. FFTWindow holds and displays the contents of FFTBox
+// FFTBox - DataCoupling. FFTWindow holds and displays the contents of FFTBox
+
 public class FFTWindow extends JPanel implements ActionListener, FourierUpdateListener{
 	private static final long serialVersionUID = 6071964663827731183L;
 	private Runner runner;

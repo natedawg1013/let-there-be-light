@@ -11,6 +11,17 @@ import ltbl.iface.OutputSource;
  * @author Nathan Brnard
  *
  */
+// The PeriodicEffect class Uses time and audio “beats” to create an output signal for the user
+// The PeriodicEffect class makes use of the "Visitor" design pattern
+// Sequential cohesion. PeriodicEffect creates a signal, and that data is then passed on to another class by Runner as needed
+// PeriodicEffect collaborates with the following classes
+// MainMenu - Control coupling. Runner controls the flow of classes called from MainMenu
+// Runner - Control coupling. Runner controls the flow of classes called from MainMenu
+// AudioInput - Data coupling. The input for PeriodicEffect is the processed data from AudioInput
+// PeriodicEffectWindow - Common coupling. PeriodicEffectWindow only contains the elements of PeriodicEffect
+// PeriodicEffectPanel - Control coupling. PeriodicEffectPanel is the settings that manipulate the behavior of PeriodicEffect
+
+
 public class PeriodicEffect implements OutputSource{
 	private LFO oscillator;
 	private ArrayList<Integer> channels;

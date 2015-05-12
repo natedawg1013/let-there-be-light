@@ -9,6 +9,14 @@ import javax.swing.JPanel;
 import ltbl.algo.FourierAnalysis;
 import ltbl.iface.FourierUpdateListener;
 
+// The BarGraph class communicates with FourierAnalysis to display basic histogram of current audio input
+// BarGraph makes use of the "Observer" design pattern
+// Sequential cohesion. The input of BarGraph is the output of FourierAnalysis
+// BarGraph collaborates with the following classes
+// MainMenu - Data coupling. The MainMenu window holds the contents and data contained in BarGraph
+// FourierAnalysis - Content Coupling. BarGraph will display a graph that depends on the data from FourierAnalysis
+
+
 public class BarGraph extends JPanel implements FourierUpdateListener{
 	private static final long serialVersionUID = 4570416097915326118L;
     private float[] buckets;

@@ -9,6 +9,16 @@ import ltbl.iface.Output;
 import ltbl.iface.OutputSource;
 import ltbl.sim.SimPanel;
 
+// The class SimOut displays a virtual light show
+// Procedural cohesion. After audio has been fully processed, the output is interpreted as data
+// SimOut collaborates with the following classes
+// AudioInput - 
+// Data coupling. AudioInput is processed before the data reaches SimOut
+// Output - 
+// Control coupling. Output flags the output to either be of type DMXOut or SimOut and notifies the respective class to perform its tasks
+// Runner - 
+// Control coupling. Runner controls the flow of classes called from MainMenu
+
 public class SimOut implements Output, Runnable {
 	private float[] values;
 	private SimPanel panel;
