@@ -21,16 +21,40 @@ import ltbl.control.Runner;
  * double click on box opens settings menu for box
  */
 
+/**
+ * FFTMousePanel takes care of the user controls for FFTBoxes
+ * Allows use to draw a box, move a box, resize a box,
+ * focus the box, and open settings menu for a box
+ * 
+ * 
+ * @author Chris Chappell (chappc)
+ *
+ */
 
 public class FFTMousePanel extends JPanel implements MouseListener,MouseMotionListener,
 													 MouseWheelListener, ComponentListener {
 	private static final long serialVersionUID = 3698473995741472990L;
 
+	/**
+	 * State design pattern from the Gang of Four
+	 * Enumerations are used for easy reference to different states
+	 * 
+	 * @author Chris Chappell
+	 *
+	 */
 	public enum EState {
 		ADD, ADD_DRAW_BOX,
 		EDIT, EDIT_RESIZE_BOX, EDIT_MOVE_BOX;
 	}
 
+	/**
+	 * State design pattern from the Gang of Four
+	 * States are the different ways the mouse panel
+	 * reads in user input.
+	 * 
+	 * @author Chris Chappell
+	 *
+	 */
 	public abstract class State {
 		protected final FFTMousePanel statePanel;
 		protected State ( FFTMousePanel mp ) { statePanel = mp; }
@@ -39,12 +63,24 @@ public class FFTMousePanel extends JPanel implements MouseListener,MouseMotionLi
 		public abstract void processMouseWheelEvent ( MouseWheelEvent mwe );
 	}
 
+	/**
+	 * AddState listens for a user to start drawing a box.
+	 * It is called when the user presses the "Add" button
+	 * It switches to AddDrawBoxState when the user presses down inside the graph
+	 * It creates a FFTBox before switching, and adds it to the Runner
+	 * 
+	 * @author Chris Chappell
+	 *
+	 */
 	public class AddState extends State {
 
 		public AddState ( FFTMousePanel mp ) {
 			super(mp);
 		}
 
+		/**
+		 * listen for user left mouse button down
+		 */
 		public void processMouseEvent ( MouseEvent me ) {
 			// when you click down and hold the mouse, get coords for initial box
 			// actually make it, and add it on top of the box pile.
@@ -53,6 +89,8 @@ public class FFTMousePanel extends JPanel implements MouseListener,MouseMotionLi
 					SwingUtilities.isLeftMouseButton(me) ) {
 				// synchronize?
 				FFTBoxOverlay newBox = new FFTBoxOverlay(runner);
+				setSize();
+				newBox.setOuter( sizeX, sizeY );
 				this.statePanel.setState(EState.ADD_DRAW_BOX);
 				AddDrawBoxState nextState = (AddDrawBoxState) this.statePanel.inputState;
 				nextState.setInitialCoords( me.getX(), me.getY() );
@@ -81,7 +119,13 @@ public class FFTMousePanel extends JPanel implements MouseListener,MouseMotionLi
 
 	}
 
-
+	/**
+	 * AddDrawBoxState 
+	 * 
+	 * 
+	 * @author Chris Chappell
+	 *
+	 */
 	public class AddDrawBoxState extends State {
 
 		private FFTBoxOverlay boxAdded;
@@ -267,7 +311,7 @@ public class FFTMousePanel extends JPanel implements MouseListener,MouseMotionLi
 				newCoords[1] += statePanel.getHeight() - newCoords[3];
 				newCoords[3] = statePanel.getHeight();
 			}
-
+			System.out.println( newCoords[0] + " " + newCoords[1] + " " + newCoords[2] + " " + newCoords[3] );
 			moveBox.setDimensions( newCoords[0], newCoords[1], newCoords[2], newCoords[3] );
 		}
 

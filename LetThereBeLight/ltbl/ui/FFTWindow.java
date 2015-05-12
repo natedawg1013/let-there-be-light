@@ -45,10 +45,10 @@ public class FFTWindow extends JPanel implements ActionListener, FourierUpdateLi
     	graphPane.add( mousePanel, new Integer(1) );
     	
     	GridBagConstraints c = new GridBagConstraints();
-    	Dimension d = new Dimension(720, 480);
+    	Dimension d = new Dimension(1000, 700);
     	c.gridx = c.gridy = 0;
     	c.weightx = 1.0;
-    	c.weighty = .9;
+    	c.weighty = .98;
     	c.gridwidth = 2;
 		graphPane.setPreferredSize(d);
 		graph.setPreferredSize(d);

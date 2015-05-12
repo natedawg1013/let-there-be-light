@@ -126,9 +126,11 @@ public class FFTBoxSettings extends JPanel implements ActionListener {
         	channel.first = (Integer) channel1.getValue();
     		channel.second = ((SpinnerNumberModel) level1.getModel()).getNumber().intValue();
     		channels.add(channel);
+    		channel = new Pair<Integer, Integer>();
     		channel.first = (Integer) channel2.getValue();
     		channel.second = ((SpinnerNumberModel) level2.getModel()).getNumber().intValue();
     		channels.add(channel);
+    		channel = new Pair<Integer, Integer>();
     		channel.first = (Integer) channel3.getValue();
     		channel.second = ((SpinnerNumberModel) level2.getModel()).getNumber().intValue();
     		channels.add(channel);
