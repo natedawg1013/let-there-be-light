@@ -5,7 +5,10 @@ import ltbl.algo.FourierAnalysis;
 /**
  * Supports observer pattern by defining an interface 
  * that can be used by all classes which need information
- * from FourierAnalysis when it becomes available.
+ * from FourierAnalysis when it becomes available. FourierAnalysis
+ * will have a list of objects implementing this interface
+ * and will call update(FourierAnalysis) on them when data
+ * becomes available.
  * @author Nathan Bernard
  *
  */
