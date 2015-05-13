@@ -34,10 +34,6 @@ public class FFTGraph extends JPanel implements FourierUpdateListener{
     public LineGraph getGraph() {
     	return lg;
     }
-    
-    public void update(float[] points){
-    	lg.update(points);
-    }
 
 	@Override
 	public void update(FourierAnalysis a) {

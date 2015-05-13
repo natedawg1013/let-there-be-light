@@ -11,7 +11,11 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
-
+/**
+ * Panel which creates SimLights
+ * @author Nathan Bernard
+ *
+ */
 public class LightGeneratorPanel extends JPanel implements ActionListener{
 	private static final long serialVersionUID = 8270903873127771060L;
 	SimPanel panel;
@@ -27,7 +31,10 @@ public class LightGeneratorPanel extends JPanel implements ActionListener{
 	JLabel lCol;
 	JButton add;
 	int count;
-
+	/**
+	 * constructor
+	 * @param panel panel holding this panel
+	 */
 	public LightGeneratorPanel(SimPanel panel){
 		super();
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -78,7 +85,9 @@ public class LightGeneratorPanel extends JPanel implements ActionListener{
 		color.setVisible(true);
 		add.setVisible(true);
 	}
-
+	/**
+	 * responds to user input
+	 */
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		if(ae.getSource()==type){

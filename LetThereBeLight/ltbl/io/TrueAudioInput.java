@@ -7,6 +7,13 @@ import javax.sound.sampled.*;
 import ltbl.iface.AudioInput;
 import ltbl.util.RingBuffer;
 
+/**
+ * Class which takes audio from various input sources on the computer
+ * and buffers it for the later use of FourierAnalysis. It also
+ * has static methods to get available sound devices.
+ * @author Nathan Bernard
+ *
+ */
 public class TrueAudioInput extends Thread implements AudioInput{
 	volatile public RingBuffer rb;
 	volatile TargetDataLine line = null;
@@ -15,10 +22,20 @@ public class TrueAudioInput extends Thread implements AudioInput{
 	volatile AudioFormat af;
 	Mixer mixer;
 	
+	/**
+	 * allows for getting the data in the buffer
+	 */
 	public RingBuffer getBuffer(){
 		return rb;
 	}
 
+	/**
+	 * Constructor for TrueAudioInput
+	 * @param mi mixer info object identifying the java mixer (line) to use
+	 * @param sampleRate audio sample rate in samples per second
+	 * @param bufLen length of buffer to allocate
+	 * @throws LineUnavailableException
+	 */
 	public TrueAudioInput(Mixer.Info mi, int sampleRate, int bufLen) throws LineUnavailableException{
 		af = new AudioFormat(sampleRate, 8, 1, true, false);
 		rb = new RingBuffer(bufLen);
@@ -27,7 +44,9 @@ public class TrueAudioInput extends Thread implements AudioInput{
 		line = (TargetDataLine) AudioSystem.getLine(mixer.getTargetLineInfo()[0]);
 		line = AudioSystem.getTargetDataLine(af, mi);
 	}
-	
+	/**
+	 * opens the audio line and starts buffering in its own thread
+	 */
 	public void begin() throws LineUnavailableException{
 		line.open();
 		line.start();
@@ -35,7 +54,9 @@ public class TrueAudioInput extends Thread implements AudioInput{
 		input = new Thread(this,"input");
 		input.start();
 	}
-	
+	/**
+	 * main thread function. Gets audio data from data line and buffers.
+	 */
 	public void run(){
 		while(running){
 			byte[] buf2 = new byte[rb.getSize()/20];
@@ -48,6 +69,9 @@ public class TrueAudioInput extends Thread implements AudioInput{
 		}
 	}
 	
+	/**
+	 * stops processing
+	 */
 	public void end(){
 		running=false;
 		synchronized(input){
@@ -62,15 +86,24 @@ public class TrueAudioInput extends Thread implements AudioInput{
 		line.close();
 		mixer.close();
 	}
-
+	/**
+	 * gets length of buffer
+	 */
 	public int bufLen(){
 		return rb.length();
 	}
 	
+	/**
+	 * gets data in buffer
+	 */
 	public byte[] getBuf(){
 		return rb.peek(rb.length());
 	}
 	
+	/**
+	 * lists available mixers (Audio lines)
+	 * @return list of Mixer.Info objects describing the available mixers
+	 */
 	public static List<Mixer.Info> getAvailableMixers(){
 		ArrayList<Mixer.Info> mixers = new ArrayList<Mixer.Info>();
 		for(Mixer.Info mixerInfo : AudioSystem.getMixerInfo()){

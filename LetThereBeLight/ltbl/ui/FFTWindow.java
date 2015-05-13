@@ -87,11 +87,6 @@ public class FFTWindow extends JPanel implements ActionListener, FourierUpdateLi
         }
     }
 
-	public void updateGraph(float[] points) {
-		graph.update(points);
-		graphPane.repaint();
-	}
-
 	@Override
 	public void update(FourierAnalysis a) {
 		graph.update(a);

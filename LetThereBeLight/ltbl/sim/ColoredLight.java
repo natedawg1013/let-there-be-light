@@ -7,13 +7,22 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
 import ltbl.util.ColorHelper;
-
+/**
+ * JPanel which has a fixed color and changes brightness based on input
+ * @author Nathan Bernard
+ *
+ */
 public class ColoredLight extends SimLight{
 	private static final long serialVersionUID = 1514788004299401675L;
 	private int channel;
 	private int hue;
 	private JLabel l;
-	
+	/**
+	 * Constructor for colored light
+	 * @param channel channel to use as value source
+	 * @param hue color of light
+	 * @param n ID
+	 */
 	public ColoredLight(int channel, int hue, int n){
 		this.channel=channel;
 		this.hue=hue;
@@ -23,7 +32,10 @@ public class ColoredLight extends SimLight{
 		setVisible(true);
 		this.setBorder(BorderFactory.createLineBorder(Color.GREEN));
 	}
-	
+	/**
+	 * updates color based off data value at index 'channel' 
+	 * @param data values to use to set brightness value
+	 */
 	public void update(float[] data){
 		float r, g, b;
 		float color;
